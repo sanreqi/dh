@@ -10,7 +10,7 @@ $this->title = 'USER';
 
 <!-- Modal -->
 <div class="modal fade" id="user-modal" tabindex="-1" aria-labelledby="user-modal-label" aria-hidden="true">
-111
+
 </div>
 
 <div>
@@ -29,8 +29,23 @@ $this->title = 'USER';
         </div>
     </div>
 </div>
-<!--<button class="btn btn-primary" type="submit">创建</button>-->
 
 <script>
+    $(document).ready(function () {
+        dhConfirm("123");
 
+        $("body").on("click", "#create-user-btn", function () {
+            $.ajax({
+                type: "get",
+                url: "/user/create-modal",
+                data: {},
+                dataType: "json",
+                success: function(data){
+                    if (data.status == 1) {
+                        $("#user-modal").html(data.data.html).modal();
+                    }
+                }
+            });
+        });
+    });
 </script>

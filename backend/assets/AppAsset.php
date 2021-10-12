@@ -17,7 +17,7 @@ class AppAsset extends AssetBundle
         'static/css/dashbord.css?v=2',
     ];
     public $js = [
-//        'static/js/dashbord.js'
+        'static/js/function.js?v=3'
     ];
     public $depends = [
         'common\assets\BootstrapV4Asset'

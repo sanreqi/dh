@@ -282,9 +282,13 @@ AppAsset::register($this);
 <!--                    </tbody>-->
 <!--                </table>-->
 <!--            </div>-->
+
+            <?php echo \Yii::$app->view->render('_alert_confirm'); ?>
         </main>
     </div>
 </div>
+
+
 
 
 <?php $this->endBody() ?>
