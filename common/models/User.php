@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 use yii\web\IdentityInterface;
 
 /**
@@ -211,5 +212,30 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function search($params, $count = false) {
+        $query = new Query();
+        $query->from('user')->where(['status' => self::STATUS_ACTIVE]);
+        if (isset($params['username']) & !empty($params['username'])) {
+            $query->andWhere(['like', 'username', $params['username']]);
+        }
+
+        if ($count) {
+            return $query->count();
+        }
+
+        $offset = 0;
+        $limit = 10;
+        //判断正整数 写在function里
+        if (isset($params['per-page']) && !empty($params['per-page'])) {
+            $limit = $params['per-page'];
+        }
+        if (isset($params['page']) && !empty($params['page'])) {
+            $offset = ($params['page'] - 1) * $limit;
+        }
+
+
+        return $query->offset($offset)->limit($limit)->all();
     }
 }

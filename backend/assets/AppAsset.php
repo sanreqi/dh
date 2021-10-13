@@ -20,6 +20,8 @@ class AppAsset extends AssetBundle
         'static/js/function.js?v=3'
     ];
     public $depends = [
+        'yii\web\YiiAsset',
+//        'yii\bootstrap\BootstrapAsset',
         'common\assets\BootstrapV4Asset'
     ];
 }

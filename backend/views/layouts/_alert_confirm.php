@@ -1,5 +1,5 @@
 <div id="dh-alert" class="modal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">提示</h5>
@@ -18,7 +18,7 @@
 </div>
 
 <div id="dh-confirm" class="modal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">提示</h5>

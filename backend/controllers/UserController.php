@@ -1,13 +1,21 @@
 <?php
 
 namespace backend\controllers;
+use backend\models\forms\UserForm;
 use common\models\User;
 use Yii;
+use yii\data\Pagination;
+use yii\widgets\LinkPager;
 
 class UserController extends BaseController
 {
     public function actionIndex() {
-        return $this->render('index');
+        $params = Yii::$app->request->get();
+        $model = new User();
+        $models = $model->search($params);
+        $count = $model->search($params, true);
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => 2]);
+        return $this->render('index', ['models' => $models, 'pages' => $pages]);
     }
 
     public function actionCreateModal() {
@@ -16,16 +24,19 @@ class UserController extends BaseController
     }
 
     public function actionCreate() {
-        $post = Yii::$app->request->post('Us2er');
+        $post = Yii::$app->request->post();
         if (empty($post)) {
             $this->errorAjax('缺少参数');
         }
 
-
-print_r($post);exit;
-        $model = new User();
+        $model = new UserForm();
+        $model->scenario = 'create';
         $model->load($post);
-        print_r($model->username);exit;
+        if (!$model->validate()) {
+            $this->errorAjax($this->getModelError($model));
+        }
+
+        $model->createUser();
     }
 
     public function actionUpdate() {

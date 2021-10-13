@@ -1,8 +1,18 @@
 <?php
-\common\assets\BootstrapV4Asset::register($this);
+//\common\assets\BootstrapV4Asset::register($this);
 ?>
-<body>
-<?php $this->beginBody() ?>
-a o e
-<?php $this->endBody() ?>
-<body>
+123
+
+<div class="text-right">
+    <?= \yii\widgets\LinkPager::widget([
+        'pagination' => $pages,
+//        'firstPageLabel' => "首页",
+        'prevPageLabel' => '上一页',
+        'nextPageLabel' => '下一页',
+//        'lastPageLabel' => '末页',
+//        'linkContainerOptions' => ['class' => 'page-item'],
+//        'linkOptions' => ['class' => 'page-link'],
+//        'firstPageCssClass' => '',
+//        'lastPageCssClass' => '',
+    ]); ?>
+</div>
