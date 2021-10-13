@@ -11,11 +11,13 @@ class UserController extends BaseController
 {
     public function actionIndex() {
         $params = Yii::$app->request->get();
+        $search['username'] = Yii::$app->request->get('username', '');
+        $search['truename'] = Yii::$app->request->get('truename', '');
         $model = new User();
         $models = $model->search($params);
         $count = $model->search($params, true);
-        $pages = new Pagination(['totalCount' => $count, 'pageSize' => 2]);
-        return $this->render('index', ['models' => $models, 'pages' => $pages]);
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => 10]);
+        return $this->render('index', ['models' => $models, 'search' => $search, 'pages' => $pages]);
     }
 
     public function actionCreateModal() {
@@ -37,6 +39,7 @@ class UserController extends BaseController
         }
 
         $model->createUser();
+        $this->successAjax();
     }
 
     public function actionUpdate() {

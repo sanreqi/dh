@@ -17,7 +17,7 @@ class DhLinkPager extends LinkPager
         $this->linkContainerOptions = ['class' => 'page-item'];
         $this->linkOptions = ['class' => 'page-link'];
         $this->disabledListItemSubTagOptions = ['class' => 'page-link'];
-
+        $this->hideOnSinglePage = false;
     }
 
 }

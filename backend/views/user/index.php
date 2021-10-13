@@ -11,10 +11,10 @@ $this->title = 'USER';
 
 <form class="form-row align-items-center">
     <div class="col-auto">
-        <input type="text" class="form-control mb-2" name="username" placeholder="用户名">
+        <input type="text" class="form-control mb-2" name="username" value="<?= $search['username'] ?>" placeholder="用户名">
     </div>
     <div class="col-auto">
-        <input type="text" class="form-control mb-2" name="truename" placeholder="姓名">
+        <input type="text" class="form-control mb-2" name="truename" value="<?= $search['truename'] ?>" placeholder="姓名">
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-primary mb-2">搜索</button>
@@ -32,6 +32,7 @@ $this->title = 'USER';
                 <th>姓名</th>
                 <th>手机号</th>
                 <th>邮箱</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,10 @@ $this->title = 'USER';
                         <td><?= $model['truename'] ?></td>
                         <td><?= $model['mobile'] ?></td>
                         <td><?= $model['email'] ?></td>
+                        <td>
+                            <a href="javascript:void(0)" class="btn-sm btn-success">编辑</a>
+                            <a href="javascript:void(0)" class="btn-sm btn-danger">删除</a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -67,7 +72,7 @@ $this->title = 'USER';
                 dataType: "json",
                 success: function (data) {
                     if (data.status == 1) {
-                        // $("#user-modal").html(data.data.html).modal();
+                        window.location.reload();
                     } else {
                         dhAlert(data.errorMsg)
                     }
