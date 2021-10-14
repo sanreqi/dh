@@ -48,6 +48,7 @@
                         <input name="UserForm[confirmPassword]" type="password" class="form-control" id="confirmPassword">
                     </div>
                 </div>
+                <input name="UserForm[id]" type="hidden" value="<?php echo !empty($model) ? $model->id : ''; ?>">
             </form>
         </div>
         <div class="modal-footer">
