@@ -1,4 +1,4 @@
-<?php \common\assets\UEditorAsset::register($this); ?>
+<?php //\common\assets\UEditorAsset::register($this); ?>
 <div>
     <h1>完整demo</h1>
     <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
@@ -43,8 +43,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-        alert(66);
-        var ue = UE.getEditor('editor');
+        // var ue = UE.getEditor('editor');
     })
 
     //实例化编辑器

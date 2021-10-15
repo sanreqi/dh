@@ -12,7 +12,7 @@ class BootstrapV4Asset extends AssetBundle
     ];
 
     public $js = [
-        'js/bootstrap.min.js'
+        'js/bootstrap.min.js?v=1'
     ];
 
     public $depends = [

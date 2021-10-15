@@ -21,13 +21,11 @@ class UserController extends BaseController
     }
 
     public function actionCreateModal() {
-        $this->layout = false;
         $html = $this->renderPartial('_user_modal', ['model' => []]);
         $this->successAjax(['html' => $html]);
     }
 
     public function actionUpdateModal() {
-        $this->layout = false;
         $id = Yii::$app->request->get('id');
         if (empty($id)) {
             $this->errorAjax('缺少参数');

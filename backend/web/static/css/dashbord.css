@@ -116,3 +116,7 @@ body {
 a:hover {
     text-decoration: none!important;
 }
+
+.mt-30 {
+    margin-top: 30px;
+}
