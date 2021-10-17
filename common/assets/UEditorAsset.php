@@ -14,8 +14,8 @@ class UEditorAsset extends AssetBundle
 
     public $js = [
         //顺序不能错
-//        'ueditor/ueditor.config.js',
-//        'ueditor/ueditor.all.min.js',
+        'ueditor/ueditor.config.js',
+        'ueditor/ueditor.all.min.js',
     ];
 
     public $depends = [
