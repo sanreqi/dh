@@ -33,12 +33,17 @@ class BaseController extends Controller
         $this->ajaxReturn(['status' => 0, 'errorMsg' => $errorMsg], $json_option);
     }
 
-    protected function layerTableDataReturn($data, $count) {
-        $returnData['code'] = 0;
-        $returnData['msg'] = '';
-        $returnData['count'] = $count;
-        $returnData['data'] = $data;
-        $this->ajaxReturn($returnData);
+    protected function successEchoAjax($data) {
+        $data['status'] = 1;
+        echo json_encode($data);
+        exit;
+    }
+
+    protected function errorEchoAjax($errorMsg) {
+        $data['status'] = 0;
+        $data['errorMsg'] = $errorMsg;
+        echo json_encode($data);
+        exit;
     }
 
     //@todo 不跳

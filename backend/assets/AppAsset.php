@@ -14,11 +14,11 @@ class AppAsset extends AssetBundle
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 
     public $css = [
-        'static/css/dashbord.css?v=4',
+        'static/css/dashbord.css?v=5',
     ];
     public $js = [
         'static/js/function.js?v=3',
-        'static/js/ajaxfileupload.js?v=5',
+        'static/js/ajaxfileupload.js?v=6',
     ];
     public $depends = [
         'common\assets\BootstrapV4Asset',

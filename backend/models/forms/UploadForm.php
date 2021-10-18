@@ -20,6 +20,8 @@ class UploadForm extends Model
 
     public $webPath;
 
+    public $folderName;
+
     private $errorMsg;
 
 
@@ -27,9 +29,12 @@ class UploadForm extends Model
     {
         return [
             //@todo
-//            maxsize;
             //提示错误信息
-            [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => ['png', 'jpg', 'jpeg', 'image/png', 'image/jpg', 'image/jpeg']],
+//            'maxSize' => '4M'
+            [['file'], 'file', 'skipOnEmpty' => false,
+                'extensions' => ['png', 'jpg', 'jpeg', 'image/png', 'image/jpg', 'image/jpeg'],
+                'checkExtensionByMimeType' => false, 'maxSize' => 1024*1024*1024],
+
         ];
     }
 
@@ -52,9 +57,10 @@ class UploadForm extends Model
         //替换原来的文件名称
         //@todo 数据库保存文件名 大小 类型等字段
 
-        $this->physicalPath = $dir .'/' . $this->file->name . '.' . $this->file->extension;
 
-//@todo        $this->fileName
+        $this->physicalPath = $dir .'/' . $this->file->name;
+        $this->webPath = '/uploads/' . $this->folderName . '/' . $this->file->name;
+
 
         if (!$this->file->saveAs($this->physicalPath)) {
             $this->errorMsg = '文件上传失败';
@@ -69,10 +75,10 @@ class UploadForm extends Model
      * 创建日期命名的文件夹
      */
     public function createFolder() {
-        $date =  date('Ymd');
-
+        $date =  date('Ym');
+        $this->folderName = $date;
         //存入数据库
-        $this->webPath = '/uploads/' . $date . '/' . $this->file->name . '.' . $this->file->extension;
+//        $this->webPath = '/uploads/' . $date . '/' . $this->file->name . '.' . $this->file->extension;
 
         $date_dir = Yii::getAlias('@backend') . '/web/uploads/' . $date;
 
