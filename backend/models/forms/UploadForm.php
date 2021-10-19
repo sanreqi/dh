@@ -33,7 +33,7 @@ class UploadForm extends Model
 //            'maxSize' => '4M'
             [['file'], 'file', 'skipOnEmpty' => false,
                 'extensions' => ['png', 'jpg', 'jpeg', 'image/png', 'image/jpg', 'image/jpeg'],
-                'checkExtensionByMimeType' => false, 'maxSize' => 1024*1024*1024],
+                'checkExtensionByMimeType' => false, 'maxSize' => 2*1024*1024*1024],
 
         ];
     }
@@ -56,11 +56,11 @@ class UploadForm extends Model
         //文件名
         //替换原来的文件名称
         //@todo 数据库保存文件名 大小 类型等字段
+        //$this->file->name
 
-
-        $this->physicalPath = $dir .'/' . $this->file->name;
-        $this->webPath = '/uploads/' . $this->folderName . '/' . $this->file->name;
-
+        $fileName = time() . '_' . getRandString(6) . '.' . $this->file->extension;
+        $this->physicalPath = $dir .'/' . $fileName;
+        $this->webPath = '/uploads/' . $this->folderName . '/' . $fileName;
 
         if (!$this->file->saveAs($this->physicalPath)) {
             $this->errorMsg = '文件上传失败';
@@ -78,8 +78,6 @@ class UploadForm extends Model
         $date =  date('Ym');
         $this->folderName = $date;
         //存入数据库
-//        $this->webPath = '/uploads/' . $date . '/' . $this->file->name . '.' . $this->file->extension;
-
         $date_dir = Yii::getAlias('@backend') . '/web/uploads/' . $date;
 
         if (!is_dir($date_dir)) {

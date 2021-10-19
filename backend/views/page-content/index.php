@@ -42,7 +42,7 @@
     <div class="form-group row">
         <div class="col-sm-6">
             <img src="" class="col-sm-6">
-            <input type="hidden" class="form-control dh-hide img-content" name="content[]">
+            <input type="hidden" class="form-control dh-hide img-input" name="content[]">
             <input type="hidden" class="form-control dh-hide" name="inputType[]" value="3">
         </div>
         <div class="col-sm-1">
@@ -59,6 +59,8 @@
         <div class="col-sm-1">
             <span class="glyphicon glyphicon-remove content-remove dh-cp">
         </div>
+        <input type="hidden" class="ueditor-input" name="content[]">
+        <input type="hidden" class="form-control dh-hide" name="inputType[]" value="4">
     </div>
 </div>
 
@@ -84,7 +86,6 @@
         });
         $("#add-editor-btn").click(function () {
             var num = $("#ueditor-num").val();
-            var i_num = parseInt(num);
             var id = "ueditor-" + num;
             $("#content-editor .udc").prop("id", id);
             num ++;
@@ -95,7 +96,6 @@
             $("#content-editor .udc").removeAttr("id").empty();
         });
     })
-
     function ajaxFileUpload() {
         $.ajaxFileUpload({
             url: "/page-content/upload", //用于文件上传的服务器端请求地址
@@ -106,9 +106,8 @@
             success: function(data) {
                 if (data.status == 1) {
                     $("#content-img").find("img").prop("src", data.src);
-                    $("#content-img").find(".img-content").prop("value", data.src);
+                    $("#content-img").find(".img-input").prop("value", data.src);
                     var html = $("#content-img").html();
-                    alert(html);
                     $("#content-form").append(html);
                 } else {
                     dhAlert(data.errorMsg)
@@ -117,7 +116,7 @@
         });
     }
     $("#save-content-btn").click(function () {
-        get
+        setUeditorVal();
         $.ajax({
             type: "post",
             url: "/page-content/save-content",
@@ -136,7 +135,11 @@
         });
     });
     function setUeditorVal() {
-
+        $("#content-form .udc").each(function() {
+            var ue = UE.getEditor($(this).attr("id"));
+            var content = ue.getContent();
+            $(this).parents(".form-group").find(".ueditor-input").prop("value", content);
+        });
     }
 </script>
 

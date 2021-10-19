@@ -1,159 +1,144 @@
-<?php //\common\assets\UEditorAsset::register($this); ?>
-<div>
-    <h1>完整demo</h1>
-    <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
-</div>
-<div id="btns">
-    <div>
-        <button onclick="getAllHtml()">获得整个html的内容</button>
-        <button onclick="getContent()">获得内容</button>
-        <button onclick="setContent()">写入内容</button>
-        <button onclick="setContent(true)">追加内容</button>
-        <button onclick="getContentTxt()">获得纯文本</button>
-        <button onclick="getPlainTxt()">获得带格式的纯文本</button>
-        <button onclick="hasContent()">判断是否有内容</button>
-        <button onclick="setFocus()">使编辑器获得焦点</button>
-        <button onmousedown="isFocus(event)">编辑器是否获得焦点</button>
-        <button onmousedown="setblur(event)" >编辑器失去焦点</button>
+<?php
+/* @var $this \yii\web\View */
+/* @var $search */
+/* @var $pages */
 
-    </div>
-    <div>
-        <button onclick="getText()">获得当前选中的文本</button>
-        <button onclick="insertHtml()">插入给定的内容</button>
-        <button id="enable" onclick="setEnabled()">可以编辑</button>
-        <button onclick="setDisabled()">不可编辑</button>
-        <button onclick=" UE.getEditor('editor').setHide()">隐藏编辑器</button>
-        <button onclick=" UE.getEditor('editor').setShow()">显示编辑器</button>
-        <button onclick=" UE.getEditor('editor').setHeight(300)">设置高度为300默认关闭了自动长高</button>
-    </div>
+$this->title = 'PAGE';
+?>
 
-    <div>
-        <button onclick="getLocalData()" >获取草稿箱内容</button>
-        <button onclick="clearLocalData()" >清空草稿箱</button>
-    </div>
+<div class="modal fade" id="page-modal" tabindex="-1" aria-labelledby="page-modal-label" aria-hidden="true">
 
 </div>
-<div>
-    <button onclick="createEditor()">
-        创建编辑器</button>
-    <button onclick="deleteEditor()">
-        删除编辑器</button>
+
+<form class="form-row align-items-center">
+    <div class="col-auto">
+        <input type="text" class="form-control mb-2" name="name" value="" placeholder="页面名称">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-2">搜索</button>
+    </div>
+    <div class="col-auto">
+        <a id="create-page-btn" class="btn btn-primary mb-2">创建</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>页面名称</th>
+            <th>页面描述</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($models)): ?>
+            <?php foreach ($models as $model): ?>
+                <tr>
+                    <td><?= $model['id'] ?></td>
+                    <td><?= $model['name'] ?></td>
+                    <td><?= $model['description'] ?></td>
+                    <td>
+                        <a href="javascript:void(0)" class="btn-sm btn-success update-page-btn" page_id="<?= $model['id'] ?>" page_name="<?= $model['name'] ?>">编辑</a>
+                        <a href="javascript:void(0)" class="btn-sm btn-danger delete-page-btn" page_id="<?= $model['id'] ?>" page_name="<?= $model['name'] ?>">删除</a>
+                        <a href="<?php echo \yii\helpers\Url::toRoute(['page-content/index', 'page_id' => $model['id']]) ?>" target="_blank" class="btn-sm btn-warning">内容</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
 </div>
 
-<script type="text/javascript">
+<div class="text-right">
+    <?= \common\widgets\DhLinkPager::widget([
+        'pagination' => $pages,
+    ]); ?>
+</div>
 
-    $(document).ready(function() {
-        // var ue = UE.getEditor('editor');
-    })
+<script>
+    $(document).ready(function () {
+        $("body").on("click", "#save-page-btn", function () {
+            var $this = $(this);
+            $this.prop("disabled", "disabled").addClass("disabled");
+            $.ajax({
+                type: "post",
+                url: "/page/save-page",
+                data: $("#page-form").serializeArray(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        window.location.reload();
+                    } else {
+                        dhAlert(data.errorMsg)
+                    }
+                },
+                complete: function (data) {
+                    $this.prop("disabled", false).removeClass("disabled");
+                }
+            });
+        });
 
-    //实例化编辑器
-    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-    var ue = UE.getEditor('editor');
+        $("body").on("click", "#create-page-btn", function () {
+            $.ajax({
+                type: "get",
+                url: "/page/create-modal",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        $("#page-modal").html(data.data.html).modal();
+                    }
+                }
+            });
+        });
 
+        $("body").on("click", ".update-page-btn", function () {
+            var id = $(this).attr("page_id");
+            $.ajax({
+                type: "get",
+                url: "/page/update-modal",
+                data: {
+                    "id": id
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        $("#page-modal").html(data.data.html).modal();
+                    }
+                }
+            });
+        });
 
-    function isFocus(e){
-        alert(UE.getEditor('editor').isFocus());
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function setblur(e){
-        UE.getEditor('editor').blur();
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function insertHtml() {
-        var value = prompt('插入html代码', '');
-        UE.getEditor('editor').execCommand('insertHtml', value)
-    }
-    function createEditor() {
-        enableBtn();
-        UE.getEditor('editor');
-    }
-    function getAllHtml() {
-        alert(UE.getEditor('editor').getAllHtml())
-    }
-    function getContent() {
-        var arr = [];
-        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getContent());
-        alert(arr.join("\n"));
-    }
-    function getPlainTxt() {
-        var arr = [];
-        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getPlainTxt());
-        alert(arr.join('\n'))
-    }
-    function setContent(isAppendTo) {
-        var arr = [];
-        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
-        alert(arr.join("\n"));
-    }
-    function setDisabled() {
-        UE.getEditor('editor').setDisabled('fullscreen');
-        disableBtn("enable");
-    }
+        $("body").on("click", ".delete-page-btn", function () {
+            var $this = $(this);
+            $this.prop("disabled", "disabled").addClass("disabled");
+            var id = $this.attr("page_id");
+            var name = $this.attr("page_name");
+            dhConfirm("确定要删除页面" + name + "吗？");
 
-    function setEnabled() {
-        UE.getEditor('editor').setEnabled();
-        enableBtn();
-    }
-
-    function getText() {
-        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
-        var range = UE.getEditor('editor').selection.getRange();
-        range.select();
-        var txt = UE.getEditor('editor').selection.getText();
-        alert(txt)
-    }
-
-    function getContentTxt() {
-        var arr = [];
-        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
-        arr.push("编辑器的纯文本内容为：");
-        arr.push(UE.getEditor('editor').getContentTxt());
-        alert(arr.join("\n"));
-    }
-    function hasContent() {
-        var arr = [];
-        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
-        arr.push("判断结果为：");
-        arr.push(UE.getEditor('editor').hasContents());
-        alert(arr.join("\n"));
-    }
-    function setFocus() {
-        UE.getEditor('editor').focus();
-    }
-    function deleteEditor() {
-        disableBtn();
-        UE.getEditor('editor').destroy();
-    }
-    function disableBtn(str) {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            if (btn.id == str) {
-                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-            } else {
-                btn.setAttribute("disabled", "true");
-            }
-        }
-    }
-    function enableBtn() {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-        }
-    }
-
-    function getLocalData () {
-        alert(UE.getEditor('editor').execCommand( "getlocaldata" ));
-    }
-
-    function clearLocalData () {
-        UE.getEditor('editor').execCommand( "clearlocaldata" );
-        alert("已清空草稿箱")
-    }
+            $("#dh-confirm").find("#dh-confirm-btn").click(function() {
+                $.ajax({
+                    type: "post",
+                    url: "/page/delete-page",
+                    data: {
+                        "id": id
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.status == 1) {
+                            window.location.reload();
+                        } else {
+                            dhAlert(data.errorMsg)
+                        }
+                    },
+                    complete: function (data) {
+                        $this.prop("disabled", false).removeClass("disabled");
+                    }
+                });
+            });
+        });
+    });
 </script>
+

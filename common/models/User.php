@@ -217,6 +217,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function search($params, $count = false) {
         $query = new Query();
         $query->from('user')->where(['status' => self::STATUS_ACTIVE]);
+        //keywords
         if (isset($params['username']) & !empty($params['username'])) {
             $query->andWhere(['like', 'username', $params['username']]);
         }

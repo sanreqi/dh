@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\controllers;
+use common\models\PageContent;
 use Yii;
 use backend\forms\ReportForm;
 use backend\models\forms\UploadForm;
@@ -36,6 +37,21 @@ class PageContentController extends BaseController
 
     public function actionSaveContent() {
         $post = Yii::$app->request->post();
-        print_r($post);exit;
+        if (!isset($post['content']) || empty($post['content']) ||
+            !isset($post['inputType']) || empty($post['inputType'])) {
+            $this->errorEchoAjax('内容不能为空');
+        }
+        $contents = $post['content'];
+        $inputTypes = $post['inputType'];
+        if (count($contents) != count($inputTypes)) {
+            $this->errorEchoAjax('非法请求');
+        }
+        for ($i=0; $i<count($contents); $i++) {
+            $model = new PageContent();
+            $model->page_id = 1;
+            $model->type = $inputTypes[$i];
+            $model->value = $contents[$i];
+            $model->save();
+        }
     }
 }

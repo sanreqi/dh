@@ -69,7 +69,7 @@ $this->title = 'USER';
             $.ajax({
                 type: "post",
                 url: "/user/save-user",
-                data: $("form").serializeArray(),
+                data: $("#user-form").serializeArray(),
                 dataType: "json",
                 success: function (data) {
                     if (data.status == 1) {
