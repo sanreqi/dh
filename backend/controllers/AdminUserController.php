@@ -2,18 +2,17 @@
 
 namespace backend\controllers;
 use Yii;
-use backend\models\forms\UserForm;
-use common\models\User;
-use yii\helpers\Url;
+use backend\models\forms\AdminUserForm;
+use common\models\AdminUser;
 use yii\data\Pagination;
 
-class UserController extends BaseController
+class AdminUserController extends BaseController
 {
     public function actionIndex() {
         $params = Yii::$app->request->get();
         $search['username'] = Yii::$app->request->get('username', '');
         $search['truename'] = Yii::$app->request->get('truename', '');
-        $model = new User();
+        $model = new AdminUser();
         $models = $model->search($params);
         $count = $model->search($params, true);
         $pages = new Pagination(['totalCount' => $count, 'pageSize' => 10]);
@@ -31,7 +30,7 @@ class UserController extends BaseController
             $this->errorAjax('缺少参数');
         }
 
-        $model = User::find()->where(['id' => $id, 'status' => User::STATUS_ACTIVE])->one();
+        $model = AdminUser::find()->where(['id' => $id, 'status' => AdminUser::STATUS_ACTIVE])->one();
         if (empty($model)) {
             $this->errorAjax('用户不存在');
         }
@@ -40,29 +39,29 @@ class UserController extends BaseController
         $this->successAjax(['html' => $html]);
     }
 
-    public function actionSaveUser() {
+    public function actionSaveAdminUser() {
         $post = Yii::$app->request->post();
-        $model = new UserForm();
+        $model = new AdminUserForm();
         $model->load($post);
         $model->scenario = !empty($model->id) ? 'update' : 'create';
         if (!$model->validate()) {
             $this->errorAjax(getModelError($model));
         }
 
-        if ($model->saveUser()) {
+        if ($model->saveAdminUser()) {
             $this->successAjax();
         } else {
             $this->errorAjax('保存失败');
         }
     }
 
-    public function actionDeleteUser() {
+    public function actionDeleteAdminUser() {
         $id = Yii::$app->request->post('id');
         if (empty($id)) {
             $this->errorAjax('非法请求');
         }
 
-        $model = User::find()->where(['id' => $id, 'status' => User::STATUS_ACTIVE])->one();
+        $model = AdminUser::find()->where(['id' => $id, 'status' => AdminUser::STATUS_ACTIVE])->one();
         if (empty($model)) {
             $this->errorAjax('非法请求');
         }
@@ -71,7 +70,7 @@ class UserController extends BaseController
             $this->errorAjax('超级管理员不能删除');
         }
 
-        $model->status = User::STATUS_DELETED;
+        $model->status = AdminUser::STATUS_DELETED;
         if ($model->save()) {
             $this->successAjax();
         } else {

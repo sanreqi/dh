@@ -5,13 +5,31 @@ namespace backend\controllers;
 use common\models\Constants;
 use Yii;
 use backend\models\forms\PageForm;
-use backend\models\forms\UserForm;
+use backend\models\forms\AdminUserForm;
 use common\models\Page;
 use common\models\User;
 use yii\data\Pagination;
+use yii\filters\AccessControl;
 
 class PageController extends BaseController
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+//                'only' => ['special-callback'],
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => false,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex() {
         $params = Yii::$app->request->get();
         $search['name'] = Yii::$app->request->get('name', '');

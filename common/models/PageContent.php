@@ -19,6 +19,11 @@ use yii\behaviors\TimestampBehavior;
  */
 class PageContent extends \yii\db\ActiveRecord
 {
+    const TYPE_TEXT = 1;
+    const TYPE_TEXTAREA = 2;
+    const TYPE_IMAGE = 3;
+    const TYPE_EDITOR = 4;
+
     /**
      * {@inheritdoc}
      */

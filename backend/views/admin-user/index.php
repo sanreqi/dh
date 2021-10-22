@@ -68,7 +68,7 @@ $this->title = 'USER';
             $this.prop("disabled", "disabled").addClass("disabled");
             $.ajax({
                 type: "post",
-                url: "/user/save-user",
+                url: "/admin-user/save-admin-user",
                 data: $("#user-form").serializeArray(),
                 dataType: "json",
                 success: function (data) {
@@ -87,7 +87,7 @@ $this->title = 'USER';
         $("body").on("click", "#create-user-btn", function () {
             $.ajax({
                 type: "get",
-                url: "/user/create-modal",
+                url: "/admin-user/create-modal",
                 data: {},
                 dataType: "json",
                 success: function (data) {
@@ -102,7 +102,7 @@ $this->title = 'USER';
             var id = $(this).attr("userid");
             $.ajax({
                 type: "get",
-                url: "/user/update-modal",
+                url: "/admin-user/update-modal",
                 data: {
                     "id": id
                 },
@@ -125,7 +125,7 @@ $this->title = 'USER';
             $("#dh-confirm").find("#dh-confirm-btn").click(function() {
                 $.ajax({
                     type: "post",
-                    url: "/user/delete-user",
+                    url: "/admin-user/delete-admin-user",
                     data: {
                         "id": id
                     },

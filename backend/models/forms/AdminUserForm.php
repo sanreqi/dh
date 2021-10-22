@@ -1,11 +1,12 @@
 <?php
 namespace backend\models\forms;
 
+use common\models\AdminUser;
 use common\models\User;
 use yii\base\Model;
 use yii\db\Query;
 
-class UserForm extends Model
+class AdminUserForm extends Model
 {
     public $id;
     public $username;
@@ -25,7 +26,6 @@ class UserForm extends Model
             ['username', 'required', 'message' => '用户名必填'],
             ['username', 'string', 'min' => 3, 'max' => 20, 'tooShort' => '用户名长度必须在3-20之间', 'tooLong' => '用户名长度必须在3-20之间'],
             ['username', 'validateUsername'],
-//            ['username', 'unique', 'targetClass' => '\common\models\User', 'filter' => [['=','status' ,User::STATUS_ACTIVE], ['!=','id',$this->id]], 'message' => '用户名已经存在'],
 
             ['truename', 'trim'],
             ['truename', 'string', 'min' => 2, 'max' => 20, 'tooShort' => '姓名长度必须在2-20之间', 'tooLong' => '姓名长度必须在2-20之间'],
@@ -68,7 +68,7 @@ class UserForm extends Model
      */
     public function validateUsername() {
         $query = new Query();
-        $query->from('user')->where(['status' => User::STATUS_ACTIVE])->andWhere(['username' => $this->username]);
+        $query->from('admin_user')->where(['status' => AdminUser::STATUS_ACTIVE])->andWhere(['username' => $this->username]);
         if (!empty($this->id)) { //编辑情况
             $query->andWhere(['!=', 'id', $this->id]);
         }
@@ -84,12 +84,12 @@ class UserForm extends Model
      * 创建/编辑用户
      * @return bool
      */
-    public function saveUser() {
+    public function saveAdminUser() {
         //是否需要修改密码
         $modifyPassword = true;
         if (!empty($this->id)) {
             //编辑
-            $model = User::find()->where(['id' => $this->id, 'status' => User::STATUS_ACTIVE])->one();
+            $model = AdminUser::find()->where(['id' => $this->id, 'status' => AdminUser::STATUS_ACTIVE])->one();
             if (empty($model)) {
                 return false;
             }
@@ -98,8 +98,8 @@ class UserForm extends Model
             }
         } else {
             //新增
-            $model = new User();
-            $model->status = User::STATUS_ACTIVE;
+            $model = new AdminUser();
+            $model->status = AdminUser::STATUS_ACTIVE;
         }
 
         $model->username = $this->username;
@@ -113,7 +113,5 @@ class UserForm extends Model
 
         return $model->save();
     }
-
-
 
 }
