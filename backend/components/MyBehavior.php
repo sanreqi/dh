@@ -1,4 +1,4 @@
-
+<?php
 namespace backend\components;
 
 use yii\base\Behavior;
