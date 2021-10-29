@@ -1,4 +1,3 @@
-<?php
 
 namespace backend\components;
 
@@ -22,6 +21,8 @@ class MyBehavior extends Behavior
 
     public function foo()
     {
+       print_r($this->owner);exit;
+//        return static::class;
         // ...
     }
 }
