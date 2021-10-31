@@ -5,6 +5,8 @@ namespace backend\controllers;
 
 use backend\components\Foo;
 use backend\components\MyBehavior;
+use common\models\AdminUser;
+use common\models\Page;
 use yii\web\Controller;
 
 class IndexController extends BaseController
@@ -22,6 +24,10 @@ class IndexController extends BaseController
     }
 
     public function actionTest() {
+        $page = Page::find()->where(['id' => 1])->one();
+        print_r($page);exit;
+
+
         echo $this->foo();
         exit;
         $this->prop1 = 'hehe da';
