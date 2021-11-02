@@ -17,7 +17,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\AdminUser',
+            'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -44,5 +44,6 @@ return [
             ],
         ],
     ],
+    'homeUrl'=>'/site/index',
     'params' => $params,
 ];

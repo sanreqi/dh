@@ -25,7 +25,7 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class AdminUser extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
@@ -37,7 +37,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{admin_user}}';
+        return '{{user}}';
     }
 
     /**
@@ -216,7 +216,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 
     public function search($params, $count = false) {
         $query = new Query();
-        $query->from('admin_user')->where(['status' => self::STATUS_ACTIVE]);
+        $query->from('user')->where(['status' => self::STATUS_ACTIVE]);
         //keywords
         if (isset($params['username']) & !empty($params['username'])) {
             $query->andWhere(['like', 'username', $params['username']]);

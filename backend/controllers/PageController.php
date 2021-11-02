@@ -5,7 +5,7 @@ namespace backend\controllers;
 use common\models\Constants;
 use Yii;
 use backend\models\forms\PageForm;
-use backend\models\forms\AdminUserForm;
+use backend\models\forms\UserForm;
 use common\models\Page;
 use common\models\User;
 use yii\data\Pagination;

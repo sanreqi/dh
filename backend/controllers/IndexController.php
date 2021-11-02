@@ -5,7 +5,7 @@ namespace backend\controllers;
 
 use backend\components\Foo;
 use backend\components\MyBehavior;
-use common\models\AdminUser;
+use common\models\User;
 use common\models\Page;
 use yii\web\Controller;
 
