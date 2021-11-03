@@ -43,6 +43,20 @@ return [
             'rules' => [
             ],
         ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@backend/messages',
+                    // 'sourceLanguage' => 'en-US',
+//                    'sourceLanguage' => 'en',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+            ],
+        ],
     ],
     'homeUrl'=>'/site/index',
     'params' => $params,

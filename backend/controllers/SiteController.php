@@ -61,6 +61,15 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+//        Yii::$app->session['dh_language'] = 'en';
+
+        echo Yii::$app->session['dh_language'];exit;
+
+//        Yii::$app->language = 'en';  //指定使用哪个语言翻译  如果用俄文则是 Yii::$app->language = 'ru';
+        echo Yii::t('app', 'hello', ['username' => 'zhha']);
+        exit;
+
+
         $auth = Yii::$app->authManager;
         $auth->removeAll();
 
@@ -110,6 +119,15 @@ class SiteController extends BaseController
 //        }
 //        exit;
 
+    }
+
+    public function actionTestGo() {
+        print_r(Yii::$app->controller->action);exit;
+        echo Yii::$app->controller->id;
+
+        exit;
+
+        echo 123; exit;
     }
 
     /**

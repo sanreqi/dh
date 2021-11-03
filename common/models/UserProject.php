@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
@@ -14,7 +14,6 @@ use Yii;
 class UserProject extends \yii\db\ActiveRecord
 {
     const PROJECT_BACKEND = 1;
-
     const PROJECT_FRONTEND = 2;
 
     /**
@@ -45,5 +44,21 @@ class UserProject extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'project' => 'Project',
         ];
+    }
+
+    public static function getProjectList() {
+        return [
+            self::PROJECT_BACKEND => 'backend',
+            self::PROJECT_FRONTEND => 'frontend',
+        ];
+    }
+
+    public static function getProjectByKey($key) {
+        $result = '';
+        $list = self::getProjectList();
+        if (array_key_exists($key, $list)) {
+            $result = $list[$key];
+        }
+        return $result;
     }
 }
