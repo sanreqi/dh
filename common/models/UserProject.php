@@ -16,6 +16,10 @@ class UserProject extends \yii\db\ActiveRecord
     const PROJECT_BACKEND = 1;
     const PROJECT_FRONTEND = 2;
 
+    const CONTROLLER_BACKEND_USER = 'controller_backend_user';
+    const CONTROLLER_BACKEND_PAGE = 'controller_backend_page';
+    const CONTROLLER_BACKEND_PAGE_CONTENT = 'controller_backend_page_content';
+
     /**
      * {@inheritdoc}
      */
@@ -61,4 +65,23 @@ class UserProject extends \yii\db\ActiveRecord
         }
         return $result;
     }
+
+    public static function getControllerList() {
+        return [
+            self::CONTROLLER_BACKEND_USER => '用户(User)',
+            self::CONTROLLER_BACKEND_PAGE => '页面(Page)',
+            self::CONTROLLER_BACKEND_PAGE_CONTENT => '页面内容(PageContent)',
+        ];
+    }
+
+    public static function getControByKeyller($key) {
+        $result = '';
+        $list = self::getControllerList();
+        if (array_key_exists($key, $list)) {
+            $result = $list[$key];
+        }
+        return $result;
+    }
+
+
 }
