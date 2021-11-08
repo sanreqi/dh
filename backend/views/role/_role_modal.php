@@ -1,6 +1,7 @@
 <?php
 /* @var $model */
 /* @var $title */
+/* @var $url */
 ?>
 
 <div class="modal-dialog">
@@ -42,7 +43,7 @@
                     </div>
                 </div>
 
-                <input name="RoleForm[id]" type="hidden" value="<?php echo !empty($model) ? $model->id : ''; ?>">
+                <input type="hidden" id="save-url" value="<?php echo $url; ?>">
             </form>
         </div>
         <div class="modal-footer">

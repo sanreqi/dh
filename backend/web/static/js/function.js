@@ -9,8 +9,8 @@ function dhConfirm(content) {
 }
 
 function createModalBind(name) {
+    var btn = "#create-" + name + "-btn";
     $("body").on("click", btn, function () {
-        var btn = "#create-" + name + "-btn";
         var url = "/" + name + "/create-modal";
         var modal = "#" + name + "-modal";
         $.ajax({
@@ -28,8 +28,8 @@ function createModalBind(name) {
 }
 
 function updateModalBind(name) {
+    var btn = ".update-" + name + "-btn";
     $("body").on("click", btn, function () {
-        var btn = ".update-" + name + "-btn";
         var url = "/" + name + "/update-modal";
         var modal = "#" + name + "-modal";
         var _id = name + "_id";
@@ -51,13 +51,12 @@ function updateModalBind(name) {
 }
 
 function saveModalBind(name, url) {
+    var btn = "#save-" + name + "-btn";
     $("body").on("click", btn, function () {
         //typeof兼容null和undefined
         if (typeof(url) == "undefined") {
-            alert(123);
             url = "/" + name + "/save-" + name;
         }
-        var btn = "#save-" + name + "-btn";
         var form = "#" + name + "-form";
         var $this = $(this);
         $this.prop("disabled", "disabled").addClass("disabled");

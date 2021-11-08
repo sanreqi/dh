@@ -47,6 +47,28 @@
     $(document).ready(function () {
         createModalBind("role");
         updateModalBind("role");
-        saveModalBind("role");
+
+        $("body").on("click", "#save-role-btn", function () {
+            var $this = $(this);
+            var url = $("#save-url").val();
+            $this.prop("disabled", "disabled").addClass("disabled");
+            $.ajax({
+                type: "post",
+                url: url,
+                data: $("#role-form").serializeArray(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        window.location.reload();
+                    } else {
+                        dhAlert(data.errorMsg)
+                    }
+                },
+                complete: function (data) {
+                    $this.prop("disabled", false).removeClass("disabled");
+                }
+            });
+        });
+
     });
 </script>
