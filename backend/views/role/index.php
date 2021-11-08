@@ -1,6 +1,6 @@
 <?php $this->title = 'ROLE'; ?>
 
-<div class="modal fade" id="page-modal" tabindex="-1" aria-labelledby="page-modal-label" aria-hidden="true">
+<div class="modal fade" id="role-modal" tabindex="-1" aria-labelledby="role-modal-label" aria-hidden="true">
 
 </div>
 
@@ -12,7 +12,7 @@
         <button type="submit" class="btn btn-primary mb-2">搜索</button>
     </div>
     <div class="col-auto">
-        <a id="create-page-btn" class="btn btn-primary mb-2">创建</a>
+        <a id="create-role-btn" class="btn btn-primary mb-2">创建</a>
     </div>
 </form>
 
@@ -20,7 +20,7 @@
     <table class="table table-striped table-sm">
         <thead>
         <tr>
-            <th>角色名称</th>
+            <th>名称</th>
             <th>描述</th>
             <th>创建时间</th>
             <th>操作</th>
@@ -32,7 +32,7 @@
                 <tr>
                     <td><?= $model->name ?></td>
                     <td><?= $model->description ?></td>
-                    <td><?= $model->createdAt ?></td>
+                    <td><?= date('Y-m-d', $model->createdAt) ?></td>
                     <td>
                         1
                     </td>
@@ -42,3 +42,11 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready(function () {
+        createModalBind("role");
+        updateModalBind("role");
+        saveModalBind("role");
+    });
+</script>

@@ -59,7 +59,7 @@ class RoleController extends BaseController
         return $this->render('index', ['models' => $models]);
     }
 
-    public function actionIndex() {
+    public function actionIndex1223() {
         if (1) {
             $list = [];
             foreach ([1,2] as $v) {
@@ -94,5 +94,16 @@ class RoleController extends BaseController
 
     }
 
+    public function actionIndex() {
+        $auth = Yii::$app->authManager;
+        $models = $auth->getRoles();
+
+        return $this->render('index', ['models' => $models]);
+    }
+
+    public function actionCreateModal() {
+        $html = $this->renderPartial('_role_modal', ['model' => [], 'title' => '创建角色']);
+        $this->successAjax(['html' => $html]);
+    }
 
 }
