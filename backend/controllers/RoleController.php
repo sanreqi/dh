@@ -7,6 +7,7 @@ use api\modules\app\models\Address;
 use api\modules\app\models\excel\CheckOut;
 use backend\models\forms\RoleForm;
 use common\models\UploadExcelFile;
+use common\models\User;
 use Yii;
 use yii\helpers\Url;
 
@@ -104,18 +105,19 @@ class RoleController extends BaseController
     }
 
     public function actionCreateModal() {
-        $url = Url::toRoute(['/role/create-role']);
-        $html = $this->renderPartial('_role_modal', ['model' => [], 'title' => '创建角色', 'url' => $url]);
+        $html = $this->renderPartial('_role_modal', ['model' => [], 'title' => '创建角色']);
         $this->successAjax(['html' => $html]);
     }
 
     public function actionUpdateModal() {
-        $url = Url::toRoute(['/role/update-role']);
-        $html = $this->renderPartial('_role_modal', ['model' => [], 'title' => '修改角色', 'url' => $url]);
+        $name = Yii::$app->request->get('name');
+        $auth = Yii::$app->authManager;
+        $model = $auth->getRole($name);
+        $html = $this->renderPartial('_role_modal', ['model' => $model, 'title' => '修改角色']);
         $this->successAjax(['html' => $html]);
     }
 
-    public function actionCreateRole() {
+    public function actionCreate() {
         $post = Yii::$app->request->post();
         $model = new RoleForm();
         $model->scenario = 'create';
@@ -124,14 +126,17 @@ class RoleController extends BaseController
             $this->errorAjax(getModelError($model));
         }
         try {
-            $model->createRole();
-            $this->successAjax();
+            if ($model->createRole()) {
+                $this->successAjax();
+            } else {
+                $this->errorAjax('保存失败');
+            }
         } catch (\Exception $e) {
             $this->errorAjax($e->getMessage());
         }
     }
 
-    public function actionUpdateRole() {
+    public function actionUpdate() {
         $post = Yii::$app->request->post();
         $model = new RoleForm();
         $model->scenario = 'update';
@@ -140,11 +145,18 @@ class RoleController extends BaseController
             $this->errorAjax(getModelError($model));
         }
         try {
-            $model->updateRole();
-            $this->successAjax();
+            if ($model->updateRole()) {
+                $this->successAjax();
+            } else {
+                $this->errorAjax('保存失败');
+            }
         } catch (\Exception $e) {
             $this->errorAjax($e->getMessage());
         }
+    }
+
+    public function actionDelete() {
+
     }
 
 }

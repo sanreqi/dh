@@ -45,8 +45,8 @@ $this->title = 'USER';
                         <td><?= $model['mobile'] ?></td>
                         <td><?= $model['email'] ?></td>
                         <td>
-                            <a href="javascript:void(0)" class="btn-sm btn-success update-user-btn" userid="<?= $model['id'] ?>" username="<?= $model['username'] ?>">编辑</a>
-                            <a href="javascript:void(0)" class="btn-sm btn-danger delete-user-btn" userid="<?= $model['id'] ?>" username="<?= $model['username'] ?>">删除</a>
+                            <a href="javascript:void(0)" class="btn-sm btn-success update-user-btn" prikey-val="<?= $model['id'] ?>">编辑</a>
+                            <a href="javascript:void(0)" class="btn-sm btn-danger delete-user-btn" prikey-val="<?= $model['id'] ?>" str="<?= $model['username'] ?>">删除</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -63,86 +63,10 @@ $this->title = 'USER';
 
 <script>
     $(document).ready(function () {
-        $("body").on("click", "#save-user-btn", function () {
-            var $this = $(this);
-            $this.prop("disabled", "disabled").addClass("disabled");
-            $.ajax({
-                type: "post",
-                url: "/user/save-user",
-                data: $("#user-form").serializeArray(),
-                dataType: "json",
-                success: function (data) {
-                    if (data.status == 1) {
-                        window.location.reload();
-                    } else {
-                        dhAlert(data.errorMsg)
-                    }
-                },
-                complete: function (data) {
-                    $this.prop("disabled", false).removeClass("disabled");
-                }
-            });
-        });
-
-        $("body").on("click", "#create-user-btn", function () {
-            $.ajax({
-                type: "get",
-                url: "/user/create-modal",
-                data: {},
-                dataType: "json",
-                success: function (data) {
-                    if (data.status == 1) {
-                        $("#user-modal").html(data.data.html).modal();
-                    }
-                }
-            });
-        });
-
-        $("body").on("click", ".update-user-btn", function () {
-            var id = $(this).attr("userid");
-            $.ajax({
-                type: "get",
-                url: "/user/update-modal",
-                data: {
-                    "id": id
-                },
-                dataType: "json",
-                success: function (data) {
-                    if (data.status == 1) {
-                        $("#user-modal").html(data.data.html).modal();
-                    }
-                }
-            });
-        });
-
-        $("body").on("click", ".delete-user-btn", function () {
-            var $this = $(this);
-            $this.prop("disabled", "disabled").addClass("disabled");
-            var id = $this.attr("userid");
-            var username = $this.attr("username");
-            dhConfirm("确定要删除用户" + username + "吗？");
-
-            $("#dh-confirm").find("#dh-confirm-btn").click(function() {
-                $.ajax({
-                    type: "post",
-                    url: "/user/delete-user",
-                    data: {
-                        "id": id
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        if (data.status == 1) {
-                            window.location.reload();
-                        } else {
-                            dhAlert(data.errorMsg)
-                        }
-                    },
-                    complete: function (data) {
-                        $this.prop("disabled", false).removeClass("disabled");
-                    }
-                });
-            });
-        });
+        createModalBind("user");
+        updateModalBind("user");
+        saveModalBind("user");
+        deleteModalBind("user");
     });
 </script>
 

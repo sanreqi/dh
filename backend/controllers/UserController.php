@@ -39,11 +39,11 @@ class UserController extends BaseController
         $this->successAjax(['html' => $html]);
     }
 
-    public function actionSaveUser() {
+    public function actionCreate() {
         $post = Yii::$app->request->post();
         $model = new UserForm();
+        $model->scenario = 'create';
         $model->load($post);
-        $model->scenario = !empty($model->id) ? 'update' : 'create';
         if (!$model->validate()) {
             $this->errorAjax(getModelError($model));
         }
@@ -55,7 +55,28 @@ class UserController extends BaseController
         }
     }
 
-    public function actionDeleteUser() {
+    public function actionUpdate() {
+        $id = Yii::$app->request->get('id');
+        if (empty($id)) {
+            $this->errorAjax('缺少参数');
+        }
+        $post = Yii::$app->request->post();
+        $model = new UserForm();
+        $model->scenario = 'update';
+        $model->load($post);
+        $model->id = $id;
+        if (!$model->validate()) {
+            $this->errorAjax(getModelError($model));
+        }
+
+        if ($model->saveUser()) {
+            $this->successAjax();
+        } else {
+            $this->errorAjax('保存失败');
+        }
+    }
+
+    public function actionDelete() {
         $id = Yii::$app->request->post('id');
         if (empty($id)) {
             $this->errorAjax('非法请求');

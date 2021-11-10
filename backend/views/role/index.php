@@ -34,7 +34,8 @@
                     <td><?= $model->description ?></td>
                     <td><?= date('Y-m-d', $model->createdAt) ?></td>
                     <td>
-                        1
+                        <a href="javascript:void(0)" class="btn-sm btn-success update-role-btn" prikey-val="<?= $model->name; ?>">编辑</a>
+                        <a href="javascript:void(0)" class="btn-sm btn-danger delete-role-btn" prikey-val="<?= $model->name; ?>" str="<?= $model->name; ?>">删除</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -46,29 +47,8 @@
 <script>
     $(document).ready(function () {
         createModalBind("role");
-        updateModalBind("role");
-
-        $("body").on("click", "#save-role-btn", function () {
-            var $this = $(this);
-            var url = $("#save-url").val();
-            $this.prop("disabled", "disabled").addClass("disabled");
-            $.ajax({
-                type: "post",
-                url: url,
-                data: $("#role-form").serializeArray(),
-                dataType: "json",
-                success: function (data) {
-                    if (data.status == 1) {
-                        window.location.reload();
-                    } else {
-                        dhAlert(data.errorMsg)
-                    }
-                },
-                complete: function (data) {
-                    $this.prop("disabled", false).removeClass("disabled");
-                }
-            });
-        });
-
+        updateModalBind("role", "name");
+        saveModalBind("role");
+        deleteModalBind("role", "name");
     });
 </script>

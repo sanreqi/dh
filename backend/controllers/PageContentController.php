@@ -45,7 +45,7 @@ class PageContentController extends BaseController
         }
     }
 
-    public function actionSaveContent() {
+    public function actionSave() {
         $post = Yii::$app->request->post();
         if (!isset($post['content']) || empty($post['content']) ||
             !isset($post['inputType']) || empty($post['inputType'])) {

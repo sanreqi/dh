@@ -55,8 +55,7 @@ class RoleForm extends Model
         !empty($this->ruleName) && $role->ruleName = $this->ruleName;
         !empty($this->data) && $role->data = $this->data;
         //可能会抛出异常
-        $auth->add($role);
-        return true;
+        return $auth->add($role);
     }
 
     public function updateRole() {
@@ -67,7 +66,7 @@ class RoleForm extends Model
         !empty($this->ruleName) && $role->ruleName = $this->ruleName;
         !empty($this->data) && $role->data = $this->data;
         //可能会抛出异常
-        $auth->update($this->name, $role);
+        return $auth->update($this->name, $role);
     }
 
 
