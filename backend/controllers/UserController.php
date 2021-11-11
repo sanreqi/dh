@@ -99,4 +99,8 @@ class UserController extends BaseController
             $this->errorAjax('删除失败');
         }
     }
+
+    public function actionDetail() {
+        return $this->render('detail');
+    }
 }

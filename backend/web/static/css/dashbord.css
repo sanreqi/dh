@@ -109,9 +109,10 @@ body {
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
 
-.card,.card-header,#sidebarMenu {
-    background-color: #343a40!important;
-}
+/*@todo srq*/
+/*.card,.card-header,#sidebarMenu {*/
+/*    background-color: #343a40!important;*/
+/*}*/
 
 a:hover {
     text-decoration: none!important;
