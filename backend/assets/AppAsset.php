@@ -14,7 +14,7 @@ class AppAsset extends AssetBundle
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 
     public $css = [
-        'static/css/dashbord.css?v=5',
+        'static/css/dashbord.css?v=91',
     ];
     public $js = [
         'static/js/function.js?v=7222212311222331',

@@ -2,14 +2,13 @@
 
 namespace backend\controllers;
 
-use api\common\helpers\Tools;
-use api\modules\app\models\Address;
-use api\modules\app\models\excel\CheckOut;
+use common\models\AuthItem;
 use backend\models\forms\RoleForm;
-use common\models\UploadExcelFile;
-use common\models\User;
+use common\helper\Tools;
+use common\models\Constants;
 use Yii;
-use yii\helpers\Url;
+use yii\data\Pagination;
+use yii\rbac\Item;
 
 class RoleController extends BaseController
 {
@@ -98,10 +97,14 @@ class RoleController extends BaseController
     }
 
     public function actionIndex() {
-        $auth = Yii::$app->authManager;
-        $models = $auth->getRoles();
-
-        return $this->render('index', ['models' => $models]);
+        $params = Yii::$app->request->get();
+        $params['type'] = Item::TYPE_ROLE;
+        $search['name'] = Yii::$app->request->get('name', '');
+        $model = new AuthItem();
+        $count = $model->search($params, true);
+        $models = $model->search($params);
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => Constants::PAGE_SIZE]);
+        return $this->render('index', ['models' => $models, 'search' => $search, 'pages' => $pages]);
     }
 
     public function actionCreateModal() {
@@ -123,7 +126,7 @@ class RoleController extends BaseController
         $model->scenario = 'create';
         $model->load($post);
         if (!$model->validate()) {
-            $this->errorAjax(getModelError($model));
+            $this->errorAjax(Tools::getModelError($model));
         }
         try {
             if ($model->createRole()) {
@@ -142,7 +145,7 @@ class RoleController extends BaseController
         $model->scenario = 'update';
         $model->load($post);
         if (!$model->validate()) {
-            $this->errorAjax(getModelError($model));
+            $this->errorAjax(Tools::getModelError($model));
         }
         try {
             if ($model->updateRole()) {

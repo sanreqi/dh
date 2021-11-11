@@ -11,19 +11,21 @@ class RbacController extends Controller
      * 同步permission
      */
     public function actionTest() {
+        $data = Yii::$app->params['permissions'];
         $auth = Yii::$app->authManager;
-        $data = require __DIR__ . '/../components/rbac/PermissionData.php';
-        foreach ($data as $project => $items) {
-            foreach ($items as $item) {
-                $name = UserProject::getProjectByKey($project) . $item['name'];
-                $ex = $auth->getPermission($name);
-                if ($ex) {
-                    continue;
-                }
+        foreach ($data as $k1 => $v1) {
+            foreach ($v1 as $v2) {
+                foreach ($v2 as $v3) {
+                    $name = $k1 . $v3['name'];
+                    $ex = $auth->getPermission($name);
+                    if ($ex) {
+                        continue;
+                    }
 
-                $permission = $auth->createPermission($name);
-                $permission->description = $item['description'];
-                $auth->add($permission);
+                    $permission = $auth->createPermission($name);
+                    $permission->description = $v3['description'];
+                    $auth->add($permission);
+                }
             }
         }
     }

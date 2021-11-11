@@ -1,4 +1,10 @@
-<?php $this->title = 'ROLE'; ?>
+<?php
+/* @var $this \yii\web\View */
+/* @var $search */
+/* @var $pages */
+
+$this->title = 'ROLE';
+?>
 
 <div class="modal fade" id="role-modal" tabindex="-1" aria-labelledby="role-modal-label" aria-hidden="true">
 
@@ -6,7 +12,7 @@
 
 <form class="form-row align-items-center">
     <div class="col-auto">
-        <input type="text" class="form-control mb-2" name="name" value="" placeholder="页面名称">
+        <input type="text" class="form-control mb-2" name="name" value="" placeholder="角色名称">
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-primary mb-2">搜索</button>
@@ -30,18 +36,24 @@
         <?php if (!empty($models)): ?>
             <?php foreach ($models as $model): ?>
                 <tr>
-                    <td><?= $model->name ?></td>
-                    <td><?= $model->description ?></td>
-                    <td><?= date('Y-m-d', $model->createdAt) ?></td>
+                    <td><?= $model['name'] ?></td>
+                    <td><?= $model['description'] ?></td>
+                    <td><?= date('Y-m-d', $model['created_at']) ?></td>
                     <td>
-                        <a href="javascript:void(0)" class="btn-sm btn-success update-role-btn" prikey-val="<?= $model->name; ?>">编辑</a>
-                        <a href="javascript:void(0)" class="btn-sm btn-danger delete-role-btn" prikey-val="<?= $model->name; ?>" str="<?= $model->name; ?>">删除</a>
+                        <a href="javascript:void(0)" class="btn-sm btn-success update-role-btn" prikey-val="<?= $model['name']; ?>">编辑</a>
+                        <a href="javascript:void(0)" class="btn-sm btn-danger delete-role-btn" prikey-val="<?= $model['name']; ?>" str="<?= $model['name']; ?>">删除</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
         </tbody>
     </table>
+</div>
+
+<div>
+    <?= \common\widgets\DhLinkPager::widget([
+        'pagination' => $pages,
+    ]); ?>
 </div>
 
 <script>

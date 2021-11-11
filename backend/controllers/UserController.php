@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\controllers;
+use common\helper\Tools;
 use Yii;
 use backend\models\forms\UserForm;
 use common\models\User;
@@ -45,7 +46,7 @@ class UserController extends BaseController
         $model->scenario = 'create';
         $model->load($post);
         if (!$model->validate()) {
-            $this->errorAjax(getModelError($model));
+            $this->errorAjax(Tools::getModelError($model));
         }
 
         if ($model->saveUser()) {
@@ -66,7 +67,7 @@ class UserController extends BaseController
         $model->load($post);
         $model->id = $id;
         if (!$model->validate()) {
-            $this->errorAjax(getModelError($model));
+            $this->errorAjax(Tools::getModelError($model));
         }
 
         if ($model->saveUser()) {

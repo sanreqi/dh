@@ -2,15 +2,11 @@
 
 use yii\base\Model;
 
-function getModelError(Model $model) {
-    if (empty($model->getFirstErrors())) {
-        return '';
-    }
-
-    $errors = array_values($model->getFirstErrors());
-    return $errors[0];
-}
-
+/**
+ * 随机数
+ * @param int $length
+ * @return string
+ */
 function getRandString($length = 6) {
     $str = '012345678abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $max = strlen($str) - 1;
@@ -22,22 +18,28 @@ function getRandString($length = 6) {
     return $result;
 }
 
-//分页 //@todo srq
-public static function constructPage($query,$params)
-{
-    if (isset($params['page']) && isset($params['pageSize'])) {
-        $page = intval($params['page']);
-        $pageSize = intval($params['pageSize']);
-        $offset = ($page - 1) * $pageSize;
-        $limit = $pageSize;
-        $query->offset($offset)->limit($limit);
+/**
+ * 验证身份证
+ * @return bool
+ */
+function checkIdentity($idCard) {
+    $set = array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
+    $ver = array('1', '0', 'x', '9', '8', '7', '6', '5', '4', '3', '2');
+    $arr = str_split($idCard);
+    $sum = 0;
+    for ($i = 0; $i < 17; $i++){
+        //modify by srq at 2021-08-11
+        if (!isset($arr[$i])) {
+            return false;
+        }
+        if (!is_numeric($arr[$i])){
+            return false;
+        }
+        $sum += $arr[$i] * $set[$i];
     }
-    if (isset($params['page']) && isset($params['per-page'])) {
-        $page = intval($params['page']);
-        $pageSize = intval($params['per-page']);
-        $offset = ($page - 1) * $pageSize;
-        $limit = $pageSize;
-        $query->offset($offset)->limit($limit);
+    $mod = $sum % 11;
+    if (strcasecmp($ver[$mod], $arr[17]) != 0){
+        return false;
     }
-    return $query;
+    return true;
 }

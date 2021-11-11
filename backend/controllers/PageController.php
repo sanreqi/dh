@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\helper\Tools;
 use common\models\Constants;
 use Yii;
 use backend\models\forms\PageForm;
@@ -65,7 +66,7 @@ class PageController extends BaseController
         $model = new PageForm();
         $model->load($post);
         if (!$model->validate()) {
-            $this->errorAjax(getModelError($model));
+            $this->errorAjax(Tools::getModelError($model));
         }
 
         if ($model->savePage()) {

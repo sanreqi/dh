@@ -128,3 +128,12 @@ a:hover {
 .dh-cp {
     cursor: pointer;   
 }
+
+.dh-hr {
+    margin-top: 5px!important;
+    margin-bottom: 5px!important;
+}
+
+.rem-1 {
+    font-size: 1rem!important;
+}

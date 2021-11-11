@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use common\helper\Tools;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -226,16 +227,7 @@ class User extends ActiveRecord implements IdentityInterface
             return $query->count();
         }
 
-        $offset = 0;
-        $limit = 10;
-        //判断正整数 写在function里
-        if (isset($params['per-page']) && !empty($params['per-page'])) {
-            $limit = $params['per-page'];
-        }
-        if (isset($params['page']) && !empty($params['page'])) {
-            $offset = ($params['page'] - 1) * $limit;
-        }
-
-        return $query->offset($offset)->limit($limit)->all();
+        Tools::constructPage($query, $params);
+        return $query->all();
     }
 }

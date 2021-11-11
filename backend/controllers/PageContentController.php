@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\controllers;
+use common\helper\Tools;
 use common\models\Constants;
 use common\models\Page;
 use common\models\PageContent;
@@ -41,7 +42,7 @@ class PageContentController extends BaseController
                 $this->successEchoAjax(['src' => $model->webPath]);
             }
         } else {
-            $this->errorEchoAjax(getModelError($model));
+            $this->errorEchoAjax(Tools::getModelError($model));
         }
     }
 

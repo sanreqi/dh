@@ -12,9 +12,6 @@ class RoleForm extends Model
     public $ruleName;
     public $data;
 
-    const TYPE_CREATE = 1;
-    const TYPE_UPDATE = 2;
-
     /**
      * {@inheritdoc}
      */
