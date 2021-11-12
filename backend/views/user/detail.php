@@ -14,8 +14,8 @@ $this->title = 'USER';
                 <h5 class="card-title">User detail</h5>
                 <form>
                     <div class="form-group row">
-                        <div class="col-sm-6"><span style="margin-right: 20px;">姓名</span><span>周杰伦</span></div>
-                        <div class="col-sm-6">年龄</div>
+                        <div class="col-sm-6"><span style="margin-right: 20px;"><b>姓名</b></span><span>周杰伦</span></div>
+                        <div class="col-sm-6"><span style="margin-right: 20px;"><b>年龄</b></span><span>12</span></div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-2">name</div>
