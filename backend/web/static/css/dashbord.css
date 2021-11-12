@@ -110,9 +110,9 @@ body {
 }
 
 /*@todo srq*/
-/*.card,.card-header,#sidebarMenu {*/
-/*    background-color: #343a40!important;*/
-/*}*/
+#sidebarMenu {
+    background-color: #343a40!important;
+}
 
 a:hover {
     text-decoration: none!important;
@@ -137,4 +137,34 @@ a:hover {
 
 .rem-1 {
     font-size: 1rem!important;
+}
+
+.card-body {
+    font-size: 1rem;
+}
+
+.pa {
+    position: absolute;
+}
+
+.pr {
+    position: relative;
+}
+
+.btn-edit {
+    position: absolute;
+    top: .65rem;
+    right: .65rem;
+    z-index: 10;
+    display: block;
+    padding: .25rem .5rem;
+    font-size: 65%;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid;
+    border-radius: .25rem;
+}
+
+.mr-20 {
+    margin-right: 20px;
 }
