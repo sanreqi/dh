@@ -139,9 +139,9 @@ a:hover {
     font-size: 1rem!important;
 }
 
-.card-body {
-    font-size: 1rem;
-}
+/*.card-body {*/
+/*    font-size: 1rem;*/
+/*}*/
 
 .pa {
     position: absolute;
@@ -151,7 +151,7 @@ a:hover {
     position: relative;
 }
 
-.btn-edit {
+.card-edit-btn {
     position: absolute;
     top: .65rem;
     right: .65rem;

@@ -2,6 +2,7 @@
 /* @var $this \yii\web\View */
 /* @var $search */
 /* @var $pages */
+/* @var $uid */
 
 $this->title = 'USER';
 ?>
@@ -9,41 +10,25 @@ $this->title = 'USER';
 
 <div class="row">
     <div class="col-sm-7">
-        <div class="card pr">
-            <div class="card-body">
-                <h5 class="card-title">User detail</h5>
-                <form>
-                    <div class="form-group row">
-                        <div class="col-sm-6"><span style="margin-right: 20px;"><b>姓名</b></span><span>周杰伦</span></div>
-                        <div class="col-sm-6"><span style="margin-right: 20px;"><b>年龄</b></span><span>12</span></div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-2">name</div>
-                        <div class="col-sm-4">ssss</div>
-                        <div class="col-sm-2">age</div>
-                        <div class="col-sm-4">1111</div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-2">name</div>
-                        <div class="col-sm-4">ssss</div>
-                        <div class="col-sm-2">age</div>
-                        <div class="col-sm-4">1111</div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-2">name</div>
-                        <div class="col-sm-4">ssss</div>
-                        <div class="col-sm-2">age</div>
-                        <div class="col-sm-4">1111</div>
-                    </div>
-                </form>
-            </div>
-            <button type="button" class="btn-edit">编辑</button>
-        </div>
+        <div id="basic-card"><?php echo \Yii::$app->view->render('_basic'); ?></div>
+        <div id="project-card"><?php echo \Yii::$app->view->render('_project'); ?></div>
+        <div id="role-card"><?php echo \Yii::$app->view->render('_role'); ?></div>
     </div>
     <div class="col-sm-5">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
@@ -51,47 +36,53 @@ $this->title = 'USER';
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-7">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User detail</h5>
-                <form>
-                    <div class="form-group row">
-                        <div class="col-sm-2">name</div>
-                        <div class="col-sm-4">ssss</div>
-                        <div class="col-sm-2">age</div>
-                        <div class="col-sm-4">1111</div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-2">name</div>
-                        <div class="col-sm-4">ssss</div>
-                        <div class="col-sm-2">age</div>
-                        <div class="col-sm-4">1111</div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-2">name</div>
-                        <div class="col-sm-4">ssss</div>
-                        <div class="col-sm-2">age</div>
-                        <div class="col-sm-4">1111</div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-2">name</div>
-                        <div class="col-sm-4">ssss</div>
-                        <div class="col-sm-2">age</div>
-                        <div class="col-sm-4">1111</div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-5">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-    </div>
-</div>
+<script>
+    $(document).ready(function() {
+        $("body").on("click", "#edit-role-btn", function () {
+            let $this = $(this);
+            $this.prop("disabled", "disabled").addClass("disabled");
+            let url = "/user/get-role-form?uid=" + "<?= $uid; ?>"
+            $.ajax({
+                type: "get",
+                url: url,
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        $("#role-card").html(data.data.html);
+                    } else {
+                        dhAlert(data.errorMsg)
+                    }
+                },
+                complete: function (data) {
+                    $this.prop("disabled", false).removeClass("disabled");
+                }
+            });
+
+            return false;
+        });
+
+        $("body").on("click", "#save-role-btn", function () {
+            let $this = $(this);
+            $this.prop("disabled", "disabled").addClass("disabled");
+            $.ajax({
+                type: "post",
+                url: "/user/assign-role",
+                data: $("#role-form").serializeArray(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+
+                    } else {
+                        dhAlert(data.errorMsg)
+                    }
+                },
+                complete: function (data) {
+                    $this.prop("disabled", false).removeClass("disabled");
+                }
+            });
+
+            return false;
+        });
+    });
+</script>

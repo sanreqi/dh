@@ -103,7 +103,6 @@ $this->title = $role->name;
                 data: $("#permission-form").serializeArray(),
                 dataType: "json",
                 success: function (data) {
-                    console.log(data);
                     if (data.status == 1) {
                         window.location.href = "/role/index";
                     } else {

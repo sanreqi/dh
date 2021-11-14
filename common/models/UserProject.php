@@ -1,5 +1,7 @@
 <?php
 
+//@todo user_id改成uid
+
 namespace common\models;
 
 use Yii;

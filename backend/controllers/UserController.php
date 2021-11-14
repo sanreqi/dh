@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 use common\helper\Tools;
+use common\services\RbacService;
 use Yii;
 use backend\models\forms\UserForm;
 use common\models\User;
@@ -100,7 +101,37 @@ class UserController extends BaseController
         }
     }
 
+    /**
+     * 用户详情
+     */
     public function actionDetail() {
-        return $this->render('detail');
+        $uid = Yii::$app->request->get('uid');
+        $user = User::find()->where(['id' => $uid])->one();
+        if (empty($user)) {
+            //@todo srq 404
+        }
+        return $this->render('detail', ['uid' => $uid]);
+    }
+
+    public function actionGetRoleForm() {
+        $uid = Yii::$app->request->get('uid');
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRoles();
+        $html = $this->renderPartial('_role_form', ['roles' => $roles, 'uid' => $uid]);
+        $this->successAjax(['html' => $html]);
+    }
+
+    public function actionAssignRole() {
+        $post = Yii::$app->request->post();
+        if (!isset($post['uid']) || empty($post['uid'])) {
+            $this->errorAjax('非法请求');
+        }
+        $uid = $post['uid'];
+        $roleNames = isset($post['roles']) ? $post['roles'] : [];
+        $service = new RbacService();
+        $service->assignRoles($uid, $roleNames);
     }
 }
