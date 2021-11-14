@@ -146,3 +146,22 @@ function getPriParamsJson(prikey, prikeyVal) {
     var params_str = '{"' + prikey + '":"' + prikeyVal + '"}';
     return JSON.parse(params_str);
 }
+
+function renderView(url, id) {
+    $.ajax({
+        type: "get",
+        url: url,
+        data: {},
+        dataType: "json",
+        success: function (data) {
+            if (data.status == 1) {
+                $("#" + id).html(data.data.html);
+            } else {
+                dhAlert(data.errorMsg)
+            }
+        },
+        complete: function (data) {
+            $this.prop("disabled", false).removeClass("disabled");
+        }
+    });
+}

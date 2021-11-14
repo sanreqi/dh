@@ -113,7 +113,8 @@ class UserController extends BaseController
         return $this->render('detail', ['uid' => $uid]);
     }
 
-    public function actionGetRoleForm() {
+    //@todo srq 选中
+    public function actionGetRoleFormHtml() {
         $uid = Yii::$app->request->get('uid');
         if (empty($uid)) {
             $this->errorAjax('非法请求');
@@ -121,6 +122,18 @@ class UserController extends BaseController
         $auth = Yii::$app->authManager;
         $roles = $auth->getRoles();
         $html = $this->renderPartial('_role_form', ['roles' => $roles, 'uid' => $uid]);
+        $this->successAjax(['html' => $html]);
+    }
+
+    //文字
+    public function actionGetRoleViewHtml() {
+        $uid = Yii::$app->request->get('uid');
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRoles();
+        $html = $this->renderPartial('_role', ['roles' => $roles, 'uid' => $uid]);
         $this->successAjax(['html' => $html]);
     }
 

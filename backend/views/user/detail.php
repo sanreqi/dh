@@ -37,6 +37,26 @@ $this->title = 'USER';
 </div>
 
 <script>
+    function renderRoleView() {
+
+        $.ajax({
+            type: "get",
+            url: url,
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data.status == 1) {
+                    $("#role-card").html(data.data.html);
+                } else {
+                    dhAlert(data.errorMsg)
+                }
+            },
+            complete: function (data) {
+                $this.prop("disabled", false).removeClass("disabled");
+            }
+        });
+    }
+
     $(document).ready(function() {
         $("body").on("click", "#edit-role-btn", function () {
             let $this = $(this);
