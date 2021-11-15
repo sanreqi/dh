@@ -147,7 +147,7 @@ function getPriParamsJson(prikey, prikeyVal) {
     return JSON.parse(params_str);
 }
 
-function renderView(url, id) {
+function renderHtml(url, id) {
     $.ajax({
         type: "get",
         url: url,
@@ -161,7 +161,7 @@ function renderView(url, id) {
             }
         },
         complete: function (data) {
-            $this.prop("disabled", false).removeClass("disabled");
+
         }
     });
 }

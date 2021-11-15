@@ -113,27 +113,45 @@ class UserController extends BaseController
         return $this->render('detail', ['uid' => $uid]);
     }
 
-    //@todo srq 选中
     public function actionGetRoleFormHtml() {
         $uid = Yii::$app->request->get('uid');
         if (empty($uid)) {
             $this->errorAjax('非法请求');
         }
+        $assignRoleNames = [];
+        $roles = [];
         $auth = Yii::$app->authManager;
-        $roles = $auth->getRoles();
+        $allRoles = $auth->getRoles();
+        $assignments = $auth->getAssignments($uid);
+        if (!empty($assignments)) {
+            foreach ($assignments as $assignment) {
+                $assignRoleNames[] = $assignment->roleName;
+            }
+        }
+        if (!empty($allRoles)) {
+            foreach ($allRoles as $role) {
+                $tmp['name'] = $role->name;
+                $tmp['checked'] = in_array($role->name, $assignRoleNames) ? 'checked' : '';
+                $roles[] = $tmp;
+            }
+        }
         $html = $this->renderPartial('_role_form', ['roles' => $roles, 'uid' => $uid]);
         $this->successAjax(['html' => $html]);
     }
 
-    //文字
     public function actionGetRoleViewHtml() {
         $uid = Yii::$app->request->get('uid');
         if (empty($uid)) {
             $this->errorAjax('非法请求');
         }
+        $roles = [];
         $auth = Yii::$app->authManager;
-        $roles = $auth->getRoles();
-        $html = $this->renderPartial('_role', ['roles' => $roles, 'uid' => $uid]);
+        $assignments = $auth->getAssignments($uid);
+        foreach ($assignments as $assignment) {
+            $roles[] = $assignment->roleName;
+        }
+        $roleNames = implode(',', $roles);
+        $html = $this->renderPartial('_role', ['roleNames' => $roleNames, 'uid' => $uid]);
         $this->successAjax(['html' => $html]);
     }
 
@@ -146,5 +164,6 @@ class UserController extends BaseController
         $roleNames = isset($post['roles']) ? $post['roles'] : [];
         $service = new RbacService();
         $service->assignRoles($uid, $roleNames);
+        $this->successAjax();
     }
 }

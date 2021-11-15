@@ -12,7 +12,7 @@ $this->title = 'USER';
     <div class="col-sm-7">
         <div id="basic-card"><?php echo \Yii::$app->view->render('_basic'); ?></div>
         <div id="project-card"><?php echo \Yii::$app->view->render('_project'); ?></div>
-        <div id="role-card"><?php echo \Yii::$app->view->render('_role'); ?></div>
+        <div id="role-card"></div>
     </div>
     <div class="col-sm-5">
         <div class="card">
@@ -37,47 +37,15 @@ $this->title = 'USER';
 </div>
 
 <script>
-    function renderRoleView() {
-
-        $.ajax({
-            type: "get",
-            url: url,
-            data: {},
-            dataType: "json",
-            success: function (data) {
-                if (data.status == 1) {
-                    $("#role-card").html(data.data.html);
-                } else {
-                    dhAlert(data.errorMsg)
-                }
-            },
-            complete: function (data) {
-                $this.prop("disabled", false).removeClass("disabled");
-            }
-        });
-    }
-
     $(document).ready(function() {
+        renderHtml("/user/get-role-view-html?uid="+"<?= $uid; ?>", "role-card");
+
         $("body").on("click", "#edit-role-btn", function () {
             let $this = $(this);
             $this.prop("disabled", "disabled").addClass("disabled");
             let url = "/user/get-role-form?uid=" + "<?= $uid; ?>"
-            $.ajax({
-                type: "get",
-                url: url,
-                data: {},
-                dataType: "json",
-                success: function (data) {
-                    if (data.status == 1) {
-                        $("#role-card").html(data.data.html);
-                    } else {
-                        dhAlert(data.errorMsg)
-                    }
-                },
-                complete: function (data) {
-                    $this.prop("disabled", false).removeClass("disabled");
-                }
-            });
+            renderHtml("/user/get-role-form-html?uid="+"<?= $uid; ?>", "role-card");
+            $this.prop("disabled", false).removeClass("disabled");
 
             return false;
         });
@@ -92,7 +60,7 @@ $this->title = 'USER';
                 dataType: "json",
                 success: function (data) {
                     if (data.status == 1) {
-
+                        renderHtml("/user/get-role-view-html?uid="+"<?= $uid; ?>", "role-card");
                     } else {
                         dhAlert(data.errorMsg)
                     }

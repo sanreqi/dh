@@ -1,5 +1,6 @@
 <?php
 /* @var $uid */
+/* @var $roles */
 ?>
 
 <div class="card pr">
@@ -11,8 +12,8 @@
                     <?php foreach ($roles as $role): ?>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input name="roles[]" type="checkbox" value="<?php echo $role->name ?>"
-                                       class="controller-chx-item form-check-input" ?><?php echo $role->name; ?>
+                                <input name="roles[]" type="checkbox" <?= $role['checked']; ?> value="<?= $role['name'] ?>"
+                                       class="controller-chx-item form-check-input" ?><?= $role['name']; ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
