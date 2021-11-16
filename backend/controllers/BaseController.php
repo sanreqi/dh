@@ -3,12 +3,38 @@
 namespace backend\controllers;
 
 use yii\base\Model;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 
 class BaseController extends Controller
 {
 
     public $enableCsrfValidation = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+//    public function beforeAction($action)
+//    {
+////        return parent::beforeAction($action);
+////        echo 123; exit;
+//    }
 
     /**
      * Ajax方式返回数据到客户端

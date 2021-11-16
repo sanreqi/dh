@@ -7,10 +7,18 @@ use Yii;
 use backend\models\forms\UserForm;
 use common\models\User;
 use yii\data\Pagination;
+use yii\filters\AccessControl;
 
 class UserController extends BaseController
 {
+
     public function actionIndex() {
+//        echo Yii::$app->user->id;exit;
+//if (Yii::$app->user->id) {
+//    echo 111; exit;
+//} else {
+//    echo 222; exit;
+//}
         $params = Yii::$app->request->get();
         $search['username'] = Yii::$app->request->get('username', '');
         $search['truename'] = Yii::$app->request->get('truename', '');
@@ -165,5 +173,11 @@ class UserController extends BaseController
         $service = new RbacService();
         $service->assignRoles($uid, $roleNames);
         $this->successAjax();
+    }
+
+    public function actionTestError() {
+//        throw new NotFoundHttpException();
+
+//        throw new ForbiddenHttpException();
     }
 }

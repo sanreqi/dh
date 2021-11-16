@@ -41,6 +41,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => '/site/index', //首页
             ],
         ],
         'i18n' => [

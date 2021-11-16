@@ -20,6 +20,9 @@ class IndexController extends BaseController
     }
 
     public function actionIndex() {
+        $this->prop3 = 1;
+        echo $this->prop1;
+        exit;
         return $this->render('index');
     }
 
