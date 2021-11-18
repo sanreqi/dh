@@ -43,3 +43,4 @@ function checkIdentity($idCard) {
     }
     return true;
 }
+

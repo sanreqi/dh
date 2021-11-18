@@ -3,25 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class PermissionController extends BaseController
 {
     public function actionIndex() {
         $auth = Yii::$app->authManager;
         $roleName = Yii::$app->request->get('role');
-
-        if (empty($roleName)) {
-            //@todo 404
-            echo 'bye bye';
-            exit;
-        }
         $role = $auth->getRole($roleName);
-        if (empty($roleName)) {
-            //@todo 404
-            echo 'bye bye';
-            exit;
+        if (empty($role)) {
+            throw new NotFoundHttpException();
         }
-
         $children = $auth->getChildren($roleName);
         $ownPermissions = array_keys($children);
 

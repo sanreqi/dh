@@ -2,6 +2,7 @@
 namespace backend\controllers;
 
 use backend\components\MyBehavior;
+use common\helper\Tools;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -17,31 +18,31 @@ class SiteController extends BaseController
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
+//    public function behaviors()
+//    {
+//        return [
+//            'access' => [
+//                'class' => AccessControl::class,
+//                'rules' => [
+//                    [
+//                        'actions' => ['login', 'error'],
+//                        'allow' => true,
+//                    ],
+//                    [
+//                        'actions' => ['logout', 'index'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
+//                ],
+//            ],
+//            'verbs' => [
+//                'class' => VerbFilter::class,
+//                'actions' => [
+//                    'logout' => ['post'],
+//                ],
+//            ],
+//        ];
+//    }
 
     /**
      * {@inheritdoc}
@@ -66,25 +67,6 @@ class SiteController extends BaseController
         return $this->render('index');
     }
 
-    public function actionTest() {
-        $auth = Yii::$app->authManager;
-//        $auth->getUserIdsByRole()
-//        $p1 = $auth->createPermission('updatePostParent1');
-//        $p1->ruleName = ''
-
-
-
-//        $r = $auth->checkAccess(1, 'updatePost');
-//        if ($r){
-//            echo 1;
-//        } else {
-//            echo 2;
-//        }
-//        exit;
-
-    }
-
-
     /**
      * Login action.
      *
@@ -97,15 +79,9 @@ class SiteController extends BaseController
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -118,5 +94,25 @@ class SiteController extends BaseController
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionLoginAjax() {
+        if (!Yii::$app->request->isAjax || !Yii::$app->request->isPost) {
+            $this->errorAjax('非法访问');
+        }
+
+        $post = Yii::$app->request->post();
+        if (isset($post['rememberMe']) && !empty($post['rememberMe'])) {
+            $post['rememberMe'] = true;
+        } else {
+            $post['rememberMe'] = false;
+        }
+
+        $model = new LoginForm();
+        if ($model->load($post) && $model->login()) {
+            $this->successAjax();
+        } else {
+            $this->errorAjax('用户名或密码不正确');
+        }
     }
 }

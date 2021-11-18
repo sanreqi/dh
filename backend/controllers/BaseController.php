@@ -2,9 +2,8 @@
 
 namespace backend\controllers;
 
-use yii\base\Model;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
+use common\services\RbacService;
+use Yii;
 use yii\web\Controller;
 
 class BaseController extends Controller
@@ -12,29 +11,42 @@ class BaseController extends Controller
 
     public $enableCsrfValidation = false;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
+    public function beforeAction($action)
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                ],
-            ],
-        ];
-    }
+        parent::beforeAction($action);
+        $actionAuth = Yii::$app->params['action_auth'];
+        $userWithoutAuth = $actionAuth['user_without_auth'];
+        $guestOnly = $actionAuth['guest_only'];
+        $allWithoutAuth = $actionAuth['all_without_auth'];
+        $isGuest = Yii::$app->user->isGuest;
+        $path = Yii::$app->request->pathInfo;
+        if($isGuest && !in_array($path, array_merge($guestOnly, $allWithoutAuth))) {
+            //游客访问
+            return Yii::$app->getResponse()->redirect('/site/login');
+        }
 
-//    public function beforeAction($action)
-//    {
-////        return parent::beforeAction($action);
-////        echo 123; exit;
-//    }
+        if (!$isGuest) {
+            if (in_array($path, $guestOnly)) {
+                //认证用户访问了游客才能访问的页面
+                $this->goHome();
+            }
+            if (in_array($path, array_merge($userWithoutAuth, $allWithoutAuth))) {
+                //认证用户访问了不需要验证的页面
+                return true;
+            }
+
+
+            if (RbacService::checkPermission(Yii::$app->user->identity, $path)) {
+                return true;
+            } else {
+                //beforeAction方法里抛出异常errorHandler不能正常使用,目前解决办法直接输出error页面
+                echo $this->renderPartial('/site/error');
+                exit;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Ajax方式返回数据到客户端
@@ -71,28 +83,4 @@ class BaseController extends Controller
         echo json_encode($data);
         exit;
     }
-
-    //@todo 不跳
-    protected function error(){
-        $this->redirect('/index/error');
-        exit;
-    }
-
-    protected function checkIsAjax(){
-        if (!Yii::$app->request->isAjax) {
-            $this->error();
-        }
-    }
-
-//    protected function getModelError(Model $model) {
-//        if (empty($model->getFirstErrors())) {
-//            return '';
-//        }
-//
-//        $errors = array_values($model->getFirstErrors());
-//        return $errors[0];
-//    }
-
-
-
 }

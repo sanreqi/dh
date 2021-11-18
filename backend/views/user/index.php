@@ -40,7 +40,7 @@ $this->title = 'USER';
             <?php if (!empty($models)): ?>
                 <?php foreach ($models as $model): ?>
                     <tr>
-                        <td><?= $model['username'] ?></td>
+                        <td><a href="<?php echo \yii\helpers\Url::toRoute(['/user/detail', 'uid' => $model['id']]); ?>"><?= $model['username'] ?></a></td>
                         <td><?= $model['truename'] ?></td>
                         <td><?= $model['mobile'] ?></td>
                         <td><?= $model['email'] ?></td>

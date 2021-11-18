@@ -11,7 +11,7 @@
                 <div class="form-group row">
                     <label for="username" class="col-sm-3 col-form-label">用户名</label>
                     <div class="col-sm-9">
-                        <input name="UserForm[username]" type="text" class="form-control" id="username"
+                        <input <?php echo !empty($model) ? 'readonly' : ''; ?> name="UserForm[username]" type="text" class="form-control" id="username"
                                value="<?php echo !empty($model) ? $model->username : '' ?>">
                     </div>
                 </div>

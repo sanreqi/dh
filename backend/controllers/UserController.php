@@ -8,17 +8,12 @@ use backend\models\forms\UserForm;
 use common\models\User;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
+use yii\web\NotFoundHttpException;
 
 class UserController extends BaseController
 {
 
     public function actionIndex() {
-//        echo Yii::$app->user->id;exit;
-//if (Yii::$app->user->id) {
-//    echo 111; exit;
-//} else {
-//    echo 222; exit;
-//}
         $params = Yii::$app->request->get();
         $search['username'] = Yii::$app->request->get('username', '');
         $search['truename'] = Yii::$app->request->get('truename', '');
@@ -116,7 +111,7 @@ class UserController extends BaseController
         $uid = Yii::$app->request->get('uid');
         $user = User::find()->where(['id' => $uid])->one();
         if (empty($user)) {
-            //@todo srq 404
+            throw new NotFoundHttpException();
         }
         return $this->render('detail', ['uid' => $uid]);
     }
@@ -173,11 +168,5 @@ class UserController extends BaseController
         $service = new RbacService();
         $service->assignRoles($uid, $roleNames);
         $this->successAjax();
-    }
-
-    public function actionTestError() {
-//        throw new NotFoundHttpException();
-
-//        throw new ForbiddenHttpException();
     }
 }

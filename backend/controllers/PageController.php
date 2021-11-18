@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\menu;
 use common\helper\Tools;
 use common\models\Constants;
 use Yii;
@@ -14,22 +15,7 @@ use yii\filters\AccessControl;
 
 class PageController extends BaseController
 {
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-//                'only' => ['special-callback'],
-                'rules' => [
-                    [
-                        'actions' => ['index'],
-                        'allow' => false,
-                        'roles' => ['?'],
-                    ],
-                ],
-            ],
-        ];
-    }
+
 
     public function actionIndex() {
         $params = Yii::$app->request->get();

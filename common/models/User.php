@@ -32,6 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    private $beforeOldAttributes;
 
     /**
      * {@inheritdoc}
@@ -230,4 +231,39 @@ class User extends ActiveRecord implements IdentityInterface
         Tools::constructPage($query, $params);
         return $query->all();
     }
+
+    public function beforeSave($insert)
+    {
+        $this->beforeOldAttributes = $this->oldAttributes;
+        return true;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        //权限角色无日志
+        $logDataTable = Yii::$app->params['log_data_table'];
+        $tableName = self::tableName();
+        $model = new LogData();
+        $model->uid = Yii::$app->user->identity->getId();
+        $model->project = UserProject::PROJECT_BACKEND;
+        $model->module = $logDataTable[$tableName]['module'];
+        $model->table = $logDataTable[$tableName]['table'];
+        $model->table_key = (string) $this->primaryKey;
+        $model->description = '明日再战';
+        if ($insert) {
+            $model->type = LogData::TYPE_INSERT;
+        } else {
+            $model->type = LogData::TYPE_UPDATE;
+            $model->old_val = json_encode($this->beforeOldAttributes);
+        }
+
+        //父类model增加logDescription属性
+//        $model->description = LogData::
+        $model->new_val = json_encode($this->attributes);
+        if (!$model->save()) {
+            print_r($model->getFirstErrors());exit;
+        }
+    }
+
+
 }

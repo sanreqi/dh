@@ -36,7 +36,7 @@ $this->title = 'ROLE';
         <?php if (!empty($models)): ?>
             <?php foreach ($models as $model): ?>
                 <tr>
-                    <td><?= $model['name'] ?></td>
+                    <td><a href="<?php echo \yii\helpers\Url::toRoute(['/permission/index', 'role' => $model['name']]) ?>"><?= $model['name'] ?></a></td>
                     <td><?= $model['description'] ?></td>
                     <td><?= date('Y-m-d', $model['created_at']) ?></td>
                     <td>

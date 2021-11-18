@@ -1,0 +1,84 @@
+<?php
+
+namespace common\models;
+
+use Yii;
+
+/**
+ * This is the model class for table "log_data".
+ *
+ * @property int $id
+ * @property int $uid 用户id
+ * @property string $project 项目名称
+ * @property string $module 模块名称
+ * @property int $type 类型 1-创建 2-修改 3-删除
+ * @property string $table 数据库表名
+ * @property string $table_key 主键
+ * @property string $description 描述
+ * @property string $old_val 老数据
+ * @property string $new_val 新数据
+ * @property int $time 操作时间
+ */
+class LogData extends \yii\db\ActiveRecord
+{
+    const TYPE_INSERT = 1;
+    const TYPE_UPDATE = 2;
+    const TYPE_DELETE = 3;
+
+    public static function getTypeList() {
+        return [
+            self::TYPE_INSERT => '新增',
+            self::TYPE_UPDATE => '修改',
+            self::TYPE_DELETE => '删除',
+        ];
+    }
+
+    public static function getTypeByKey($key) {
+        $result = '';
+        $list = self::getTypeList();
+        if (array_key_exists($key, $list)) {
+            $result = $list[$key];
+        }
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return 'log_data';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['uid', 'type', 'time'], 'integer'],
+            [['project', 'module', 'table', 'table_key', 'description'], 'string', 'max' => 255],
+            [['old_val', 'new_val'], 'string', 'max' => 4000],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'uid' => 'Uid',
+            'project' => 'Project',
+            'module' => 'Module',
+            'type' => 'Type',
+            'table' => 'Table',
+            'table_key' => 'Table Key',
+            'description' => 'Description',
+            'old_val' => 'Old Val',
+            'new_val' => 'New Val',
+            'time' => 'Time',
+        ];
+    }
+}

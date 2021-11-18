@@ -47,69 +47,8 @@ AppAsset::register($this);
 
 <div class="container-fluid">
     <div class="row">
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse accordion">
-            <div class="sidebar-sticky pt-3 accordion">
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item" id="headingOne">
-                        <a class="nav-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                           aria-controls="collapseOne" href="#">
-                            <span data-feather="file-text"></span>
-                            侧边栏1
-                        </a>
-                    </li>
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#sidebarMenu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                侧边栏1-1
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                侧边栏1-2
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                侧边栏1-3
-                            </a>
-                        </li>
-                    </div>
-                </ul>
+        <?php echo \Yii::$app->view->render('_menu'); ?>
 
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item" id="headingTwo">
-                        <a class="nav-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                           aria-controls="collapseTwo" href="#">
-                            <span data-feather="file-text"></span>
-                            侧边栏2
-                        </a>
-                    </li>
-                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#sidebarMenu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                侧边栏2-1
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                侧边栏2-2
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                侧边栏2-3
-                            </a>
-                        </li>
-                    </div>
-                </ul>
-            </div>
-        </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2"><?php echo $this->title; ?></h1>

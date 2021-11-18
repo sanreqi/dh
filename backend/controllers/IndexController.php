@@ -8,6 +8,7 @@ use backend\components\MyBehavior;
 use common\models\User;
 use common\models\Page;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class IndexController extends BaseController
 {
@@ -20,9 +21,11 @@ class IndexController extends BaseController
     }
 
     public function actionIndex() {
-        $this->prop3 = 1;
-        echo $this->prop1;
-        exit;
+        throw new NotFoundHttpException();
+//        $this->prop3 = 1;
+//        echo $this->prop1;
+//        exit;
+        $this->trigger('testE');
         return $this->render('index');
     }
 
@@ -49,6 +52,10 @@ class IndexController extends BaseController
         echo 'end'; exit;
     }
 
+
+    public function teSe() {
+        echo 777; exit;
+    }
 
 
 }
