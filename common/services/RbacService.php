@@ -83,6 +83,9 @@ class RbacService {
     }
 
     public static function getMenuItemHideCss($path) {
+        if (Yii::$app->user->isGuest) {
+            return '';
+        }
         if (self::isAdmin()) {
             return '';
         }

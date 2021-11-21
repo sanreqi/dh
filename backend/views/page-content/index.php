@@ -185,7 +185,7 @@
         setUeditorVal();
         $.ajax({
             type: "post",
-            url: "/page-content/save-content",
+            url: "/page-content/save",
             data: $("#content-form").serializeArray(),
             dataType: "json",
             success: function (data) {
