@@ -176,3 +176,7 @@ a:hover {
 .ml-26 {
     margin-left: 26px;
 }
+
+.detail-content {
+    word-break: break-all;
+}

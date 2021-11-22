@@ -6,3 +6,6 @@ TODO
 4-Contact Us
 5-Log Future
 6-MySql All user_id change to uid
+
+2021-11-22
+1-多次编辑和用户bug，报用户名已存在

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 use common\helper\Tools;
+use common\models\Constants;
 use common\services\RbacService;
 use Yii;
 use backend\models\forms\UserForm;
@@ -97,6 +98,7 @@ class UserController extends BaseController
         }
 
         $model->status = User::STATUS_DELETED;
+        $model->is_delete = Constants::IS_DELETE_YES;
         if ($model->save()) {
             $this->successAjax();
         } else {

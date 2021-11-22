@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use common\behaviors\LogBehavior;
 use common\helper\Tools;
 use Yii;
 use yii\base\NotSupportedException;
@@ -15,7 +16,7 @@ use yii\web\IdentityInterface;
  * @property integer $id
  * @property string $username
  * @property string truename
- * @property   string mobile
+ * @property string mobile
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $verification_token
@@ -25,14 +26,13 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property integer $is_delete
  */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
-
-    private $beforeOldAttributes;
 
     /**
      * {@inheritdoc}
@@ -48,7 +48,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            TimestampBehavior::class,
+            LogBehavior::class,
         ];
     }
 
@@ -232,38 +233,14 @@ class User extends ActiveRecord implements IdentityInterface
         return $query->all();
     }
 
-    public function beforeSave($insert)
-    {
-        $this->beforeOldAttributes = $this->oldAttributes;
-        return true;
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        //权限角色无日志
-        $logDataTable = Yii::$app->params['log_data_table'];
-        $tableName = self::tableName();
-        $model = new LogData();
-        $model->uid = Yii::$app->user->identity->getId();
-        $model->project = UserProject::PROJECT_BACKEND;
-        $model->module = $logDataTable[$tableName]['module'];
-        $model->table = $logDataTable[$tableName]['table'];
-        $model->table_key = (string) $this->primaryKey;
-        $model->description = '明日再战';
-        if ($insert) {
-            $model->type = LogData::TYPE_INSERT;
-        } else {
-            $model->type = LogData::TYPE_UPDATE;
-            $model->old_val = json_encode($this->beforeOldAttributes);
+    public static function findByIdAttr($id, $attribute) {
+        if (empty($id)) {
+            return '';
         }
-
-        //父类model增加logDescription属性
-//        $model->description = LogData::
-        $model->new_val = json_encode($this->attributes);
-        if (!$model->save()) {
-            print_r($model->getFirstErrors());exit;
+        $user = User::find()->where(['id' => $id])->one();
+        if (empty($user)) {
+            return '';
         }
+        return $user->hasAttribute($attribute) ? $user->getAttribute($attribute) : '';
     }
-
-
 }

@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\helper\Tools;
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "log_data".
@@ -81,4 +83,37 @@ class LogData extends \yii\db\ActiveRecord
             'time' => 'Time',
         ];
     }
+
+    public function search($params, $count = false) {
+        $query = new Query();
+        $query->from('log_data');
+//        if (isset($params['type'])) {
+//            $query->andWhere(['type' => $params['type']]);
+//        }
+//        if (isset($params['name'])) {
+//            $query->andWhere(['name' => $params['name']]);
+//        }
+        if ($count) {
+            return $query->count();
+        }
+        Tools::constructPage($query, $params);
+        $data = $query->all();
+        return $this->convertData($data);
+    }
+
+    public function convertData($data) {
+        if (empty($data)) {
+            return [];
+        }
+
+        foreach ($data as &$v) {
+            $v['username'] = User::findByIdAttr($v['uid'], 'username');
+            $v['type'] = self::getTypeByKey($v['type']);
+            $v['time'] = date('Y-m-d', $v['time']);
+        }
+
+        return $data;
+    }
+
+
 }
