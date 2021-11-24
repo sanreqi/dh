@@ -24,8 +24,7 @@ function createModalBind(name) {
             success: function (data) {
                 if (data.status == 1) {
                     $(modal).html(data.data.html).modal();
-                    var save_btn = "#save-" + name + "-btn";
-                    $(save_btn).attr("url", post_url);
+                    $(modal).attr("url", post_url);
                 }
             },
             complete: function (data) {
@@ -54,8 +53,7 @@ function updateModalBind(name, prikey) {
             success: function (data) {
                 if (data.status == 1) {
                     $(modal).html(data.data.html).modal();
-                    var save_btn = "#save-" + name + "-btn";
-                    $(save_btn).attr("url", post_url);
+                    $(modal).attr("url", post_url);
                 }
             },
             complete: function (data) {
@@ -69,9 +67,10 @@ function saveModalBind(name, url) {
     var btn = "#save-" + name + "-btn";
     $("body").on("click", btn, function () {
         var $this = $(this);
+        var modal = "#" + name + "-modal";
         //typeof兼容null和undefined
         if (typeof(url) == "undefined") {
-            url = $this.attr("url");
+            url = $(modal).attr("url");
         }
         var form = "#" + name + "-form";
         $this.prop("disabled", "disabled").addClass("disabled");
@@ -137,6 +136,13 @@ function getPriParams(prikey, prikeyVal) {
     }
     var params = "?" + prikey + "=" + prikeyVal;
     return params;
+}
+
+function getPriKey(prikey) {
+    if (typeof(prikey) == "undefined") {
+        return "id";
+    }
+    return prikey;
 }
 
 function getPriParamsJson(prikey, prikeyVal) {

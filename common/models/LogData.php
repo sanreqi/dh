@@ -19,6 +19,7 @@ use yii\db\Query;
  * @property string $description 描述
  * @property string $old_val 老数据
  * @property string $new_val 新数据
+ * @property strin $change_attributes 改变的字段
  * @property int $time 操作时间
  */
 class LogData extends \yii\db\ActiveRecord
@@ -61,6 +62,7 @@ class LogData extends \yii\db\ActiveRecord
             [['uid', 'type', 'time'], 'integer'],
             [['project', 'module', 'table', 'table_key', 'description'], 'string', 'max' => 255],
             [['old_val', 'new_val'], 'string', 'max' => 4000],
+            [['change_attributes'], 'string', 'max' => 1000],
         ];
     }
 
@@ -84,6 +86,15 @@ class LogData extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getLogDataTableArr($key) {
+        $logDataTable = array_values(Yii::$app->params['log_data_table']);
+        if (!isset($logDataTable[0][$key])) {
+            return [];
+        }
+        return array_column($logDataTable, $key);
+    }
+
+    //6个搜索字段
     public function search($params, $count = false) {
         $query = new Query();
         $query->from('log_data');

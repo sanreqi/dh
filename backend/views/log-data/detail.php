@@ -43,6 +43,10 @@ $this->title = 'DETAIL';
         <div class="col-sm-11 detail-content"><?php echo $model['new_val']; ?></div>
     </div>
     <div class="form-group row">
+        <div class="col-sm-1">改变字段</div>
+        <div class="col-sm-11 detail-content"><?php echo $model['change_attributes']; ?></div>
+    </div>
+    <div class="form-group row">
         <div class="col-sm-1">操作时间</div>
         <div class="col-sm-11 detail-content"><?php echo date('Y-m-d H:i:s', $model['time']); ?></div>
     </div>

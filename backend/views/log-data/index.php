@@ -12,10 +12,13 @@ $this->title = 'USER';
 
 <form class="form-row align-items-center">
     <div class="col-auto">
-        <input type="text" class="form-control mb-2" name="username" value="<?= 1 ?>" placeholder="用户名">
+        <input type="text"  class="form-control mb-2"  name="uid" value="<?= $search['uid'] ?>" placeholder="uid">
     </div>
     <div class="col-auto">
-        <input type="text" class="form-control mb-2" name="truename" value="<?= 1 ?>" placeholder="姓名">
+        <select type="text" class="form-control mb-2 w-200" name="module" placeholder="模块">
+            <option>sss</option>
+            <option>sss</option>
+        </select>
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-primary mb-2">搜索</button>
@@ -23,6 +26,9 @@ $this->title = 'USER';
     <div class="col-auto">
         <a id="create-user-btn" class="btn btn-primary mb-2">创建</a>
     </div>
+
+
+
 </form>
 
 <div class="table-responsive">

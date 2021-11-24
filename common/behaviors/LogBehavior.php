@@ -75,7 +75,6 @@ class LogBehavior extends Behavior
     }
 
     public function afterUpdate(AfterSaveEvent $event) {
-        print_r($event->changedAttributes);exit;
         $this->initData();
         $model = new LogData();
         $this->setLogData($model);
@@ -88,6 +87,9 @@ class LogBehavior extends Behavior
             $model->description = '删除' . $this->logDataTable['desc'];
         } else {
             $model->description = '修改' . $this->logDataTable['desc'];
+        }
+        if (!empty($event->changedAttributes)) {
+            $model->change_attributes = implode(',', array_keys($event->changedAttributes));
         }
         $model->save();
     }

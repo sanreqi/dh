@@ -13,7 +13,15 @@ class LogDataController extends Controller
 {
     public function actionIndex() {
         $params = Yii::$app->request->get();
-        $search = [];
+        $search['uid'] = Yii::$app->request->get('uid', '');
+        $search['module'] = Yii::$app->request->get('module', '');
+        $search['type'] = Yii::$app->request->get('type', '');
+        $search['table'] = Yii::$app->request->get('table', '');
+        $search['table_key'] = Yii::$app->request->get('table_key', '');
+        $search['description'] = Yii::$app->request->get('description', '');
+        $search['time_start'] = Yii::$app->request->get('time_start', '');
+        $search['time_end'] = Yii::$app->request->get('time_end', '');
+
 //        $search['username'] = Yii::$app->request->get('username', '');
 //        $search['truename'] = Yii::$app->request->get('truename', '');
         $model = new LogData();
