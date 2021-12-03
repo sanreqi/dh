@@ -37,9 +37,13 @@ $this->title = 'USER';
 </div>
 
 <script>
-    $(document).ready(function() {
-        renderHtml("/user/get-role-view-html?uid="+"<?= $uid; ?>", "role-card");
+    $(document).ready(function()
 
+        //renderHtml("/user/get-role-view-html?uid="+"<?//= $uid; ?>//", "role-card");
+        //renderHtml("/user/get-role-view-html?uid="+"<?//= $uid; ?>//", "role-card");
+        //renderHtml("/user/get-role-view-html?uid="+"<?//= $uid; ?>//", "role-card");
+
+        //@todo srq 写通用方法
         $("body").on("click", "#edit-role-btn", function () {
             let $this = $(this);
             $this.prop("disabled", "disabled").addClass("disabled");

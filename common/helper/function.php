@@ -44,3 +44,13 @@ function checkIdentity($idCard) {
     return true;
 }
 
+/**
+ * 根据出生年月计算年龄
+ */
+function getAgeByBirthDate($brithDate) {
+    if (empty($brithDate)) {
+        return '';
+    }
+    return date('Y') - date('Y', strtotime($brithDate));
+}
+

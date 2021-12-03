@@ -21,6 +21,7 @@ class Tools {
             $offset = ($page - 1) * $pageSize;
             $limit = $pageSize;
             $query->offset($offset)->limit($limit);
+            return $query;
         }
         if (isset($params['page']) && isset($params['per-page'])) {
             $page = intval($params['page']);
@@ -28,8 +29,10 @@ class Tools {
             $offset = ($page - 1) * $pageSize;
             $limit = $pageSize;
             $query->offset($offset)->limit($limit);
+            return $query;
         }
-        return $query;
+
+        return  $query->offset(0)->limit(10);
     }
 }
 

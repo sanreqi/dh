@@ -1,6 +1,8 @@
 <?php
 namespace backend\models\forms;
 
+use common\models\UserInfo;
+use Yii;
 use common\models\User;
 use yii\base\Model;
 use yii\db\Query;
@@ -110,7 +112,32 @@ class UserForm extends Model
             $model->generateAuthKey();
         }
 
-        return $model->save();
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            $model->save();
+            $this->saveExtUserInfo($model);
+            $transaction->commit();
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
+    }
+
+    /**
+     * 保存额外的用户信息
+     */
+    private function saveExtUserInfo($userModel) {
+        $uid = $userModel->id;
+        $userInfoModel = new UserInfo();
+        $userInfoModel->uid = $uid;
+        !empty($userModel->truename) && $userInfoModel->truename = $userModel->truename;
+        !empty($userModel->mobile) && $userInfoModel->mobile = $userModel->mobile;
+
+        //分配default角色
+        $auth = Yii::$app->authManager;
+        $auth->assign($auth->getRole('default'), $uid);
     }
 
 }

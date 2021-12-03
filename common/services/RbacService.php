@@ -50,7 +50,6 @@ class RbacService {
         }
         $auth = Yii::$app->authManager;
         $assignment = $auth->getAssignment('admin', $identity->getId());
-        //权限验证,admin无视一切
         if ($identity->username == 'admin' || !empty($assignment)) {
             return true;
         }

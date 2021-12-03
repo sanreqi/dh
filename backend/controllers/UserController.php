@@ -1,8 +1,10 @@
 <?php
 
 namespace backend\controllers;
+use backend\components\QiArrLogic;
 use common\helper\Tools;
 use common\models\Constants;
+use common\models\UserInfo;
 use common\services\RbacService;
 use Yii;
 use backend\models\forms\UserForm;
@@ -15,6 +17,9 @@ class UserController extends BaseController
 {
 
     public function actionIndex() {
+        $q = new QiArrLogic();
+        $q->run();
+
         $params = Yii::$app->request->get();
         $search['username'] = Yii::$app->request->get('username', '');
         $search['truename'] = Yii::$app->request->get('truename', '');
@@ -111,12 +116,29 @@ class UserController extends BaseController
      */
     public function actionDetail() {
         $uid = Yii::$app->request->get('uid');
-        $user = User::find()->where(['id' => $uid])->one();
-        if (empty($user)) {
-            throw new NotFoundHttpException();
-        }
         return $this->render('detail', ['uid' => $uid]);
     }
+
+    /**
+     * 基本信息卡片
+     * @throws NotFoundHttpException
+     */
+    public function actionGetBasicViewHtml() {
+        $uid = Yii::$app->request->get('uid');
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $user = User::find()->where(['id' => $uid])->one();
+        $userInfo = UserInfo::find()->where(['uid' => $uid])->one();
+        //user和userInfo一定会同时存在,目前没有做兼容
+        if (empty($user) || empty($userInfo)) {
+            throw new NotFoundHttpException();
+        }
+
+        $html = $this->renderPartial('_basic', ['user' => $user, 'userInfo' => $userInfo]);
+
+    }
+
 
     public function actionGetRoleFormHtml() {
         $uid = Yii::$app->request->get('uid');
