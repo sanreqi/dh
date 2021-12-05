@@ -24,7 +24,13 @@ function createModalBind(name) {
             success: function (data) {
                 if (data.status == 1) {
                     $(modal).html(data.data.html).modal();
-                    $(modal).attr("url", post_url);
+                    // $("#post_url").attr("val",post_url);
+                    // $(modal).attr("url", post_url);
+                    $("#modal_post_url").attr("url", post_url);
+                    //重新绑定
+                    // var btn = "#save-" + name + "-btn";
+                    // $(btn).off("click");
+                    // saveModalBind(name);
                 }
             },
             complete: function (data) {
@@ -53,8 +59,15 @@ function updateModalBind(name, prikey) {
             success: function (data) {
                 if (data.status == 1) {
                     $(modal).html(data.data.html).modal();
-                    $(modal).attr("url", post_url);
+
+                    // $("#post_url").attr("val",post_url);
+                    $("#modal_post_url").attr("url", post_url);
+                    //重新绑定
+                    // var btn = "#save-" + name + "-btn";
+                    // $(btn).off("click");
+                    // saveModalBind(name);
                 }
+                
             },
             complete: function (data) {
                 $this.prop("disabled", false).removeClass("disabled");
@@ -64,6 +77,9 @@ function updateModalBind(name, prikey) {
 }
 
 function saveModalBind(name, url) {
+    var post_url_html = '<div id="modal_post_url"></div>';
+    $("body").append(post_url_html);
+
     var btn = "#save-" + name + "-btn";
     $("body").on("click", btn, function () {
         var $this = $(this);
@@ -72,6 +88,7 @@ function saveModalBind(name, url) {
         if (typeof(url) == "undefined") {
             url = $(modal).attr("url");
         }
+        url = $("#modal_post_url").attr("url");
         var form = "#" + name + "-form";
         $this.prop("disabled", "disabled").addClass("disabled");
         $.ajax({
