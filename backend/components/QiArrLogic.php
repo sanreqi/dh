@@ -11,7 +11,7 @@ class QiArrLogic
     private $allQiArr = []; //所有
     private $startX = 10;
     private $startY = 10;
-    private $num = 4;
+    public $num = 2;
 
     public function run() {
         set_time_limit(0);
@@ -23,7 +23,7 @@ class QiArrLogic
         $this->qiArr[] = $qi;
         $this->next([$this->startX * 10 + $this->startY => $qi]);
         $rQi = $this->qiUnique($this->allQiArr);
-        print_r($this->myPrint($rQi));exit;
+        print_r($this->myPrint($rQi));
     }
 
     private function next($qiArr) {
@@ -78,12 +78,10 @@ class QiArrLogic
                 $sArr[] = '('.$x.','.$y.')';
             }
             $s = implode(',', $sArr);
-            echo $s . "\n";
+            echo $s . "<br />";
         }
 
         echo count($qiArr) . '个';
-
-        exit;
     }
 
     //排序
