@@ -89,7 +89,6 @@ function saveModalBind(name, url) {
             url = $(modal).attr("url");
         }
         url = $("#modal_post_url").attr("url");
-        alert(url);
         var form = "#" + name + "-form";
         $this.prop("disabled", "disabled").addClass("disabled");
         $.ajax({
