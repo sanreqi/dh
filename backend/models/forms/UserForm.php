@@ -82,6 +82,46 @@ class UserForm extends Model
     }
 
     /**
+     * 新增用户
+     */
+    public function createUser() {
+        $model = new User();
+        $model->status = User::STATUS_ACTIVE;
+        $model->username = $this->username;
+        $model->truename = $this->truename;
+        $model->mobile = $this->mobile;
+        $model->email = $this->email;
+        $model->setPassword($this->password);
+        $model->generateAuthKey();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model->save();
+            $this->saveExtUserInfo($model);
+            $transaction->commit();
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
+    }
+
+    public function updateUser() {
+        $modifyPassword = true;
+        $model = User::find()->where(['id' => $this->id, 'status' => User::STATUS_ACTIVE])->one();
+        if (empty($model)) {
+            return false;
+        }
+        if (empty($this->password)) {
+            $modifyPassword = false;
+        }
+        if ($modifyPassword) {
+            $model->setPassword($this->password);
+            $model->generateAuthKey();
+        }
+        return $model->save();
+    }
+
+    /**
      * 创建/编辑用户
      * @return bool
      */
@@ -134,6 +174,7 @@ class UserForm extends Model
         $userInfoModel->uid = $uid;
         !empty($userModel->truename) && $userInfoModel->truename = $userModel->truename;
         !empty($userModel->mobile) && $userInfoModel->mobile = $userModel->mobile;
+        $userInfoModel->save();
 
         //分配default角色
         $auth = Yii::$app->authManager;

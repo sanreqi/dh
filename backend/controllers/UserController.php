@@ -17,9 +17,6 @@ class UserController extends BaseController
 {
 
     public function actionIndex() {
-        $q = new QiArrLogic();
-        $q->run();
-
         $params = Yii::$app->request->get();
         $search['username'] = Yii::$app->request->get('username', '');
         $search['truename'] = Yii::$app->request->get('truename', '');
@@ -59,7 +56,7 @@ class UserController extends BaseController
             $this->errorAjax(Tools::getModelError($model));
         }
 
-        if ($model->saveUser()) {
+        if ($model->createUser()) {
             $this->successAjax();
         } else {
             $this->errorAjax('保存失败');
@@ -80,7 +77,7 @@ class UserController extends BaseController
             $this->errorAjax(Tools::getModelError($model));
         }
 
-        if ($model->saveUser()) {
+        if ($model->updateUser()) {
             $this->successAjax();
         } else {
             $this->errorAjax('保存失败');
