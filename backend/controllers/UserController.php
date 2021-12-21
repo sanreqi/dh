@@ -133,7 +133,7 @@ class UserController extends BaseController
         }
 
         $html = $this->renderPartial('_basic', ['user' => $user, 'userInfo' => $userInfo]);
-
+        $this->successAjax(['html' => $html]);
     }
 
 

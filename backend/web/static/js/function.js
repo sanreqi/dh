@@ -171,6 +171,7 @@ function getPriParamsJson(prikey, prikeyVal) {
 }
 
 function renderHtml(url, id) {
+
     $.ajax({
         type: "get",
         url: url,

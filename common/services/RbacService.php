@@ -98,7 +98,7 @@ class RbacService {
 
     public static function getMenuItemCheckedCss($path) {
         //url地址
-        $pathInfo = Yii::$app->request->pathInfo;
+        $pathInfo = Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
         if ($path == $pathInfo) {
             return 'style=background-color:#0f6ecd';
         }

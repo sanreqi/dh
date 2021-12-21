@@ -5,12 +5,14 @@ use Yii;
 use yii\base\Model;
 use yii\rbac\Role;
 
+//@todo 重做
 class RoleForm extends Model
 {
     public $name;
     public $description;
     public $ruleName;
     public $data;
+    public $parent_role;
 
     /**
      * {@inheritdoc}
@@ -21,18 +23,21 @@ class RoleForm extends Model
             ['name', 'required', 'message' => '角色名称不能为空'],
             ['name', 'string', 'max' => 50, 'tooLong' => '用户名长度过长'],
             ['name', 'validateName'],
+            [['parent_role'], 'safe'],
         ];
     }
 
-    public function scenarios()
+
+
+    public function scenarios1()
     {
         return [
-            'create' => ['name', 'description', 'ruleName', 'data'],
-            'update' => ['name', 'description', 'ruleName', 'data'],
+            'create' => ['name', 'description', 'ruleName', 'data', 'parent_role'],
+            'update' => ['name', 'description', 'ruleName', 'data', 'parent_role'],
         ];
     }
 
-    public function validateName() {
+    public function validateName1() {
         $auth = Yii::$app->authManager;
         $role = $auth->getRole($this->name);
         if ($this->scenario == 'create' && !empty($role)) {
@@ -45,17 +50,30 @@ class RoleForm extends Model
         return true;
     }
 
-    public function createRole() {
+    public function createRole2() {
         $auth = Yii::$app->authManager;
+//        if (!empty($this->parent_role)) {
+//            $parentRole = $auth->getRole($this->parent_role);
+//            if (!empty($parentRole)) {
+//                if ($auth->canAddChild($parentRole, $role)) {
+//
+//                }
+//            }
+//        }
+
+
         $role = $auth->createRole($this->name);
         !empty($this->description) && $role->description = $this->description;
         !empty($this->ruleName) && $role->ruleName = $this->ruleName;
         !empty($this->data) && $role->data = $this->data;
-        //可能会抛出异常
-        return $auth->add($role);
+        $auth->add($role);
+
+
+        return true;
+
     }
 
-    public function updateRole() {
+    public function updateRole3() {
         //名称不允许修改
         $auth = Yii::$app->authManager;
         $role = $auth->getRole($this->name);

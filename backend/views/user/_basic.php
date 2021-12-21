@@ -8,7 +8,7 @@
         <form id="basic-form">
             <div class="form-group row">
                 <div class="col-sm-6"><span class="mr-20"><b>用户名</b></span><span><?= $user->username; ?></span></div>
-                <div class="col-sm-6"><span class="mr-20"><b>姓名</b></span><span><?= $userInfo->name; ?>></span></div>
+                <div class="col-sm-6"><span class="mr-20"><b>姓名</b></span><span><?= $userInfo->truename; ?></span></div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-6"><span class="mr-20"><b>性别</b></span><span><?= $user->username; ?></span></div>

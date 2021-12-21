@@ -29,20 +29,32 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="role-rule-name" class="col-sm-3 col-form-label">规则名称</label>
+                    <label for="role-rule-name" class="col-sm-3 col-form-label">上级角色</label>
                     <div class="col-sm-9">
-                        <select name="RoleForm[ruleName]" class="form-control" id="role-rule-name">
+                        <select name="RoleForm[parent_role]" class="form-control" id="role-rule-name">
+                            <option value=""></option>
+                            <option value="1">角色1</option>
+                            <option value="2">角色2</option>
+                            <option value="3">角色3</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="role-data" class="col-sm-3 col-form-label">数据</label>
-                    <div class="col-sm-9">
-                        <textarea name="RoleForm[data]" rows="4" class="form-control" id="role-data"
-                               value="<?php echo !empty($model) ? $model->data : '' ?>">
-                        </textarea>
-                    </div>
-                </div>
+
+<!--                <div class="form-group row">-->
+<!--                    <label for="role-rule-name" class="col-sm-3 col-form-label">规则名称</label>-->
+<!--                    <div class="col-sm-9">-->
+<!--                        <select name="RoleForm[ruleName]" class="form-control" id="role-rule-name">-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="form-group row">-->
+<!--                    <label for="role-data" class="col-sm-3 col-form-label">数据</label>-->
+<!--                    <div class="col-sm-9">-->
+<!--                        <textarea name="RoleForm[data]" rows="4" class="form-control" id="role-data"-->
+<!--                               value="--><?php //echo !empty($model) ? $model->data : '' ?><!--">-->
+<!--                        </textarea>-->
+<!--                    </div>-->
+<!--                </div>-->
             </form>
         </div>
         <div class="modal-footer">
