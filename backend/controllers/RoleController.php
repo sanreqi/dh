@@ -39,16 +39,16 @@ class RoleController extends BaseController
     public function actionCreate() {
         $post = Yii::$app->request->post();
         $model = new RoleForm();
-        $model->scenario = 'create';
+//        $model->scenario = 'create';
         $model->load($post);
-        if (!$model->validate()) {
-            $this->errorAjax(Tools::getModelError($model));
-        }
+//        if (!$model->validate()) {
+//            $this->errorAjax(Tools::getModelError($model));
+//        }
         try {
             if ($model->createRole()) {
                 $this->successAjax();
             } else {
-                $this->errorAjax('保存失败');
+                $this->errorAjax($model->getErrorMsg());
             }
         } catch (\Exception $e) {
             $this->errorAjax($e->getMessage());
@@ -58,16 +58,16 @@ class RoleController extends BaseController
     public function actionUpdate() {
         $post = Yii::$app->request->post();
         $model = new RoleForm();
-        $model->scenario = 'update';
+//        $model->scenario = 'update';
         $model->load($post);
-        if (!$model->validate()) {
-            $this->errorAjax(Tools::getModelError($model));
-        }
+//        if (!$model->validate()) {
+//            $this->errorAjax($model->getErrorMsg());
+//        }
         try {
             if ($model->updateRole()) {
                 $this->successAjax();
             } else {
-                $this->errorAjax('保存失败');
+                $this->errorAjax($model->getErrorMsg());
             }
         } catch (\Exception $e) {
             $this->errorAjax($e->getMessage());

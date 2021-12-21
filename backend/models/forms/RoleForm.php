@@ -14,6 +14,8 @@ class RoleForm extends Model
     public $data;
     public $parent_role;
 
+    private $errorMsg = '';
+
     /**
      * {@inheritdoc}
      */
@@ -22,9 +24,33 @@ class RoleForm extends Model
             [['name', 'description', 'ruleName', 'data'], 'trim'],
             ['name', 'required', 'message' => '角色名称不能为空'],
             ['name', 'string', 'max' => 50, 'tooLong' => '用户名长度过长'],
-            ['name', 'validateName'],
+//            ['name', 'validateName'],
             [['parent_role'], 'safe'],
         ];
+    }
+
+    public function createRole() {
+        $auth = Yii::$app->authManager;
+        if (empty($this->name)) {
+            $this->errorMsg = '角色名称不能为空';
+            return false;
+        }
+        $role = $auth->getRole($this->name);
+        if (empty($role)) {
+            $this->errorMsg = '角色名称已经存在';
+            return false;
+        }
+        if (!empty($this->parent_role)) {
+            $parentRole = $auth->getRole($this->parent_role);
+            if (empty($parentRole)) {
+                $this->errorMsg = '父类角色不存在';
+                return false;
+            }
+            if ($this->parent_role == $this->name) {
+                $this->errorMsg = '父类角色子类角色名字相同';
+                return false;
+            }
+        }
     }
 
 
@@ -82,6 +108,10 @@ class RoleForm extends Model
         !empty($this->data) && $role->data = $this->data;
         //可能会抛出异常
         return $auth->update($this->name, $role);
+    }
+
+    public function getErrorMsg() {
+        return $this->errorMsg;
     }
 
 
