@@ -38,42 +38,73 @@ $this->title = 'USER';
 
 <script>
     $(document).ready(function() {
-
         renderHtml("/user/get-basic-view-html?uid="+"<?= $uid; ?>", "basic-card");
         renderHtml("/user/get-role-view-html?uid="+"<?= $uid; ?>", "role-card");
 
-        //@todo srq 写通用方法 renderForm
-        //$("body").on("click", "#edit-role-btn", function () {
-        //    let $this = $(this);
-        //    $this.prop("disabled", "disabled").addClass("disabled");
-        //    let url = "/user/get-role-form?uid=" + "<?//= $uid; ?>//"
-        //    renderHtml("/user/get-role-form-html?uid="+"<?//= $uid; ?>//", "role-card");
-        //    $this.prop("disabled", false).removeClass("disabled");
-        //
-        //    return false;
-        //});
-        //
-        //$("body").on("click", "#save-role-btn", function () {
-        //    let $this = $(this);
-        //    $this.prop("disabled", "disabled").addClass("disabled");
-        //    $.ajax({
-        //        type: "post",
-        //        url: "/user/assign-role",
-        //        data: $("#role-form").serializeArray(),
-        //        dataType: "json",
-        //        success: function (data) {
-        //            if (data.status == 1) {
-        //                renderHtml("/user/get-role-view-html?uid="+"<?//= $uid; ?>//", "role-card");
-        //            } else {
-        //                dhAlert(data.errorMsg)
-        //            }
-        //        },
-        //        complete: function (data) {
-        //            $this.prop("disabled", false).removeClass("disabled");
-        //        }
-        //    });
-        //
-        //    return false;
-        //});
+        //@todo 可以写成通用的renderForm
+        $("body").on("click", "#edit-role-btn", function () {
+            let $this = $(this);
+            $this.prop("disabled", "disabled").addClass("disabled");
+            renderHtml("/user/get-role-form-html?uid="+"<?= $uid; ?>", "role-card");
+            $this.prop("disabled", false).removeClass("disabled");
+
+            return false;
+        });
+
+        $("body").on("click", "#save-role-btn", function () {
+            let $this = $(this);
+            $this.prop("disabled", "disabled").addClass("disabled");
+            $.ajax({
+                type: "post",
+                url: "/user/assign-role",
+                data: $("#role-form").serializeArray(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        renderHtml("/user/get-role-view-html?uid="+"<?= $uid; ?>", "role-card");
+                    } else {
+                        dhAlert(data.errorMsg)
+                    }
+                },
+                complete: function (data) {
+                    $this.prop("disabled", false).removeClass("disabled");
+                }
+            });
+
+            return false;
+        });
+
+        $("body").on("click", "#edit-basic-btn", function () {
+            let $this = $(this);
+            $this.prop("disabled", "disabled").addClass("disabled");
+            renderHtml("/user/get-basic-form-html?uid="+"<?= $uid; ?>", "basic-card");
+            $this.prop("disabled", false).removeClass("disabled");
+
+            return false;
+        });
+
+        $("body").on("click", "#save-basic-btn", function () {
+            let $this = $(this);
+            let url = "/user/save-basic?uid=" + <?= $uid; ?>;
+            $this.prop("disabled", "disabled").addClass("disabled");
+            $.ajax({
+                type: "post",
+                url: url,
+                data: $("#basic-form").serializeArray(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        renderHtml("/user/get-basic-view-html?uid="+"<?= $uid; ?>", "basic-card");
+                    } else {
+                        dhAlert(data.errorMsg)
+                    }
+                },
+                complete: function (data) {
+                    $this.prop("disabled", false).removeClass("disabled");
+                }
+            });
+
+            return false;
+        });
     });
 </script>

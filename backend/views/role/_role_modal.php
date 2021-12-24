@@ -2,6 +2,7 @@
 /* @var $model */
 /* @var $title */
 /* @var $url */
+/* @var $parent */
 ?>
 
 <div class="modal-dialog">
@@ -33,9 +34,12 @@
                     <div class="col-sm-9">
                         <select name="RoleForm[parent_role]" class="form-control" id="role-rule-name">
                             <option value=""></option>
-                            <option value="1">角色1</option>
-                            <option value="2">角色2</option>
-                            <option value="3">角色3</option>
+                            <?php if (!empty($parent_roles)): ?>
+                                <?php foreach ($parent_roles as $role): ?>
+                                    <?php $selected = $parent==$role ? 'selected' : ''; ?>
+                                    <option <?= $selected ?> value="<?= $role ?>"><?= $role ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </select>
                     </div>
                 </div>

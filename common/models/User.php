@@ -70,7 +70,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE, 'is_delete' => Constants::IS_DELETE_NO]);
     }
 
     /**
@@ -242,5 +242,22 @@ class User extends ActiveRecord implements IdentityInterface
             return '';
         }
         return $user->hasAttribute($attribute) ? $user->getAttribute($attribute) : '';
+    }
+
+    /**
+     * 同步user表数据到user_info表
+     */
+    public function syncUserToInfo() {
+        $userInfo = UserInfo::find()->where(['uid' => $this->id])->one();
+        if (!empty($userInfo)) {
+            //已经存在
+            return false;
+        }
+
+        $model = new UserInfo();
+        $model->uid = $this->id;
+        !empty($this->truename) && $model->truename = $this->truename;
+        !empty($this->mobile) && $model->mobile = $this->mobile;
+        return $model->save();
     }
 }

@@ -11,6 +11,7 @@ use backend\models\forms\UserForm;
 use common\models\User;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 class UserController extends BaseController
@@ -113,6 +114,11 @@ class UserController extends BaseController
      */
     public function actionDetail() {
         $uid = Yii::$app->request->get('uid');
+        $user = User::findIdentity($uid);
+        if (empty($user)) {
+            throw new HttpException();
+        }
+        $user->syncUserToInfo();
         return $this->render('detail', ['uid' => $uid]);
     }
 
@@ -127,12 +133,28 @@ class UserController extends BaseController
         }
         $user = User::find()->where(['id' => $uid])->one();
         $userInfo = UserInfo::find()->where(['uid' => $uid])->one();
-        //user和userInfo一定会同时存在,目前没有做兼容
+        //user和userInfo一定会同时存在
         if (empty($user) || empty($userInfo)) {
             throw new NotFoundHttpException();
         }
 
         $html = $this->renderPartial('_basic', ['user' => $user, 'userInfo' => $userInfo]);
+        $this->successAjax(['html' => $html]);
+    }
+
+    public function actionGetBasicFormHtml() {
+        $uid = Yii::$app->request->get('uid');
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $user = User::find()->where(['id' => $uid])->one();
+        $userInfo = UserInfo::find()->where(['uid' => $uid])->one();
+        //user和userInfo一定会同时存在
+        if (empty($user) || empty($userInfo)) {
+            throw new NotFoundHttpException();
+        }
+
+        $html = $this->renderPartial('_basic_form', ['user' => $user, 'userInfo' => $userInfo]);
         $this->successAjax(['html' => $html]);
     }
 
@@ -189,5 +211,32 @@ class UserController extends BaseController
         $service = new RbacService();
         $service->assignRoles($uid, $roleNames);
         $this->successAjax();
+    }
+
+    public function actionSaveBasic() {
+        $uid = Yii::$app->request->get('uid');
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $user = User::findIdentity($uid);
+        if (empty($user)) {
+            $this->errorAjax('非法请求');
+        }
+        $post = Yii::$app->request->post();
+        if (!isset($post['truename']) || empty(trim($post['truename']))) {
+            $this->errorAjax('姓名必填');
+        }
+        if (isset($post['identity_card']) && !empty(trim($post['identity_card']))) {
+            $identityCard = trim($post['identity_card']);
+            if (!Tools::checkIdentity($identityCard)) {
+                $this->errorAjax('身份证填写错误');
+            }
+        }
+        $user->truename = trim($post['truename']);
+        if ($user->save()) {
+            $this->successAjax();
+        } else {
+            $this->errorAjax('保存失败');
+        }
     }
 }

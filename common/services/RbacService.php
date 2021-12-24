@@ -105,4 +105,16 @@ class RbacService {
 
         return '';
     }
+
+    //获取某个用户的所有下属uid(通过角色)
+    public function getAllChildrenUid($uid) {
+        $auth = Yii::$app->authManager;
+        $assignments = $auth->getAssignments($uid);
+        foreach ($assignments as $assignment) {
+            $roles = $auth->getChildRoles($assignment->roleName);
+//            print_r($t);exit;
+        }
+        print_r($assignments);exit;
+
+    }
 }

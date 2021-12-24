@@ -7,18 +7,27 @@
         <h5 class="card-title">基本信息</h5>
         <form id="basic-form">
             <div class="form-group row">
-                <div class="col-sm-6"><span class="mr-20"><b>用户名</b></span><span><?= $user->username; ?></span></div>
-                <div class="col-sm-6"><span class="mr-20"><b>姓名</b></span><span><?= $userInfo->truename; ?></span></div>
+                <div class="col-sm-2"><b>用户名</b></div>
+                <div class="col-sm-4"><?= $user->username; ?></div>
+                <div class="col-sm-2"><b>姓名</b></div>
+                <div class="col-sm-4"><?= $userInfo->truename; ?></div>
             </div>
+
             <div class="form-group row">
-                <div class="col-sm-6"><span class="mr-20"><b>性别</b></span><span><?= $user->username; ?></span></div>
-                <div class="col-sm-6"><span class="mr-20"><b>年龄</b></span><span>12</span></div>
+                <div class="col-sm-2"><b>性别</b></div>
+                <div class="col-sm-4">cccc</div>
+                <div class="col-sm-2"><b>年龄</b></div>
+                <div class="col-sm-4">eeee</div>
             </div>
+
             <div class="form-group row">
-                <div class="col-sm-6"><span class="mr-20"><b>手机</b></span><span><?= $user->username; ?></span></div>
-                <div class="col-sm-6"><span class="mr-20"><b>身份证</b></span><span>12</span></div>
+                <div class="col-sm-2"><b>手机</b></div>
+                <div class="col-sm-4">138888</div>
+                <div class="col-sm-2"><b>身份证</b></div>
+                <div class="col-sm-4">310111</div>
             </div>
+
         </form>
     </div>
-    <button type="button" class="card-edit-btn">编辑</button>
+    <button type="button" class="card-edit-btn" id="edit-basic-btn">编辑</button>
 </div>
