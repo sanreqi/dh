@@ -52,6 +52,7 @@ class LogBehavior extends Behavior
     }
 
     private function setLogData(LogData $model) {
+        //@todo srq 有bug
         $model->uid = $this->uid;
         $model->module = $this->logDataTable['module'];
         $model->table = $this->logDataTable['table'];

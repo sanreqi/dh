@@ -15,16 +15,14 @@
 
             <div class="form-group row">
                 <div class="col-sm-2"><b>性别</b></div>
-                <div class="col-sm-4">cccc</div>
-                <div class="col-sm-2"><b>年龄</b></div>
-                <div class="col-sm-4">eeee</div>
+                <div class="col-sm-4"><?php echo \common\models\UserInfo::getGenderByKey($userInfo->gender) ?></div>
+                <div class="col-sm-2"><b>出生日期</b></div>
+                <div class="col-sm-4"><?= $userInfo->birth_date; ?></div>
             </div>
 
             <div class="form-group row">
-                <div class="col-sm-2"><b>手机</b></div>
-                <div class="col-sm-4">138888</div>
                 <div class="col-sm-2"><b>身份证</b></div>
-                <div class="col-sm-4">310111</div>
+                <div class="col-sm-4"><?= $userInfo->identity_card; ?></div>
             </div>
 
         </form>

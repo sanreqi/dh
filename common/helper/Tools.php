@@ -39,7 +39,7 @@ class Tools {
      * 验证身份证
      * @return bool
      */
-    public static  function checkIdentity($idCard) {
+    public static function checkIdentity($idCard) {
         $set = array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
         $ver = array('1', '0', 'x', '9', '8', '7', '6', '5', '4', '3', '2');
         $arr = str_split($idCard);
@@ -59,6 +59,21 @@ class Tools {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 通过身份证获取用户信息
+     */
+    public static function getInfoByIdentity($idCard) {
+        if (!self::checkIdentity($idCard)) {
+            return false;
+        }
+
+        $birthDate = substr($idCard, 6, 8);
+        $birthDate = date('Y-m-d', strtotime($birthDate));
+        $genderNum = substr($idCard, -2, 1);
+        $gender = $genderNum % 2 != 0 ? 1 : 2; //1-男 2-女
+        return ['birth_date' => $birthDate, 'gender' => $gender];
     }
 }
 

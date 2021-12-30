@@ -49,7 +49,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::class,
-            LogBehavior::class,
+//            LogBehavior::class,
         ];
     }
 
@@ -259,5 +259,49 @@ class User extends ActiveRecord implements IdentityInterface
         !empty($this->truename) && $model->truename = $this->truename;
         !empty($this->mobile) && $model->mobile = $this->mobile;
         return $model->save();
+    }
+
+    public function saveDetailBasic($post) {
+        $userInfo = UserInfo::find()->where(['uid' => $this->id])->one();
+        if (empty($userInfo)) {
+            //做兼容
+            $this->syncUserToInfo();
+        }
+        $transaction = Yii::$app->db->beginTransaction();
+        $this->truename = trim($post['truename']);
+        $userInfo->truename = trim($post['truename']);
+
+        if (isset($post['identity_card']) && !empty(trim($post['identity_card']))) {
+            $identityCard = trim($post['identity_card']);
+            $idInfo = Tools::getInfoByIdentity($identityCard);
+            if (!empty($idInfo)) {
+                //优先用身份证匹配的出生日期和性别
+                $userInfo->identity_card = $identityCard;
+                $userInfo->gender = $idInfo['gender'];
+                $userInfo->birth_date = $idInfo['birth_date'];
+            }
+        }
+        //身份证未能匹配
+        if (!isset($idInfo) || $idInfo === false) {
+            if (isset($post['gender']) && $post['gender'] !== NULL) {
+                $userInfo->gender = $post['gender'];
+            }
+            if (isset($post['birth_date']) && !empty($post['birth_date'])) {
+                $userInfo->birth_date = $post['birth_date'];
+            }
+        }
+
+        try {
+            if ($this->save() && $userInfo->save()) {
+                $transaction->commit();
+                return true;
+            } else {
+                $transaction->rollBack();
+                return false;
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
     }
 }

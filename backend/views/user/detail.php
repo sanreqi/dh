@@ -4,7 +4,8 @@
 /* @var $pages */
 /* @var $uid */
 
-$this->title = 'USER';
+$this->title = 'USER DETAIL';
+\common\assets\DateTimePickerAsset::register($this);
 ?>
 
 
@@ -17,6 +18,11 @@ $this->title = 'USER';
     <div class="col-sm-5">
         <div class="card">
             <div class="card-body">
+                <i class="glyphicon glyphicon-remove dh-cp"></i>
+                <i class="glyphicon glyphicon-plus dh-cp"></i>
+                <i class="glyphicon glyphicon-star dh-cp"></i>
+                <i class="glyphicon glyphicon-star-empty dh-cp"></i>
+                <i class="glyphicon glyphicon-pencil dh-cp"></i>
                 <h5 class="card-title">Special title treatment</h5>
                 <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
@@ -39,9 +45,10 @@ $this->title = 'USER';
 <script>
     $(document).ready(function() {
         renderHtml("/user/get-basic-view-html?uid="+"<?= $uid; ?>", "basic-card");
+        renderHtml("/user/get-project-view-html?uid="+"<?= $uid; ?>", "project-card");
         renderHtml("/user/get-role-view-html?uid="+"<?= $uid; ?>", "role-card");
 
-        //@todo 可以写成通用的renderForm
+        //@todo srq 可以写成通用的renderForm
         $("body").on("click", "#edit-role-btn", function () {
             let $this = $(this);
             $this.prop("disabled", "disabled").addClass("disabled");
@@ -106,5 +113,39 @@ $this->title = 'USER';
 
             return false;
         });
+
+        $("body").on("click", "#edit-project-btn", function () {
+            let $this = $(this);
+            $this.prop("disabled", "disabled").addClass("disabled");
+            renderHtml("/user/get-project-form-html?uid="+"<?= $uid; ?>", "project-card");
+            $this.prop("disabled", false).removeClass("disabled");
+
+            return false;
+        });
+
+        $("body").on("click", "#save-project-btn", function () {
+            let $this = $(this);
+            let url = "/user/save-project?uid=" + <?= $uid; ?>;
+            $this.prop("disabled", "disabled").addClass("disabled");
+            $.ajax({
+                type: "post",
+                url: url,
+                data: $("#project-form").serializeArray(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.status == 1) {
+                        renderHtml("/user/get-project-view-html?uid="+"<?= $uid; ?>", "project-card");
+                    } else {
+                        dhAlert(data.errorMsg)
+                    }
+                },
+                complete: function (data) {
+                    $this.prop("disabled", false).removeClass("disabled");
+                }
+            });
+
+            return false;
+        });
+
     });
 </script>

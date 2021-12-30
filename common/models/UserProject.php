@@ -1,7 +1,5 @@
 <?php
 
-//@todo user_id改成uid
-
 namespace common\models;
 
 use Yii;
@@ -10,7 +8,7 @@ use Yii;
  * This is the model class for table "user_project".
  *
  * @property int $id
- * @property int $user_id
+ * @property int uid
  * @property int $project 1-后台 2-前台
  */
 class UserProject extends \yii\db\ActiveRecord
@@ -37,7 +35,8 @@ class UserProject extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'project'], 'integer'],
+            [['uid'], 'integer'],
+            [['project'], 'string'],
         ];
     }
 
@@ -48,7 +47,7 @@ class UserProject extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'uid' => 'UID',
             'project' => 'Project',
         ];
     }
@@ -85,6 +84,18 @@ class UserProject extends \yii\db\ActiveRecord
             $result = $list[$key];
         }
         return $result;
+    }
+
+    public function saveDetailProject($uid, $projects) {
+        UserProject::deleteAll('uid=:uid', [':uid' => $uid]);
+        if (!empty($projects)) {
+            foreach ($projects as $project) {
+                $model = new UserProject();
+                $model->uid = $uid;
+                $model->project = $project;
+                $model->save();
+            }
+        }
     }
 
 

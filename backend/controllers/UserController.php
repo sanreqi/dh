@@ -5,7 +5,9 @@ use backend\components\QiArrLogic;
 use common\helper\Tools;
 use common\models\Constants;
 use common\models\UserInfo;
+use common\models\UserProject;
 use common\services\RbacService;
+use common\services\UserService;
 use Yii;
 use backend\models\forms\UserForm;
 use common\models\User;
@@ -154,6 +156,8 @@ class UserController extends BaseController
             throw new NotFoundHttpException();
         }
 
+        $userInfo->setInfoByIdentityCard();
+
         $html = $this->renderPartial('_basic_form', ['user' => $user, 'userInfo' => $userInfo]);
         $this->successAjax(['html' => $html]);
     }
@@ -196,7 +200,7 @@ class UserController extends BaseController
         foreach ($assignments as $assignment) {
             $roles[] = $assignment->roleName;
         }
-        $roleNames = implode(',', $roles);
+        $roleNames = !empty($roles) ? implode(',', $roles) : '暂无角色';
         $html = $this->renderPartial('_role', ['roleNames' => $roleNames, 'uid' => $uid]);
         $this->successAjax(['html' => $html]);
     }
@@ -232,11 +236,78 @@ class UserController extends BaseController
                 $this->errorAjax('身份证填写错误');
             }
         }
-        $user->truename = trim($post['truename']);
-        if ($user->save()) {
+
+        if ($user->saveDetailBasic($post)) {
             $this->successAjax();
         } else {
             $this->errorAjax('保存失败');
         }
+    }
+
+    public function actionGetProjectViewHtml() {
+        $uid = Yii::$app->request->get('uid');
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $user = User::findIdentity($uid);
+        if (empty($user)) {
+            $this->errorAjax('非法请求');
+        }
+        $userProject = UserProject::find()->where(['uid' => $uid])->all();
+        $project = [];
+        if (!empty($userProject)) {
+            foreach ($userProject as $v) {
+                $project[] = UserProject::getProjectByKey($v->project);
+            }
+        }
+        $projectStr = !empty($project) ? implode(',', $project) : '暂无项目权限';
+        $html = $this->renderPartial('_project', ['projectStr' => $projectStr]);
+        $this->successAjax(['html' => $html]);
+    }
+
+
+    public function actionGetProjectFormHtml() {
+        $uid = Yii::$app->request->get('uid');
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $user = User::findIdentity($uid);
+        if (empty($user)) {
+            $this->errorAjax('非法请求');
+        }
+
+        $projects = [];
+        foreach (UserProject::getProjectList() as $k => $v) {
+            //循环查询问题不大
+            $userProject = UserProject::find()->where(['uid' => $uid, 'project' => $k])->one();
+            $tmp['key'] = $k;
+            $tmp['val'] = $v;
+            $tmp['checked'] = !empty($userProject) ? 'checked' : '';
+            $projects[] = $tmp;
+        }
+
+        $html = $this->renderPartial('_project_form', ['projects' => $projects]);
+        $this->successAjax(['html' => $html]);
+    }
+
+    public function actionSaveProject() {
+        $uid = Yii::$app->request->get('uid');
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $user = User::findIdentity($uid);
+        if (empty($user)) {
+            $this->errorAjax('非法请求');
+        }
+
+        $projects = Yii::$app->request->post('projects', []);
+        $model = new UserProject();
+        $model->saveDetailProject($uid, $projects);
+        $this->successAjax();
+    }
+
+
+    public function actionTest() {
+        return $this->render('test');
     }
 }
