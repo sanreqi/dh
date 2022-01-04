@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\User;
 use Yii;
 use common\services\RbacService;
 use yii\web\Controller;
@@ -84,4 +85,15 @@ class BaseController extends Controller
         echo json_encode($data);
         exit;
     }
+
+    protected function checkUid($uid) {
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $user = User::findIdentity($uid);
+        if (empty($user)) {
+            $this->errorAjax('非法请求');
+        }
+    }
+
 }

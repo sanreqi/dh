@@ -4,6 +4,7 @@ namespace backend\controllers;
 use backend\components\QiArrLogic;
 use common\helper\Tools;
 use common\models\Constants;
+use common\models\Contact;
 use common\models\UserInfo;
 use common\models\UserProject;
 use common\services\RbacService;
@@ -306,6 +307,17 @@ class UserController extends BaseController
         $this->successAjax();
     }
 
+    public function actionGetContactViewHtml() {
+        $uid = Yii::$app->request->get('uid');
+        $this->checkUid($uid);
+
+        $model = new Contact();
+        $model->getContactsForDetail($uid);
+
+
+        $html = $this->renderPartial('_contact', []);
+        $this->successAjax(['html' => $html]);
+    }
 
     public function actionTest() {
         return $this->render('test');

@@ -6,6 +6,7 @@
 
 $this->title = 'USER DETAIL';
 \common\assets\DateTimePickerAsset::register($this);
+$this->registerJsFile('@web/static/js/contact.js?v=1', ['depends' => '\backend\assets\AppAsset']);
 ?>
 
 
@@ -15,30 +16,9 @@ $this->title = 'USER DETAIL';
         <div id="project-card"></div>
         <div id="role-card"></div>
     </div>
-    <div class="col-sm-5">
-        <div class="card">
-            <div class="card-body">
-                <i class="glyphicon glyphicon-remove dh-cp"></i>
-                <i class="glyphicon glyphicon-plus dh-cp"></i>
-                <i class="glyphicon glyphicon-star dh-cp"></i>
-                <i class="glyphicon glyphicon-star-empty dh-cp"></i>
-                <i class="glyphicon glyphicon-pencil dh-cp"></i>
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
+
+    <div id="contact-card" class="col-sm-5">
+
     </div>
 </div>
 
@@ -47,13 +27,14 @@ $this->title = 'USER DETAIL';
         renderHtml("/user/get-basic-view-html?uid="+"<?= $uid; ?>", "basic-card");
         renderHtml("/user/get-project-view-html?uid="+"<?= $uid; ?>", "project-card");
         renderHtml("/user/get-role-view-html?uid="+"<?= $uid; ?>", "role-card");
+        renderHtml("/user/get-contact-view-html?uid="+"<?= $uid; ?>", "contact-card");
 
         //@todo srq 可以写成通用的renderForm
         $("body").on("click", "#edit-role-btn", function () {
             let $this = $(this);
             $this.prop("disabled", "disabled").addClass("disabled");
             renderHtml("/user/get-role-form-html?uid="+"<?= $uid; ?>", "role-card");
-            $this.prop("disabled", false).removeClass("disabled");
+            // $this.prop("disabled", false).removeClass("disabled");
 
             return false;
         });
@@ -85,7 +66,7 @@ $this->title = 'USER DETAIL';
             let $this = $(this);
             $this.prop("disabled", "disabled").addClass("disabled");
             renderHtml("/user/get-basic-form-html?uid="+"<?= $uid; ?>", "basic-card");
-            $this.prop("disabled", false).removeClass("disabled");
+            // $this.prop("disabled", false).removeClass("disabled");
 
             return false;
         });
@@ -118,7 +99,7 @@ $this->title = 'USER DETAIL';
             let $this = $(this);
             $this.prop("disabled", "disabled").addClass("disabled");
             renderHtml("/user/get-project-form-html?uid="+"<?= $uid; ?>", "project-card");
-            $this.prop("disabled", false).removeClass("disabled");
+            // $this.prop("disabled", false).removeClass("disabled");
 
             return false;
         });
@@ -146,6 +127,5 @@ $this->title = 'USER DETAIL';
 
             return false;
         });
-
     });
 </script>
