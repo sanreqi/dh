@@ -17,7 +17,7 @@ class AppAsset extends AssetBundle
         'static/css/dashbord.css?v=2111231',
     ];
     public $js = [
-        'static/js/function.js?v=444412212',
+        'static/js/function.js?v=444212',
         'static/js/ajaxfileupload.js?v=6',
     ];
     public $depends = [

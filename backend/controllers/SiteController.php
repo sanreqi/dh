@@ -102,10 +102,10 @@ class SiteController extends BaseController
         }
 
         $post = Yii::$app->request->post();
-        if (isset($post['rememberMe']) && !empty($post['rememberMe'])) {
-            $post['rememberMe'] = true;
+        if (isset($post['LoginForm']['rememberMe']) && !empty($post['LoginForm']['rememberMe'])) {
+            $post['LoginForm']['rememberMe'] = true;
         } else {
-            $post['rememberMe'] = false;
+            $post['LoginForm']['rememberMe'] = false;
         }
 
         $model = new LoginForm();

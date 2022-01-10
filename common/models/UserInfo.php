@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\helper\Tools;
 use Yii;
 
 /**
@@ -21,6 +22,28 @@ use Yii;
  */
 class UserInfo extends \yii\db\ActiveRecord
 {
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+    const GENDER_UNKNOWN = 3;
+
+    public static function getGenderList() {
+        return [
+            self::GENDER_MALE => '男',
+            self::GENDER_FEMALE => '女',
+            self::GENDER_UNKNOWN => '未知',
+        ];
+    }
+
+    public static function getGenderByKey($key) {
+        $result = '';
+        $list = self::getGenderList();
+        if (array_key_exists($key, $list)) {
+            $result = $list[$key];
+        }
+
+        return $result;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -59,5 +82,23 @@ class UserInfo extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        if (!empty($this->birth_date)) {
+            $this->birth_date = date('Y-m-d', strtotime($this->birth_date));
+        }
+    }
+
+    public function setInfoByIdentityCard() {
+        if (!empty($this->identity_card)) {
+             $info = Tools::getInfoByIdentity($this->identity_card);
+             if (!empty($info)) {
+                 $this->birth_date = $info['birth_date'];
+                 $this->gender = $info['gender'];
+             }
+        }
     }
 }

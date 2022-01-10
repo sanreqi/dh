@@ -9,6 +9,11 @@ class PermissionController extends BaseController
 {
     public function actionIndex() {
         $auth = Yii::$app->authManager;
+        $role = $auth->createRole('444');
+        $auth->add($role);
+        exit;
+
+        $auth = Yii::$app->authManager;
         $roleName = Yii::$app->request->get('role');
         $role = $auth->getRole($roleName);
         if (empty($role)) {

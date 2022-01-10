@@ -98,11 +98,23 @@ class RbacService {
 
     public static function getMenuItemCheckedCss($path) {
         //url地址
-        $pathInfo = Yii::$app->request->pathInfo;
+        $pathInfo = Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
         if ($path == $pathInfo) {
             return 'style=background-color:#0f6ecd';
         }
 
         return '';
+    }
+
+    //获取某个用户的所有下属uid(通过角色)
+    public function getAllChildrenUid($uid) {
+        $auth = Yii::$app->authManager;
+        $assignments = $auth->getAssignments($uid);
+        foreach ($assignments as $assignment) {
+            $roles = $auth->getChildRoles($assignment->roleName);
+//            print_r($t);exit;
+        }
+        print_r($assignments);exit;
+
     }
 }

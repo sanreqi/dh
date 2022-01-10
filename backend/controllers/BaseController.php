@@ -2,8 +2,9 @@
 
 namespace backend\controllers;
 
-use common\services\RbacService;
+use common\models\User;
 use Yii;
+use common\services\RbacService;
 use yii\web\Controller;
 
 class BaseController extends Controller
@@ -19,7 +20,9 @@ class BaseController extends Controller
         $guestOnly = $actionAuth['guest_only'];
         $allWithoutAuth = $actionAuth['all_without_auth'];
         $isGuest = Yii::$app->user->isGuest;
-        $path = Yii::$app->request->pathInfo;
+//        $path = Yii::$app->request->pathInfo;
+        $path = Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
+
         if($isGuest && !in_array($path, array_merge($guestOnly, $allWithoutAuth))) {
             //游客访问
             return Yii::$app->getResponse()->redirect('/site/login');
@@ -34,7 +37,6 @@ class BaseController extends Controller
                 //认证用户访问了不需要验证的页面
                 return true;
             }
-
 
             if (RbacService::checkPermission(Yii::$app->user->identity, $path)) {
                 return true;
@@ -83,4 +85,15 @@ class BaseController extends Controller
         echo json_encode($data);
         exit;
     }
+
+    protected function checkUid($uid) {
+        if (empty($uid)) {
+            $this->errorAjax('非法请求');
+        }
+        $user = User::findIdentity($uid);
+        if (empty($user)) {
+            $this->errorAjax('非法请求');
+        }
+    }
+
 }

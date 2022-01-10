@@ -65,8 +65,6 @@ AppAsset::register($this);
             </div>
 
             <?= $content ?>
-<!--            <h2>Section title</h2>-->
-
 
             <?php echo \Yii::$app->view->render('_alert_confirm'); ?>
         </main>

@@ -18,7 +18,7 @@ return [
         [
             ['name' => '安全', 'path' => 'role/index', 'url' => '/role/index'],
             ['name' => '角色列表', 'path' => 'role/index', 'url' => '/role/index'],
-            ['name' => '权限列表', 'path' => 'permission/index', 'url' => '/permission/index'],
+//            ['name' => '权限列表', 'path' => 'permission/index', 'url' => '/permission/index'],
         ],
         [
             ['name' => '围棋', 'path' => 'role/index', 'url' => '/role/index'],
