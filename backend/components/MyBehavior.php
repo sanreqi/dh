@@ -34,6 +34,6 @@ class MyBehavior extends Behavior
     }
 
     public function teSe() {
-        echo 666; exit;
+//        echo 666; exit;
     }
 }
