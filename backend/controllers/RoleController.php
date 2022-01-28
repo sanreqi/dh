@@ -15,8 +15,8 @@ use yii\rbac\Item;
 class RoleController extends BaseController
 {
     public function actionIndex() {
-        $service = new RbacService();
-        $service->getAllChildrenUid(2);
+//        $service = new RbacService();
+//        $service->getAllChildrenUid(2);
 
         $params = Yii::$app->request->get();
         $params['type'] = Item::TYPE_ROLE;
