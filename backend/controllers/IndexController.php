@@ -10,15 +10,21 @@ use common\models\Page;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class IndexController extends BaseController
+class IndexController extends Controller
 {
 
-    public function behaviors()
-    {
-        return [
-            MyBehavior::class,
-        ];
+	
+    public function actionGo() {
+	echo '[{"id":1,"image":"http://ww1.sinaimg.cn/mw690/006ThXL5ly1fj7zx3w751j30u00dmgy3.jpg","link":""},{"id":2,"image":"http://ww1.sinaimg.cn/mw690/006ThXL5ly1fj6ckx9tlwj30u00fqk8n.jpg","link":"/pages/list/list?cat=10"}]';
+	exit;
     }
+
+   // public function behaviors()
+    //{
+        //return [
+            //MyBehavior::class,
+        //];
+   // }
 
     public function actionIndex() {
         throw new NotFoundHttpException();
