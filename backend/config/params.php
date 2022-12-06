@@ -18,13 +18,13 @@ return [
         [
             ['name' => '安全', 'path' => 'role/index', 'url' => '/role/index'],
             ['name' => '角色列表', 'path' => 'role/index', 'url' => '/role/index'],
-//            ['name' => '权限列表', 'path' => 'permission/index', 'url' => '/permission/index'],
+            ['name' => '权限列表', 'path' => 'permission/index', 'url' => '/permission/index'],
         ],
-//        [
-//            ['name' => '围棋', 'path' => 'role/index', 'url' => '/role/index'],
-//            ['name' => '开狗黑名单', 'path' => 'wq-blacklist/index', 'url' => '/wq-blacklist/index'],
-//            ['name' => '围棋排列计算', 'path' => 'wq/rank', 'url' => '/wq/rank'],
-//        ],
+        [
+            ['name' => '围棋', 'path' => 'role/index', 'url' => '/role/index'],
+            ['name' => '开狗黑名单', 'path' => 'wq-blacklist/index', 'url' => '/wq-blacklist/index'],
+            ['name' => '围棋排列计算', 'path' => 'wq/rank', 'url' => '/wq/rank'],
+        ],
     ],
     'log_data_table' => [
         '{{user}}' => ['module' => 'user', 'table' => 'user', 'desc' => '用户'],
