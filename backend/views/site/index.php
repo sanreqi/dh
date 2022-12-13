@@ -111,5 +111,43 @@ $this->title = '首页';
                 </li>
             </div>
         </ul>
+
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item" id="heading3">
+                <a class="nav-link" data-toggle="collapse" data-target=".collapse3" aria-expanded="true" aria-controls="collapse3" href="/wq-blacklist/index">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="ml-8">围棋</span>
+                </a>
+            </li>
+            <div id="" class="collapse collapse3" aria-labelledby="heading3" data-parent="#sidebarMenu">
+                <li class="nav-item">
+                    <a style="background-color:#0f6ecd" class="nav-link" href="/wq-blacklist/index">
+                        <span class="ml-26">开狗黑名单</span>
+                    </a>
+                </li>
+            </div>
+            <div id="" class="collapse collapse3" aria-labelledby="heading3" data-parent="#sidebarMenu">
+                <li class="nav-item">
+                    <a class="nav-link" href="/wq/rank">
+                        <span class="ml-26">围棋排列计算</span>
+                    </a>
+                </li>
+            </div>
+        </ul>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item" id="heading3">
+                <a class="nav-link" data-toggle="collapse" data-target=".collapse3" aria-expanded="true" aria-controls="collapse3" href="/asd-diary/index">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="ml-8">ASD</span>
+                </a>
+            </li>
+            <div id="" class="collapse collapse3" aria-labelledby="heading3" data-parent="#sidebarMenu">
+                <li class="nav-item">
+                    <a style="background-color:#0f6ecd" class="nav-link" href="/asd-diary/index">
+                        <span class="ml-26">DIARY</span>
+                    </a>
+                </li>
+            </div>
+        </ul>
     </div>
 </nav>

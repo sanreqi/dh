@@ -14,10 +14,10 @@ class AppAsset extends AssetBundle
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 
     public $css = [
-        'static/css/dashbord.css?v=2111231',
+        'static/css/dashbord.css?v=211111231',
     ];
     public $js = [
-        'static/js/function.js?v=444212',
+        'static/js/function.js?v=111222333',
         'static/js/ajaxfileupload.js?v=6',
     ];
     public $depends = [

@@ -21,9 +21,13 @@ return [
             ['name' => '权限列表', 'path' => 'permission/index', 'url' => '/permission/index'],
         ],
         [
-            ['name' => '围棋', 'path' => 'role/index', 'url' => '/role/index'],
+            ['name' => '围棋', 'path' => 'wq-blacklist/index', 'url' => '/wq-blacklist/index'],
             ['name' => '开狗黑名单', 'path' => 'wq-blacklist/index', 'url' => '/wq-blacklist/index'],
             ['name' => '围棋排列计算', 'path' => 'wq/rank', 'url' => '/wq/rank'],
+        ],
+        [
+            ['name' => 'ASD', 'path' => 'asd-diary/index', 'url' => '/asd-diary/index'],
+            ['name' => 'DIARY', 'path' => 'asd-diary/index', 'url' => '/asd-diary/index'],
         ],
     ],
     'log_data_table' => [

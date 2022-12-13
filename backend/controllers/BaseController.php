@@ -9,7 +9,6 @@ use yii\web\Controller;
 
 class BaseController extends Controller
 {
-
     public $enableCsrfValidation = false;
 
     public function beforeAction($action)
@@ -69,7 +68,7 @@ class BaseController extends Controller
         $this->ajaxReturn($returnData, $json_option);
     }
 
-    protected function errorAjax($errorMsg, $json_option = 0){
+    protected function errorAjax($errorMsg, $json_option = 256){
         $this->ajaxReturn(['status' => 0, 'errorMsg' => $errorMsg], $json_option);
     }
 

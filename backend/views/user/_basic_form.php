@@ -1,6 +1,7 @@
 <?php
 /* @var $user; */
 /* @var $userInfo; */
+\common\assets\DateTimePickerAsset::register($this);
 ?>
 <div class="card pr">
     <div class="card-body">
