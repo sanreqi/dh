@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 use backend\services\AsdDiaryService;
+use backend\services\TaxonomyService;
 use common\models\AsdDiary;
 use common\models\WqBlacklist;
 use Yii;
@@ -82,7 +83,11 @@ class AsdDiaryController extends BaseController
     }
 
     public function actionGetJson() {
+        $service = new TaxonomyService();
+        $t= $service->tree();
 
+        echo $t; exit;
+        exit;
 
         $data = '[{
 	"id": 1,
