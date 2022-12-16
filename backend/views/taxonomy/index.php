@@ -59,6 +59,7 @@
     }
     $(document).ready(function () {
         let old_name = "";
+        let drag_flag = true;
         $("#tt").tree({
             url: "/taxonomy/get-tree-data",
             dnd: true,
@@ -113,12 +114,18 @@
 
             onBeforeDrop: function (target, source, point) {
                 let target_node = $("#tt").tree("getData", target);
-                if (target_node.attributes.parent_id != source.attributes.parent_id || (point != "top" && point != "bottom")) {
+                if (target_node.attributes.parent_id != source.attributes.parent_id ||
+                    target_node.id != source.id ||
+                    (point != "top" && point != "bottom")) {
+                    drag_flag = false;
                     return false;
                 }
             },
 
             onStopDrag: function (node) {
+                if (!drag_flag) {
+                    return false;
+                }
                 let parent = $("#tt").tree("getParent", node.target);
                 let children = $("#tt").tree("getChildren", parent.target);
                 let ids = [];
