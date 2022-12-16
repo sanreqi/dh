@@ -42,13 +42,14 @@ $this->title = 'DIARY';
         <?php if (!empty($data)): ?>
             <?php foreach ($data as $v): ?>
             <?php $date = date('Y-m-d', strtotime($v['date'])); ?>
+            <?php $title = \common\services\AsdDiaryservice::getTitle($v['date'], $v['title']); ?>
                 <tr>
                     <td><?= $date ?></td>
-                    <td><?= $v['title'] ?></td>
+                    <td><?= $title ?></td>
                     <td><?= $v['bright'] ?></td>
                     <td><?= $v['problem'] ?></td>
                     <td><?= $v['level'] ?></td>
-                    <td><?= mb_substr($v['content'],0,10) ?></td>
+                    <td>详情中查看</td>
                     <td>
                         <a href="<?php echo \yii\helpers\Url::toRoute(['asd-diary/form', 'id' => $v['id']]) ?>" class="btn-sm btn-success" prikey-val="<?= $v['id'] ?>">编辑</a>
                         <a href="javascript:void(0)" class="btn-sm btn-danger delete-asd-diary-btn" prikey-val="<?= $v['id'] ?>" str="<?= $date ?>">删除</a>

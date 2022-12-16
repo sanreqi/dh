@@ -57,7 +57,7 @@ $this->title = $title;
     <a href="javascript:void(0)" class="btn btn-primary" id="save-asd-diary-btn">保存</a>
 </div>
 
-<input type="hidden" value="<?php echo $model->content ?>" id="ct">
+<input type="hidden" value='<?php echo $model->content ?>' id="ct">
 
 <script>
     $(document).ready(function () {
