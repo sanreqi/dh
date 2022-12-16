@@ -59,7 +59,7 @@
     }
     $(document).ready(function () {
         let old_name = "";
-        let drag_flag = true;
+        let drag_flag = false;
         $("#tt").tree({
             url: "/taxonomy/get-tree-data",
             dnd: true,
@@ -114,12 +114,18 @@
 
             onBeforeDrop: function (target, source, point) {
                 let target_node = $("#tt").tree("getData", target);
+                console.log(target_node.id);
+                console.log(source.id);
+                console.log(point);
+
                 if (target_node.attributes.parent_id != source.attributes.parent_id ||
                     target_node.id == source.id ||
                     (point != "top" && point != "bottom")) {
                     drag_flag = false;
                     return false;
                 }
+
+                drag_flag = true;
             },
 
             onStopDrag: function (node) {
