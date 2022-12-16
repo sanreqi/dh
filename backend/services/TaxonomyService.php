@@ -25,6 +25,7 @@ class TaxonomyService
 
         $result['id'] = $id;
         $result['text'] = $taxonomy['name'];
+        $result['attributes'] = ['parent_id' => $taxonomy['parent_id'], 'tid' => $taxonomy['id']];
         $result['children'] = $this->children($id);
         return $result;
     }
@@ -39,6 +40,7 @@ class TaxonomyService
         foreach ($taxonomys as $v) {
             $data['id'] = $v['id'];
             $data['text'] = $v['name'];
+            $data['attributes'] = ['parent_id' => $v['parent_id'], 'tid' => $v['id']];
             //递归
             $data['children'] = $v['is_leaf'] ? [] : $this->children($v['id']);
 //            $data['children'] = $this->children($v['id']);
@@ -168,16 +170,36 @@ class TaxonomyService
         $model->is_delete = 1;
         $model->update_time = $currentTime;
 
-//        $parent = Taxonomy::find()->where(['id'=>$model->parent_id])->one();
+        //如果没有儿子就设置为叶子节点
+        $children = Taxonomy::find()->where(['is_delete'=>0, 'parent_id'=>$model->id]);
+        if (empty($children)) {
+            $parent = Taxonomy::find()->where(['id'=>$model->parent_id])->one();
+            $parent->is_leaf = 1;
+            $parent->update_time = $currentTime;
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model->save();
+            if (empty($children)) {
+                $parent->save();
+            }
+            $transaction->commit();
+            return $model->id;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            $this->errMsg = '保存失败';
+            return false;
+        }
 
 //        $taxonomy
 
-        if ($model->save()) {
-            return true;
-        } else {
-            $this->errMsg = array_values($model->getFirstErrors())[0];
-            return false;
-        }
+//        if ($model->save()) {
+//            return true;
+//        } else {
+//            $this->errMsg = array_values($model->getFirstErrors())[0];
+//            return false;
+//        }
     }
 
     private function checkDelete($params) {
