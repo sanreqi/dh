@@ -64,6 +64,7 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+        $this->redirect(['/user']);
         return $this->render('index');
     }
 
