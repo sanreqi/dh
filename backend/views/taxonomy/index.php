@@ -27,7 +27,8 @@
                         data: [{
                             // id:后端返回
                             id: data.data.id,
-                            text: '新节点'
+                            text: '新节点',
+                            attributes: {"parent_id":selected.id}
                         }]
                     });
                 } else {
@@ -39,8 +40,6 @@
 
     function remove() {
         var selected = $("#tt").tree('getSelected');
-
-
         $.ajax({
             type: "post",
             url: "/taxonomy/delete",
@@ -57,6 +56,19 @@
             },
         });
     }
+
+    //某节点的一级节点
+    function getSubChildren(id){
+        let $tree = $('#tt');
+        let node = $tree.tree('find',id);
+        let subNodes = [];
+        $(node.target)
+            .next().children().children("div.tree-node").each(function(){
+            subNodes.push($tree.tree('getNode',this));
+        });
+        return subNodes;
+    }
+
     $(document).ready(function () {
         let old_name = "";
         let drag_flag = false;
@@ -64,7 +76,7 @@
             url: "/taxonomy/get-tree-data",
             dnd: true,
 
-            onClick: function(node){
+            onClick: function(node) {
                 //编辑
                 $(this).tree('beginEdit',node.target);
             },
@@ -82,6 +94,9 @@
 
             onBeforeEdit: function (node) {
                 old_name = node.text;
+                if (node.id == 1) {
+                    return false;
+                }
             },
 
             onAfterEdit: function (node) {
@@ -114,9 +129,9 @@
 
             onBeforeDrop: function (target, source, point) {
                 let target_node = $("#tt").tree("getData", target);
-                console.log(target_node.id);
-                console.log(source.id);
-                console.log(point);
+                // console.log(target_node.id);
+                // console.log(source.id);
+                // console.log(point);
 
                 if (target_node.attributes.parent_id != source.attributes.parent_id ||
                     target_node.id == source.id ||
@@ -130,10 +145,10 @@
 
             onStopDrag: function (node) {
                 if (!drag_flag) {
-                    return false;
+                    return true;
                 }
                 let parent = $("#tt").tree("getParent", node.target);
-                let children = $("#tt").tree("getChildren", parent.target);
+                let children = getSubChildren(parent.id);
                 let ids = [];
                 let i = 0;
                 $.each(children, function (index, dom) {
@@ -157,6 +172,10 @@
                         }
                     },
                 });
+            },
+
+            onLoadSuccess: function () {
+                $("#tt").tree("collapseAll");
             }
         });
     });

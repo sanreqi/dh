@@ -61,7 +61,9 @@ class TaxonomyService
 
         $model = new Taxonomy();
         $model->parent_id = $params['parent_id'];
-        $model->root_id = $parent->root_id;
+        if (!self::isTopNode($parent->id)) {
+            $model->root_id = $parent->root_id;
+        }
         $model->name = trim($params['name']);
         $model->sort = $sort;
         $model->level = $parent->level + 1;
@@ -78,6 +80,11 @@ class TaxonomyService
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $model->save();
+            if (self::isTopNode($parent->id)) {
+                //父类是最高层，root_id等于自己
+                $model->root_id = $model->id;
+                $model->save();
+            }
             $parent->save();
             $transaction->commit();
             return $model->id;
@@ -138,10 +145,15 @@ class TaxonomyService
             $this->errMsg = 'id不能为空';
             return false;
         }
+        if (self::isTopNode($params['id'])) {
+            $this->errMsg = '根节点不能修改';
+            return false;
+        }
         if (!isset($params['name']) || empty(trim($params['name']))) {
             $this->errMsg = 'name不能为空';
             return false;
         }
+
         $name = trim($params['name']);
 
         $taxonomy1 = Taxonomy::find()->where(['is_delete'=>0, 'id'=>$params['id']])->asArray()->one();
@@ -195,6 +207,10 @@ class TaxonomyService
     private function checkDelete($params) {
         if (!isset($params['id']) || empty($params['id'])) {
             $this->errMsg = 'id不能为空';
+            return false;
+        }
+        if (self::isTopNode($params['id'])) {
+            $this->errMsg = '根节点不能删除';
             return false;
         }
         $taxonomy1 = Taxonomy::find()->where(['is_delete'=>0, 'id'=>$params['id']])->count();
@@ -254,7 +270,7 @@ class TaxonomyService
         //id是否都存在
         $count = Taxonomy::find()->where(['is_delete'=>0, 'id'=>$ids])->count();
         if (count($ids) != $count) {
-            $this->errMsg = 'ids不正确';
+        ;;;;;    $this->errMsg = 'ids不正确';
             return false;
         }
 
@@ -266,7 +282,14 @@ class TaxonomyService
             return false;
         }
 
-        //
         return true;
     }
+<<<<<<< HEAD
 }
+=======
+
+    public static function isTopNode($id) {
+        return $id == 1;
+    }
+}
+>>>>>>> ccbd591277cadb81bd7145f3ee1a5f89a47b2b4d
