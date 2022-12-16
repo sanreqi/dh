@@ -115,7 +115,7 @@
             onBeforeDrop: function (target, source, point) {
                 let target_node = $("#tt").tree("getData", target);
                 if (target_node.attributes.parent_id != source.attributes.parent_id ||
-                    target_node.id != source.id ||
+                    target_node.id == source.id ||
                     (point != "top" && point != "bottom")) {
                     drag_flag = false;
                     return false;
