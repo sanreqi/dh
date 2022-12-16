@@ -270,7 +270,7 @@ class TaxonomyService
         //id是否都存在
         $count = Taxonomy::find()->where(['is_delete'=>0, 'id'=>$ids])->count();
         if (count($ids) != $count) {
-        ;;;;;    $this->errMsg = 'ids不正确';
+            $this->errMsg = 'ids不正确';
             return false;
         }
 
@@ -284,12 +284,8 @@ class TaxonomyService
 
         return true;
     }
-<<<<<<< HEAD
-}
-=======
 
     public static function isTopNode($id) {
         return $id == 1;
     }
 }
->>>>>>> ccbd591277cadb81bd7145f3ee1a5f89a47b2b4d
