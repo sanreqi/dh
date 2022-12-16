@@ -1,20 +1,6 @@
 <?php
 \common\assets\EasyUiAsset::register($this);
 ?>
-<!--<h2>Editable Tree</h2>-->
-<!--<p>Click the node to begin edit, press enter key to stop edit or esc key to cancel edit.</p>-->
-<!--<div style="margin:20px 0;"></div>-->
-<!--<div class="easyui-panel" style="padding:5px">-->
-<!--    <ul id="tt" class="easyui-tree" data-options="-->
-<!--				url: '/asd-diary/get-json',-->
-<!--				method: 'get',-->
-<!--				animate: true,-->
-<!--				onClick: function(node){-->
-<!--					$(this).tree('beginEdit',node.target);-->
-<!--				}-->
-<!--			"></ul>-->
-<!--</div>-->
-
 
 <ul id="tt"></ul>
 
@@ -25,7 +11,7 @@
 
 <script>
     function append() {
-        var selected = $('#tt').tree('getSelected');
+        var selected = $("#tt").tree('getSelected');
         $.ajax({
             type: "post",
             url: "/taxonomy/create",
@@ -36,7 +22,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.status == 1) {
-                    $('#tt').tree('append', {
+                    $("#tt").tree('append', {
                         parent: selected.target,
                         data: [{
                             // id:后端返回
@@ -52,7 +38,7 @@
     }
 
     function remove() {
-        var selected = $('#tt').tree('getSelected');
+        var selected = $("#tt").tree('getSelected');
 
 
         $.ajax({
@@ -64,7 +50,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.status == 1) {
-                    $('#tt').tree("remove", selected.target);
+                    $("#tt").tree("remove", selected.target);
                 } else {
                     dhAlert(data.errorMsg)
                 }
@@ -73,7 +59,7 @@
     }
     $(document).ready(function () {
         let old_name = "";
-        $('#tt').tree({
+        $("#tt").tree({
             url: "/taxonomy/get-tree-data",
             dnd: true,
 
@@ -85,7 +71,7 @@
             onContextMenu: function(e, node){
                 e.preventDefault();
                 // select the node
-                $('#tt').tree('select', node.target);
+                $("#tt").tree('select', node.target);
                 // display context menu
                 $('#mm').menu('show', {
                     left: e.pageX,
@@ -111,36 +97,55 @@
 
                         } else {
                             dhAlert(data.errorMsg);
-                            $(node.target).find(".tree-title").text(old_name);
+                            // $(node.target).find(".tree-title").text(old_name);
+
+                            var node = $('#tt').tree('getSelected');
+                            if (node){
+                                $('#tt').tree('update', {
+                                    target: node.target,
+                                    text: old_name
+                                });
+                            }
                         }
                     },
                 });
             },
 
-            onBeforeDrag: function (node) {
-                // alert(111);
-            },
-
-            onStartDrag: function (node) {
-                // alert(222);
+            onBeforeDrop: function (target, source, point) {
+                let target_node = $("#tt").tree("getData", target);
+                if (target_node.attributes.parent_id != source.attributes.parent_id || (point != "top" && point != "bottom")) {
+                    return false;
+                }
             },
 
             onStopDrag: function (node) {
-                // node.id
-                // alert(333);
-            },
+                let parent = $("#tt").tree("getParent", node.target);
+                let children = $("#tt").tree("getChildren", parent.target);
+                let ids = [];
+                let i = 0;
+                $.each(children, function (index, dom) {
+                    ids[i] = dom.id;
+                    i++;
+                })
 
-            onBeforeDrop: function (target, source, point) {
-                console.log(source);
-                console.log(target.id);
-                // alert(target.id);
+                $.ajax({
+                    type: "post",
+                    url: "/taxonomy/drag",
+                    data: {
+                        parent_id: node.attributes.parent_id,
+                        ids: ids
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.status == 1) {
 
-                // return false;
+                        } else {
+                            dhAlert(data.errorMsg);
+                        }
+                    },
+                });
             }
         });
-
-
-
     });
 </script>
 

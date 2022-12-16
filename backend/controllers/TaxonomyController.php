@@ -5,7 +5,10 @@ namespace backend\controllers;
 
 use common\models\Taxonomy;
 use Yii;
-use backend\services\TaxonomyService;
+use common\services\TaxonomyService;
+use yii\web\Controller;
+
+//class TaxonomyController extends BaseController
 
 class TaxonomyController extends BaseController
 {
@@ -56,6 +59,17 @@ class TaxonomyController extends BaseController
             $this->errorAjax($service->getErrMsg());
         } else {
             $this->successAjax(['id' => $id]);
+        }
+    }
+
+    public function actionDrag() {
+        $params = Yii::$app->request->getBodyParams();
+        $service = new TaxonomyService();
+        $id = $service->drag($params);
+        if (false === $id) {
+            $this->errorAjax($service->getErrMsg());
+        } else {
+            $this->successAjax([]);
         }
     }
 

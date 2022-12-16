@@ -1,8 +1,8 @@
 <?php
 
 namespace backend\controllers;
-use backend\services\AsdDiaryService;
-use backend\services\TaxonomyService;
+use common\services\AsdDiaryService;
+use common\services\TaxonomyService;
 use common\models\AsdDiary;
 use common\models\WqBlacklist;
 use Yii;
@@ -81,65 +81,4 @@ class AsdDiaryController extends BaseController
     public function actionTest() {
         return $this->render('test');
     }
-
-    public function actionGetJson() {
-        $service = new TaxonomyService();
-        $t= $service->tree();
-
-        echo $t; exit;
-        exit;
-
-        $data = '[{
-	"id": 1,
-	"text": "My Documents",
-	"children": [{
-		"id": 11,
-		"text": "Photos",
-		"state": "closed",
-		"children": [{
-			"id": 111,
-			"text": "Friend"
-		}, {
-			"id": 112,
-			"text": "Wife"
-		}, {
-			"id": 113,
-			"text": "Company"
-		}]
-	}, {
-		"id": 12,
-		"text": "Program Files",
-		"children": [{
-			"id": 121,
-			"text": "Intel"
-		}, {
-			"id": 122,
-			"text": "Java",
-			"attributes": {
-				"p1": "Custom Attribute1",
-				"p2": "Custom Attribute2"
-			}
-		}, {
-			"id": 123,
-			"text": "Microsoft Office"
-		}, {
-			"id": 124,
-			"text": "Games",
-			"checked": true
-		}]
-	}, {
-		"id": 13,
-		"text": "index.html"
-	}, {
-		"id": 14,
-		"text": "about.html"
-	}, {
-		"id": 15,
-		"text": "welcome.html"
-	}]
-}]';
-        echo $data;
-        exit;
-    }
-
 }

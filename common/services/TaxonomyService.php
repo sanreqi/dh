@@ -1,7 +1,7 @@
 <?php
 
 
-namespace backend\services;
+namespace common\services;
 
 use Yii;
 use common\models\Taxonomy;
@@ -25,12 +25,13 @@ class TaxonomyService
 
         $result['id'] = $id;
         $result['text'] = $taxonomy['name'];
+        $result['attributes'] = ['parent_id' => $taxonomy['parent_id']];
         $result['children'] = $this->children($id);
         return $result;
     }
 
     public function children($parentId) {
-        $taxonomys = Taxonomy::find()->where(['is_delete'=>0, 'parent_id'=>$parentId])->asArray()->all();
+        $taxonomys = Taxonomy::find()->where(['is_delete'=>0, 'parent_id'=>$parentId])->orderBy(['sort'=>SORT_ASC])->asArray()->all();
         if (empty($taxonomys)) {
             return;
         }
@@ -39,9 +40,9 @@ class TaxonomyService
         foreach ($taxonomys as $v) {
             $data['id'] = $v['id'];
             $data['text'] = $v['name'];
+            $data['attributes'] = ['parent_id' => $v['parent_id']];
             //递归
             $data['children'] = $v['is_leaf'] ? [] : $this->children($v['id']);
-//            $data['children'] = $this->children($v['id']);
             $result[] = $data;
         }
         return $result;
@@ -143,12 +144,12 @@ class TaxonomyService
         }
         $name = trim($params['name']);
 
-        $taxonomy1 = Taxonomy::find()->where(['is_delete'=>0, 'id'=>$params['id']])->count();
+        $taxonomy1 = Taxonomy::find()->where(['is_delete'=>0, 'id'=>$params['id']])->asArray()->one();
         if (empty($taxonomy1)) {
             $this->errMsg = 'id不正确';
             return false;
         }
-        $taxonomy2 = Taxonomy::find()->where(['is_delete'=>0, 'name'=>$name])->andWhere(['!=', 'id', $params['id']])->count();
+        $taxonomy2 = Taxonomy::find()->where(['is_delete'=>0, 'parent_id'=>$taxonomy1['parent_id'], 'name'=>$name])->andWhere(['!=', 'id', $params['id']])->count();
         if (!empty($taxonomy2)) {
             $this->errMsg = '"' . $params['name'] . '"在该层级中已经存在';
             return false;
@@ -168,14 +169,25 @@ class TaxonomyService
         $model->is_delete = 1;
         $model->update_time = $currentTime;
 
-//        $parent = Taxonomy::find()->where(['id'=>$model->parent_id])->one();
+        //爸爸如果只有这一个儿子就设置为叶子节点
+        $childrenCount = Taxonomy::find()->where(['is_delete'=>0, 'parent_id'=>$model->parent_id])->count();
+        if ($childrenCount == 1) {
+            $parent = Taxonomy::find()->where(['id'=>$model->parent_id])->one();
+            $parent->is_leaf = 1;
+            $parent->update_time = $currentTime;
+        }
 
-//        $taxonomy
-
-        if ($model->save()) {
-            return true;
-        } else {
-            $this->errMsg = array_values($model->getFirstErrors())[0];
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model->save();
+            if ($childrenCount == 1) {
+                $parent->save();
+            }
+            $transaction->commit();
+            return $model->id;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            $this->errMsg = '保存失败';
             return false;
         }
     }
@@ -194,6 +206,63 @@ class TaxonomyService
         $taxonomy2 = Taxonomy::find()->where(['is_delete'=>0, 'parent_id'=>$params['id']])->count();
         if (!empty($taxonomy2)) {
             $this->errMsg = '有子节点不能删除';
+            return false;
+        }
+
+        return true;
+    }
+
+    public function drag($params) {
+        $currentTime = time();
+        if (false === $this->checkDrag($params)) {
+            return false;
+        }
+
+        $ids = $params['ids'];
+        $sort = 1;
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            foreach ($ids as $id) {
+                $model = Taxonomy::find()->where(['id' => $id])->one();
+                $model->sort = $sort;
+                $model->update_time = $currentTime;
+                $model->save();
+                $sort++;
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            $this->errMsg = '保存失败';
+            return false;
+        }
+
+        return true;
+    }
+
+    public function checkDrag($params) {
+        if (!isset($params['parent_id']) || empty($params['parent_id'])) {
+            $this->errMsg = 'parent_id不能为空';
+            return false;
+        }
+        if (!isset($params['ids']) || empty($params['ids'])) {
+            $this->errMsg = 'ids不能为空';
+            return false;
+        }
+        $parentId = $params['parent_id'];
+        $ids = $params['ids'];
+
+        //id是否都存在
+        $count = Taxonomy::find()->where(['is_delete'=>0, 'id'=>$ids])->count();
+        if (count($ids) != $count) {
+            $this->errMsg = 'ids不正确';
+            return false;
+        }
+
+        //必须同一parent_id判断
+        $parentIds = Taxonomy::find()->select(['parent_id'])->where(['is_delete'=>0, 'id'=>$ids])->column();
+        $parentIds = array_unique($parentIds);
+        if (count($parentIds) != 1 || $parentIds[0] != $parentId) {
+            $this->errMsg = '必须同一父级下节点才能拖动';
             return false;
         }
 

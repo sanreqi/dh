@@ -1,9 +1,9 @@
 <?php
 
-namespace backend\services;
+namespace common\services;
 
-use common\helper\Tools;
 use Yii;
+use common\helper\Tools;
 use common\models\AsdDiary;
 use yii\db\Query;
 
@@ -40,7 +40,7 @@ class AsdDiaryService
             $model->problem = $params['problem'];
         }
         if (isset($params['title'])) {
-            $model->problem = $params['title'];
+            $model->title = $params['title'];
         }
         $model->is_delete = 0;
         $model->update_time = $currentTime;
@@ -131,5 +131,17 @@ class AsdDiaryService
         }
 
         return true;
+    }
+
+    public static function getTitle($date, $title = '') {
+        if (!empty($title)) {
+            return $title;
+        }
+
+        $weekDays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+        $time = strtotime(date('Y-m-d', strtotime($date)));
+        $title = date('Y年m月d日', $time) . ' ' . $weekDays[date('w',$time)];
+
+        return $title;
     }
 }
