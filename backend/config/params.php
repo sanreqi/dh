@@ -29,6 +29,10 @@ return [
             ['name' => 'ASD', 'path' => 'asd-diary/index', 'url' => '/asd-diary/index'],
             ['name' => 'DIARY', 'path' => 'asd-diary/index', 'url' => '/asd-diary/index'],
         ],
+        [
+            ['name' => '分类', 'path' => 'taxonomy/index', 'url' => '/taxonomy/index'],
+            ['name' => '树形图', 'path' => 'taxonomy/index', 'url' => '/taxonomy/index'],
+        ],
     ],
     'log_data_table' => [
         '{{user}}' => ['module' => 'user', 'table' => 'user', 'desc' => '用户'],
