@@ -4,7 +4,7 @@
 
 <ul id="tt"></ul>
 
-<div id="mm" class="easyui-menu" style="width:120px;">
+<div id="mm" class="easyui-menu" style="width:120px; display: none">
     <div onclick="append()" data-options="iconCls:'icon-add'">Append</div>
     <div onclick="remove()" data-options="iconCls:'icon-remove'">Remove</div>
 </div>
@@ -12,6 +12,7 @@
 <script>
     function append() {
         var selected = $("#tt").tree('getSelected');
+        $("#tt").tree("expand", selected.target);
         $.ajax({
             type: "post",
             url: "/taxonomy/create",
@@ -22,7 +23,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.status == 1) {
-                    $("#tt").tree('append', {
+                    $("#tt").tree("append", {
                         parent: selected.target,
                         data: [{
                             // id:后端返回
@@ -137,6 +138,7 @@
                     target_node.id == source.id ||
                     (point != "top" && point != "bottom")) {
                     drag_flag = false;
+                    dhAlert("必须同一父级下节点才能拖动");
                     return false;
                 }
 
