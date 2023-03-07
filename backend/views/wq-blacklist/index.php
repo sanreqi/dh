@@ -19,6 +19,14 @@ $this->title = '开狗黑名单';
         </select>
     </div>
     <div class="col-auto">
+        <select type="text" class="form-control mb-2 w-200" name="type" placeholder="未知/人/狗">
+            <option value="0" <?php echo $search['type']==0 ? 'selected':'' ?>>全部</option>
+            <?php foreach (WqBlacklist::getTypeList() as $k => $v): ?>
+                <option value="<?php echo $k; ?>" <?php echo $search['type']==$k ? 'selected':'' ?>><?= $v; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-auto">
         <input type="text" class="form-control mb-2" name="username" value="<?= $search['username'] ?>" placeholder="用户名">
     </div>
     <div class="col-auto">
@@ -34,6 +42,7 @@ $this->title = '开狗黑名单';
         <thead>
         <tr>
             <th>平台</th>
+            <th>类型</th>
             <th>账号</th>
             <th>备注</th>
             <th>操作</th>
@@ -44,6 +53,7 @@ $this->title = '开狗黑名单';
             <?php foreach ($models as $model): ?>
                 <tr>
                     <td><?= WqBlacklist::getPlatformByKey($model['platform']) ?></td>
+                    <td><?= WqBlacklist::getTypeByKey($model['type']) ?></td>
                     <td><?= $model['username'] ?></td>
                     <td><?= $model['description'] ?></td>
                     <td>

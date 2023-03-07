@@ -25,6 +25,16 @@ $this->title = '围棋黑名单';
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="type" class="col-sm-3 col-form-label">类型</label>
+                    <div class="col-sm-9">
+                        <select name="type" class="form-control" id="type">
+                            <?php foreach (WqBlacklist::getTypeList() as $k => $v): ?>
+                                <option value="<?php echo $k; ?>" <?php echo !empty($model)&&$model->type==$k ? 'selected':'' ?>><?= $v; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="username" class="col-sm-3 col-form-label">用户名</label>
                     <div class="col-sm-9">
                         <input name="username" type="text" class="form-control" id="username"

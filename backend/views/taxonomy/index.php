@@ -1,5 +1,7 @@
 <?php
 \common\assets\EasyUiAsset::register($this);
+
+$this->title = '树形图';
 ?>
 
 <ul id="tt"></ul>
@@ -130,10 +132,6 @@
 
             onBeforeDrop: function (target, source, point) {
                 let target_node = $("#tt").tree("getData", target);
-                // console.log(target_node.id);
-                // console.log(source.id);
-                // console.log(point);
-
                 if (target_node.attributes.parent_id != source.attributes.parent_id ||
                     target_node.id == source.id ||
                     (point != "top" && point != "bottom")) {

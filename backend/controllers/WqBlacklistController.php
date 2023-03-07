@@ -19,6 +19,7 @@ class WqBlacklistController extends BaseController
         $params = Yii::$app->request->get();
         $search['platform'] = Yii::$app->request->get('platform', WqBlacklist::PLATFORM_YEHU);
         $search['username'] = Yii::$app->request->get('username', '');
+        $search['type'] = Yii::$app->request->get('type', 0);
         $model = new WqBlacklist();
         $models = $model->search($params);
         $count = $model->search($params, true);

@@ -73,5 +73,21 @@ class TaxonomyController extends BaseController
         }
     }
 
+    public function actionInitTop() {
+        $currentTime = time();
+        $model = new Taxonomy();
+        $model->id = 1;
+        $model->parent_id = 0;
+        $model->root_id = 1;
+        $model->name = '分类';
+        $model->sort = 1;
+        $model->level = 0;
+        $model->is_leaf = 1;
+        $model->is_delete = 0;
+        $model->create_time = $currentTime;
+        $model->update_time = $currentTime;
+        $model->save();
+    }
+
 
 }
