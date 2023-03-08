@@ -49,7 +49,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.status == 1) {
-                        window.location.href = "/user/index";
+                        window.location.href = "/site/index";
                     } else {
                         dhAlert(data.errorMsg)
                     }
