@@ -53,6 +53,7 @@ class RbacService {
         if ($identity->username == 'admin' || !empty($assignment)) {
             return true;
         }
+
         return false;
     }
 

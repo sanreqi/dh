@@ -11,29 +11,29 @@ $this->title = $role->name;
 
 <form id="permission-form" class="rem-1">
     <?php foreach ($permissions as $k1 => $v1): ?>
-<!--        <span style="font-size: 20px;!important;"><b>--><?php //echo '----权限'; ?><!--</b></span>-->
-<!--        <hr class="dh-hr">-->
-        <?php //foreach ($v1 as $k2 => $v2): ?>
+        <span style="font-size: 20px;!important;"><b><?php echo \common\models\UserProject::getProjectByKey($k1) . '权限'; ?></b></span>
+        <hr class="dh-hr">
+        <?php foreach ($v1 as $k2 => $v2): ?>
             <div class="controller-div">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="controller-chx form-check-input" value="">
-                        <span><b><?php echo $v1['title'] ?></b></span>
+                        <span><b><?php echo \common\models\UserProject::getControllerByKey($k2) . '全选/取消'; ?></b></span>
                     </label>
                 </div>
-                <?php foreach ($v1['data'] as $k2 => $v2): ?>
-                    <?php $pName = '' . $v2['name'] ?>
+                <?php foreach ($v2 as $k3 => $v3): ?>
+                    <?php $pName = $k1 . $v3['name'] ?>
                     <?php $checked = in_array($pName, $ownPermissions) ? 'checked' : ''; ?>
                     <div class="form-check form-check-inline">
                         <label class="form-check-label">
-                            <input name="permissions[]" type="checkbox" <?= $checked; ?>  value="<?php echo $k1 . $v2['name']; ?>"
-                                   class="controller-chx-item form-check-input"><?php echo $v2['description'] . '(' . $v2['name'] . ')'; ?>
+                            <input name="permissions[]" type="checkbox" <?= $checked; ?>  value="<?php echo $k1 . $v3['name']; ?>"
+                                   class="controller-chx-item form-check-input"><?php echo $v3['description'] . '(' . $v3['name'] . ')'; ?>
                         </label>
                     </div>
                 <?php endforeach; ?>
             </div>
             <hr class="dh-hr">
-        <?php //endforeach; ?>
+        <?php endforeach; ?>
     <?php endforeach; ?>
     <input type="hidden" name="role" value="<?= $role->name; ?>">
 

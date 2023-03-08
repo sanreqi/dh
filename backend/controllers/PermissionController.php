@@ -15,6 +15,7 @@ class PermissionController extends BaseController
             throw new NotFoundHttpException();
         }
         $children = $auth->getChildren($roleName);
+//        print_r($children);exit;
         $ownPermissions = array_keys($children);
 
         $permissions = Yii::$app->params['permissions'];

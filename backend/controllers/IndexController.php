@@ -13,6 +13,17 @@ use yii\web\NotFoundHttpException;
 class IndexController extends Controller
 {
 
+    public function actionTest1() {
+        $auth = \Yii::$app->authManager;
+        $author = $auth->createRole('author');
+        $auth->add($author);
+
+//        $auth = \Yii::$app->authManager;
+//        $createPost = $auth->createPermission('createPost');
+//        $createPost->description = 'Create a post';
+//        $result = $auth->add($createPost);
+//        print_r($result);exit;
+    }
 	
     public function actionGo() {
 	echo '[{"id":1,"image":"http://ww1.sinaimg.cn/mw690/006ThXL5ly1fj7zx3w751j30u00dmgy3.jpg","link":""},{"id":2,"image":"http://ww1.sinaimg.cn/mw690/006ThXL5ly1fj6ckx9tlwj30u00fqk8n.jpg","link":"/pages/list/list?cat=10"}]';

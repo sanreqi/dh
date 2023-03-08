@@ -1,11 +1,18 @@
 <?php
 return [
     'components' => [
+//        'db' => [
+//            'class' => 'yii\db\Connection',
+//            'dsn' => 'mysql:host=47.96.13.172;dbname=dh',
+//            'username' => 'root',
+//            'password' => 'linquistics26',
+//            'charset' => 'utf8',
+//        ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=47.96.13.172;dbname=dh',
+            'dsn' => 'mysql:host=localhost;dbname=dh',
             'username' => 'root',
-            'password' => 'linquistics26',
+            'password' => 'root',
             'charset' => 'utf8',
         ],
         'mailer' => [
