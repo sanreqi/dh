@@ -20,7 +20,7 @@ class BaseController extends Controller
         $allWithoutAuth = $actionAuth['all_without_auth'];
         $isGuest = Yii::$app->user->isGuest;
 //        $path = Yii::$app->request->pathInfo;
-        $path = Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
+        $path = Yii::$app->controller->module->id. '/' . Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
 
         if($isGuest && !in_array($path, array_merge($guestOnly, $allWithoutAuth))) {
             //游客访问

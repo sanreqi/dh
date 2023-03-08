@@ -74,7 +74,6 @@ class RbacService {
         }
 
         $auth = Yii::$app->authManager;
-        $path = Yii::$app->params['project'] . '/' . $path;
         if ($auth->checkAccess($identity->getId(), $path)) {
             return true;
         }

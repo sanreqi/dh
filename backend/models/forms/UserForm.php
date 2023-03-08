@@ -118,6 +118,9 @@ class UserForm extends Model
             $model->setPassword($this->password);
             $model->generateAuthKey();
         }
+        $model->truename = $this->truename;
+        $model->mobile = $this->mobile;
+        $model->email = $this->email;
         return $model->save();
     }
 

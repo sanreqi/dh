@@ -87,7 +87,7 @@ class RoleForm extends Model
         $auth->update($this->name, $role);
 
         //删除父类角色
-        Yii::$app->db->createCommand()->delete('auth_item_child', 'child='.$this->name)->execute();
+        Yii::$app->db->createCommand()->delete('auth_item_child', "child='".$this->name."'")->execute();
         if (isset($parentRole) && !empty($parentRole) && ($auth->canAddChild($parentRole, $role))) {
             $auth->addChild($parentRole, $role);
         }

@@ -15,8 +15,6 @@ use yii\filters\AccessControl;
 
 class PageController extends BaseController
 {
-
-
     public function actionIndex() {
         $params = Yii::$app->request->get();
         $search['name'] = Yii::$app->request->get('name', '');

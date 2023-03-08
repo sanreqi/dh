@@ -24,7 +24,7 @@ class WqBlacklistController extends BaseController
         $models = $model->search($params);
         $count = $model->search($params, true);
         $pages = new Pagination(['totalCount' => $count, 'pageSize' => 20]);
-        return $this->render('index', ['models' => $models, 'search' => $search, 'pages' => $pages]);
+        return $this->render('index', ['models' => $models, 'search' => $search, 'pages' => $pages, 'count' => $count]);
     }
 
     public function actionCreateModal() {

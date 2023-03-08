@@ -28,7 +28,7 @@ class UserController extends BaseController
         $models = $model->search($params);
         $count = $model->search($params, true);
         $pages = new Pagination(['totalCount' => $count, 'pageSize' => 10]);
-        return $this->render('index', ['models' => $models, 'search' => $search, 'pages' => $pages]);
+        return $this->render('index', ['models' => $models, 'search' => $search, 'pages' => $pages, 'count' => $count]);
     }
 
     public function actionCreateModal() {
@@ -75,8 +75,12 @@ class UserController extends BaseController
         $post = Yii::$app->request->post();
         $model = new UserForm();
         $model->scenario = 'update';
-        $model->load($post);
+        $model->load($post, 'UserForm');
+        $model->truename = trim($model->truename);
+        $model->mobile = trim($model->mobile);
+        $model->email = trim($model->email);
         $model->id = $id;
+
         if (!$model->validate()) {
             $this->errorAjax(Tools::getModelError($model));
         }

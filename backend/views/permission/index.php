@@ -26,7 +26,7 @@ $this->title = $role->name;
                     <?php $checked = in_array($pName, $ownPermissions) ? 'checked' : ''; ?>
                     <div class="form-check form-check-inline">
                         <label class="form-check-label">
-                            <input name="permissions[]" type="checkbox" <?= $checked; ?>  value="<?php echo $k1 . $v2['name']; ?>"
+                            <input name="permissions[]" type="checkbox" <?= $checked; ?>  value="<?php echo $v2['name']; ?>"
                                    class="controller-chx-item form-check-input"><?php echo $v2['description'] . '(' . $v2['name'] . ')'; ?>
                         </label>
                     </div>

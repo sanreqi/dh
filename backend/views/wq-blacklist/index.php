@@ -2,6 +2,7 @@
 /* @var $this \yii\web\View */
 /* @var $search */
 /* @var $pages */
+/* @var $count */
 use \common\models\WqBlacklist;
 $this->title = '开狗黑名单';
 ?>
@@ -72,6 +73,8 @@ $this->title = '开狗黑名单';
         'pagination' => $pages,
     ]); ?>
 </div>
+
+共<?php echo $count; ?>个
 
 <script>
     $(document).ready(function () {

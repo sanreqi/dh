@@ -2,6 +2,7 @@
 /* @var $this \yii\web\View */
 /* @var $search */
 /* @var $pages */
+/* @var $count */
 
 $this->title = 'USER';
 ?>
@@ -60,6 +61,8 @@ $this->title = 'USER';
         'pagination' => $pages,
     ]); ?>
 </div>
+
+共<?php echo $count; ?>个
 
 <script>
     $(document).ready(function () {
