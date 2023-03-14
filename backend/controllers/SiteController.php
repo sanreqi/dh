@@ -115,9 +115,15 @@ class SiteController extends BaseController
 
         $model = new LoginForm();
         if ($model->load($post) && $model->login()) {
-            $this->successAjax();
+            $this->sendCookies();
+            $returnData['data'] = [];
+            $returnData['status'] = 1;
+            header('Content-Type:application/json; charset=utf-8');
+            echo json_encode($returnData,JSON_UNESCAPED_UNICODE);
+            exit;
         } else {
             $this->errorAjax('用户名或密码不正确');
         }
     }
+
 }

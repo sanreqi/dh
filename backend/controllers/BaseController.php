@@ -5,7 +5,10 @@ namespace backend\controllers;
 use common\models\User;
 use Yii;
 use common\services\RbacService;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
+use yii\web\Cookie;
+use yii\web\CookieCollection;
 
 class BaseController extends Controller
 {
@@ -92,6 +95,79 @@ class BaseController extends Controller
         $user = User::findIdentity($uid);
         if (empty($user)) {
             $this->errorAjax('非法请求');
+        }
+    }
+
+    protected function sendCookies() {
+        $cookies = Yii::$app->response->getCookies();
+        if ($cookies === null) {
+            return;
+        }
+        $request = Yii::$app->getRequest();
+        if ($request->enableCookieValidation) {
+            if ($request->cookieValidationKey == '') {
+                throw new InvalidConfigException(get_class($request) . '::cookieValidationKey must be configured with a secret key.');
+            }
+            $validationKey = $request->cookieValidationKey;
+        }
+        /* @var $cookie Cookie */
+        foreach ($cookies as $cookie) {
+            $value = $cookie->value;
+            if ($cookie->expire != 1 && isset($validationKey)) {
+                $value = Yii::$app->getSecurity()->hashData(serialize([$cookie->name, $value]), $validationKey);
+            }
+            if (PHP_VERSION_ID >= 70300) {
+                setcookie($cookie->name, $value, [
+                    'expires' => $cookie->expire,
+                    'path' => $cookie->path,
+                    'domain' => $cookie->domain,
+                    'secure' => $cookie->secure,
+                    'httpOnly' => $cookie->httpOnly,
+                    'sameSite' => !empty($cookie->sameSite) ? $cookie->sameSite : null,
+                ]);
+            } else {
+                if (!is_null($cookie->sameSite)) {
+                    throw new InvalidConfigException(get_class($cookie) . '::sameSite is not supported by PHP versions < 7.3.0 (set it to null in this environment)');
+                }
+                setcookie($cookie->name, $value, $cookie->expire, $cookie->path, $cookie->domain, $cookie->secure, $cookie->httpOnly);
+            }
+        }
+    }
+
+    protected function sendCookies1()
+    {
+        $this->_cookies = new CookieCollection();
+
+        if ($this->_cookies === null) {
+            return;
+        }
+        $request = Yii::$app->getRequest();
+        if ($request->enableCookieValidation) {
+            if ($request->cookieValidationKey == '') {
+                throw new InvalidConfigException(get_class($request) . '::cookieValidationKey must be configured with a secret key.');
+            }
+            $validationKey = $request->cookieValidationKey;
+        }
+        foreach ($this->getCookies() as $cookie) {
+            $value = $cookie->value;
+            if ($cookie->expire != 1 && isset($validationKey)) {
+                $value = Yii::$app->getSecurity()->hashData(serialize([$cookie->name, $value]), $validationKey);
+            }
+            if (PHP_VERSION_ID >= 70300) {
+                setcookie($cookie->name, $value, [
+                    'expires' => $cookie->expire,
+                    'path' => $cookie->path,
+                    'domain' => $cookie->domain,
+                    'secure' => $cookie->secure,
+                    'httpOnly' => $cookie->httpOnly,
+                    'sameSite' => !empty($cookie->sameSite) ? $cookie->sameSite : null,
+                ]);
+            } else {
+                if (!is_null($cookie->sameSite)) {
+                    throw new InvalidConfigException(get_class($cookie) . '::sameSite is not supported by PHP versions < 7.3.0 (set it to null in this environment)');
+                }
+                setcookie($cookie->name, $value, $cookie->expire, $cookie->path, $cookie->domain, $cookie->secure, $cookie->httpOnly);
+            }
         }
     }
 

@@ -44,8 +44,9 @@ $this->title = $role->name;
 <script>
     $(document).ready(function() {
         let items;
-        let flag = true;
+
         $(".controller-chx").each(function() {
+            let flag = true;
             let this_controller = $(this);
             items = $(this).parents(".controller-div").find(".controller-chx-item");
             items.each(function () {
@@ -55,6 +56,7 @@ $this->title = $role->name;
                     return false;
                 }
             });
+
             if (flag) {
                 //全部选中
                 this_controller.prop("checked", true);
@@ -62,6 +64,7 @@ $this->title = $role->name;
                 this_controller.prop("checked", false);
             }
         });
+
 
         $(".controller-chx").change(function() {
             let items = $(this).parents(".controller-div").find(".controller-chx-item");
