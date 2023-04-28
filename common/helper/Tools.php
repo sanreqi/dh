@@ -75,6 +75,26 @@ class Tools {
         $gender = $genderNum % 2 != 0 ? 1 : 2; //1-男 2-女
         return ['birth_date' => $birthDate, 'gender' => $gender];
     }
+
+    public static function trimAllData($data) {
+        if (!self::isOneDimensional($data)) {
+            return false;
+        }
+
+        foreach ($data as &$v) {
+            $v = trim($v);
+        }
+
+        return $data;
+    }
+
+    public static function isOneDimensional($arr) {
+        if (is_array($arr) && count($arr) == count($arr, 1)) {
+            return true;
+        }
+
+        return false;
+    }
 }
 
 //function exportExcel($filename, array $titles, array $dataArray, $bigTitle = '')

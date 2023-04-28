@@ -57,30 +57,30 @@ class ExportCsv{
     }
 
     //示例
-    public function export($params, $titles, $filename) {
-        $header = array_values($titles);
-        $exportCsv = new ExportCsv();
-        $fp = $exportCsv->makeFp($header, $filename);
-        $page = 0;
-        while (true) {
-            $page ++;
-            if ($page > 200) {
-                break;
-            }
-            $params['per_page'] = 50;
-            $params['page'] = $page;
-            $result = $this->getExportList($params);
-            if (empty($result)) {
-                break;
-            }
-            $newDataList = [];
-            foreach ($result as $v) {
-                $newDataList[] = $v;
-            }
-            $exportCsv->exportData($fp, $newDataList);
-        }
-        $exportCsv->end();
-    }
+//    public function export($params, $titles, $filename) {
+//        $header = array_values($titles);
+//        $exportCsv = new ExportCsv();
+//        $fp = $exportCsv->makeFp($header, $filename);
+//        $page = 0;
+//        while (true) {
+//            $page ++;
+//            if ($page > 200) {
+//                break;
+//            }
+//            $params['per_page'] = 50;
+//            $params['page'] = $page;
+//            $result = $this->getExportList($params);
+//            if (empty($result)) {
+//                break;
+//            }
+//            $newDataList = [];
+//            foreach ($result as $v) {
+//                $newDataList[] = $v;
+//            }
+//            $exportCsv->exportData($fp, $newDataList);
+//        }
+//        $exportCsv->end();
+//    }
 
     public function export($params) {
         $titles = self::getExportTitlte();

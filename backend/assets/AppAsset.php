@@ -2,6 +2,7 @@
 
 namespace backend\assets;
 
+use common\assets\DateTimePickerAsset;
 use yii\web\AssetBundle;
 
 /**
@@ -14,10 +15,10 @@ class AppAsset extends AssetBundle
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 
     public $css = [
-        'static/css/dashbord.css?v=211111231',
+        'static/css/dashbord.css?v=2111112231',
     ];
     public $js = [
-        'static/js/function.js?v=111222333',
+        'static/js/function.js?v=111222223',
         'static/js/ajaxfileupload.js?v=6',
     ];
     public $depends = [
