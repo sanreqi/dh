@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "b_income".
  *
  * @property int $id
+ * @property int $uid
  * @property int $account_id b_account id
  * @property float $amount 收入金额
  * @property string $date 收入时间
@@ -32,7 +33,7 @@ class BIncome extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['account_id', 'is_delete', 'create_time', 'update_time'], 'integer'],
+            [['account_id', 'is_delete', 'create_time', 'update_time', 'uid'], 'integer'],
             [['amount'], 'number'],
             [['date'], 'required'],
             [['date'], 'safe'],

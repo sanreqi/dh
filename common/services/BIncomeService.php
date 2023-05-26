@@ -24,14 +24,20 @@ class BIncomeService
     }
 
     public function search($params, $count = false) {
-        $query = BAccount::find()->where(['is_delete' => 0]);
+        $query = BIncome::find()->where(['is_delete' => 0]);
         if ($count) {
             return $query->count();
         }
 
         //分页
         Tools::constructPage($query, $params);
-        return $query->asArray()->all();
+        $result = $query->asArray()->all();
+        foreach ($result as &$v) {
+            $v['username'] = UserService::getNameByUid($v['uid']);
+            $v['account_name'] = BAccountService::getNameById($v['account_id']);
+        }
+
+        return $result;
     }
 
     public function createUpdate($post) {
@@ -50,6 +56,7 @@ class BIncomeService
             }
         } else {
             $model = new BIncome();
+            $model->uid = Yii::$app->user->identity->id;
         }
 
         $bAccount = BAccount::find()->where(['is_delete' => 0, 'id' => $post['account_id']])->limit(1)->one();
@@ -93,6 +100,11 @@ class BIncomeService
 
         if (!is_numeric($post['amount'])) {
             $this->errMsg = '金额必须为数字';
+            return false;
+        }
+
+        if (!is_numeric($post['balance'])) {
+            $this->errMsg = '余额必须为数字';
             return false;
         }
 

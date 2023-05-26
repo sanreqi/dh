@@ -3,6 +3,7 @@
 
 namespace common\services;
 
+use common\models\User;
 use Yii;
 use common\models\BAccount;
 use common\helper\Tools;
@@ -51,6 +52,7 @@ class BAccountService
         } else {
             //创建
             $model = new BAccount();
+            $model->uid = Yii::$app->user->identity->id;
         }
         $model->name = $post['name'];
         $model->account = $post['account'];
@@ -106,6 +108,16 @@ class BAccountService
     public static function findAllAccounts() {
         $models = BAccount::find()->where(['is_delete'=>0])->asArray()->all();
         return $models;
+    }
+
+    public static function getNameById($id) {
+        $name = '';
+        $model = BAccount::find()->where(['is_delete' => 0, 'id' => $id])->one();
+        if (!empty($model)) {
+            $name = $model->name;
+        }
+
+        return $name;
     }
 
 }

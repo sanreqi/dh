@@ -2,9 +2,11 @@
 
 namespace backend\controllers;
 use common\models\BAccount;
+use common\models\BIncome;
 use common\models\Constants;
 use common\services\BAccountService;
 use common\services\BIncomeService;
+use common\services\UserService;
 use Yii;
 use yii\data\Pagination;
 
@@ -27,6 +29,26 @@ class BIncomeController extends BaseController
         $this->successAjax(['html' => $html]);
     }
 
+    public function actionUpdateModal() {
+        $id = Yii::$app->request->get('id');
+        if (empty($id)) {
+            $this->errorAjax('缺少参数');
+        }
+
+        $model = BIncome::find()->where(['id' => $id, 'is_delete' => 0])->asArray()->one();
+        if (empty($model)) {
+            $this->errorAjax('参数错误');
+        }
+
+        $model['username'] = UserService::getNameByUid($model['uid']);
+        $account = BAccount::find()->where(['is_delete'=>0, 'id'=>$model['account_id']])->one();
+        $model['account_name'] = $account->name;
+        $model['balance'] = $account->amount;
+
+        $html = $this->renderPartial('_b-income_modal', ['model' => $model]);
+        $this->successAjax(['html' => $html]);
+    }
+
     public function actionCreate() {
         $post = Yii::$app->request->post();
         $service = new BIncomeService();
@@ -40,7 +62,7 @@ class BIncomeController extends BaseController
     public function actionUpdate() {
         $post = Yii::$app->request->post();
         $post['id'] = Yii::$app->request->get('id', '');
-        $service = new BAccountService();
+        $service = new BIncomeService();
         if (false === $service->createUpdate($post)) {
             $this->errorAjax($service->getErrMsg());
         } else {
@@ -53,7 +75,7 @@ class BIncomeController extends BaseController
         if (empty($id)) {
             $this->errorAjax('非法请求');
         }
-        $model = BAccount::find()->where(['id' => $id, 'is_delete' => Constants::IS_DELETE_NO])->one();
+        $model = BIncome::find()->where(['id' => $id, 'is_delete' => Constants::IS_DELETE_NO])->one();
         if (empty($model)) {
             $this->errorAjax('非法请求');
         }

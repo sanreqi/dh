@@ -4,16 +4,12 @@
 /* @var $pages */
 /* @var $count */
 $this->title = 'ACCOUNTING';
-
+\common\assets\DateTimePickerAsset::register($this);
 ?>
 
-<div class="modal fade" id="b-account-modal" tabindex="-1" aria-labelledby="b-account-modal-label" aria-hidden="true">
 
-</div>
-
-<!--<div class="modal fade" id="asd-diary-modal" tabindex="-1" aria-labelledby=asd-diary-modal-label" aria-hidden="true">-->
-
-<!--</div>-->
+<div class="modal fade" id="b-account-modal" tabindex="-1" aria-labelledby="b-account-modal-label" aria-hidden="true"></div>
+<div class="modal fade" id="record-modal" tabindex="-1" aria-labelledby="record-modal-label" aria-hidden="true"></div>
 
 <form class="form-row align-items-center">
     <div class="col-auto">
@@ -25,6 +21,9 @@ $this->title = 'ACCOUNTING';
     </div>
     <div class="col-auto">
         <a id="create-b-account-btn" class="btn btn-primary mb-2">创建</a>
+    </div>
+    <div class="col-auto">
+        <a id="create-record-btn" class="btn btn-primary mb-2">结算</a>
     </div>
 </form>
 
@@ -65,12 +64,19 @@ $this->title = 'ACCOUNTING';
     共<?php echo $count; ?>条
 </div>
 
+<?php $recordModalHtml = $this->context->renderPartial('_record_modal'); ?>
+<input type="hidden" value='<?php echo $recordModalHtml; ?>' name="record-modal-html" id="record-modal-html">
+
 <script>
     $(document).ready(function () {
         createModalBind("b-account");
         updateModalBind("b-account");
         saveModalBind("b-account");
         deleteModalBind("b-account");
+    });
+    $("#create-record-btn").click(function () {
+        let html = $("#record-modal-html").val();
+        $("#record-modal").html(html).modal();
     });
 </script>
 

@@ -81,4 +81,6 @@ class AsdDiaryController extends BaseController
     public function actionTest() {
         return $this->render('test');
     }
+
+
 }

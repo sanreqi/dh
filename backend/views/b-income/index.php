@@ -28,7 +28,7 @@ $this->title = 'INCOME';
         <thead>
         <tr>
             <th>ID</th>
-            <th>账户号</th>
+            <th>用户名</th>
             <th>账户名</th>
             <th>收入金额</th>
             <th>收入时间</th>
@@ -39,15 +39,15 @@ $this->title = 'INCOME';
         <?php if (!empty($models)): ?>
             <?php foreach ($models as $model): ?>
                 <tr>
-                    <td><?= 1 ?></td>
-                    <td><?= 1 ?></td>
-                    <td><?= 1 ?></td>
-                    <td><?= 1 ?></td>
-                    <td><?= 1 ?></td>
-                    <td><?= 1 ?></td>
+                    <td><?= $model['id'] ?></td>
+                    <td><?= $model['username'] ?></td>
+                    <td><?= $model['account_name'] ?></td>
+                    <td><?= $model['amount'] ?></td>
+                    <td><?= $model['date'] ?></td>
+                    <td><?= $model['remark'] ?></td>
                     <td>
-                        <a href="javascript:void(0)" class="btn-sm btn-success update-b-account-btn" prikey-val="<?= 1 ?>">编辑</a>
-                        <a href="javascript:void(0)" class="btn-sm btn-danger delete-b-account-btn" prikey-val="<?= 1 ?>" str="<?= 1 ?>">删除</a>
+                        <a href="javascript:void(0)" class="btn-sm btn-success update-b-income-btn" prikey-val="<?= $model['id'] ?>">编辑</a>
+                        <a href="javascript:void(0)" class="btn-sm btn-danger delete-b-income-btn" prikey-val="<?= $model['id'] ?>" str="<?= $model['id'] ?>">删除</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -77,5 +77,7 @@ $this->title = 'INCOME';
         saveModalBind("b-income");
         deleteModalBind("b-income");
     });
+
+
 </script>
 

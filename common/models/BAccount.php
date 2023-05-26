@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "b_account".
  *
  * @property int $id
+ * @property int $uid
  * @property string $name 账户名称
  * @property string account 账户号
  * @property float $amount 金额
@@ -32,7 +33,7 @@ class BAccount extends \yii\db\ActiveRecord
     {
         return [
             [['amount'], 'number'],
-            [['is_delete', 'create_time', 'update_time'], 'integer'],
+            [['is_delete', 'create_time', 'update_time', 'uid'], 'integer'],
             [['name', 'account'], 'string', 'max' => 255],
         ];
     }
