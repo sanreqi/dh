@@ -54,14 +54,14 @@ class TestController extends Controller
 
         $token = 'r23fn4iw0PZzfX537HAsGdnD';
         $corpId = 'wwb9164107d1885dd1';
-        $encodingAESKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
-        $agentId = '1000667';
+        $encodingAesKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
+//        $agentId = '1000667';
 
-        $wxcpt = new \WXBizMsgCrypt($token, $encodingAESKey, $agentId);
+//        $wxcpt = new \WXBizMsgCrypt($token, $encodingAESKey, $agentId);
 
-        $corpId = $appConfigs['corpId'];
-        $token = $appConfigs['token'];
-        $encodingAesKey = $appConfigs['encodingAESKey'];
+//        $corpId = $appConfigs['corpId'];
+//        $token = $appConfigs['token'];
+//        $encodingAesKey = $appConfigs['encodingAESKey'];
 
         //接收get参数
         $request = Yii::$app->request;
