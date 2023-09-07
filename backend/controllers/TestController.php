@@ -57,8 +57,7 @@ class TestController extends Controller
         $encodingAESKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
         $agentId = '1000667';
 
-        $wxcpt = new \WXBizMsgCrypt(1, 1, 1);
-        print_r($wxcpt);exit;
+        $wxcpt = new \WXBizMsgCrypt($token, $encodingAESKey, $agentId);
 
         $corpId = $appConfigs['corpId'];
         $token = $appConfigs['token'];
