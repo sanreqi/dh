@@ -40,4 +40,47 @@ class TestController extends Controller
 //        return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
 
     }
+
+    public function actionCallback() {
+        Yii::error('===callback===');
+//        'wx' => [
+//            'name' => '政务微信-uat',
+//            'base_url' => 'zwwxuat.shdata.com/cgi-bin',
+//            'corpid' => 'wwb9164107d1885dd1',
+//            'corpsecret' => 'pdfw0nhtBgCls93R3TdO8r6Tp68KcH3ZPVa-0nDW53Y',
+//            'token' => 'r23fn4iw0PZzfX537HAsGdnD',
+//            'encodingAESKey' => 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g',
+//        ],
+
+        $token = 'r23fn4iw0PZzfX537HAsGdnD';
+        $corpId = 'wwb9164107d1885dd1';
+        $encodingAESKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
+        $agentId = '1000667';
+
+        $wxcpt = new \WXBizMsgCrypt(1, 1, 1);
+        print_r($wxcpt);exit;
+
+        $corpId = $appConfigs['corpId'];
+        $token = $appConfigs['token'];
+        $encodingAesKey = $appConfigs['encodingAESKey'];
+
+        //接收get参数
+        $request = Yii::$app->request;
+        Yii::error('===callback-params==='.json_encode($request->get()));
+        $sVerifyMsgSig = $request->get('msg_signature');
+        $sVerifyNonce = $request->get('nonce');
+        $sVerifyEchoStr = $request->get('echostr');
+        $sVerifyTimeStamp = $request->get('timestamp');
+
+        // 需要返回的明文
+        $sEchoStr = "";
+
+        $wxcpt = new \WXBizMsgCrypt($token, $encodingAesKey, $corpId);
+        $errCode = $wxcpt->VerifyURL($sVerifyMsgSig, $sVerifyTimeStamp, $sVerifyNonce, $sVerifyEchoStr, $sEchoStr);
+        if ($errCode == 0) {
+            return $sEchoStr;
+        } else {
+            return "ERR: " . $errCode . "\n\n";
+        }
+    }
 }

@@ -44,6 +44,7 @@ class AsdDiaryService
         }
         $model->is_delete = 0;
         $model->update_time = $currentTime;
+        //@todo srq 有bug
         if (empty($model->isNewRecord)) {
             $model->create_time = $currentTime;
         }

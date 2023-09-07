@@ -15,7 +15,6 @@ class BIncomeController extends BaseController
     public function actionIndex() {
         $params = Yii::$app->request->getQueryParams();
         $pageSize = isset($params['per-page']) && !empty($params['per-page']) ? $params['per-page'] : 10;
-//        $service = new BAccountService();
         $service = new BIncomeService();
         $result = $service->pageList($params);
         $data = $result['data'];

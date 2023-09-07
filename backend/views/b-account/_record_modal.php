@@ -1,8 +1,4 @@
 <?php
-$this->title = "结算";
-?>
-
-<?php
 //上月1号
 $recordDate = date("Y-m", strtotime("-1 month"));
 ?>

@@ -36,6 +36,7 @@ class BAccountService
 
     //创建编辑用一个方法
     public function createUpdate($post) {
+        $uid = Yii::$app->user->identity->id;
         $currentTime = time();
         $post = Tools::trimAllData($post);
         if (false === $this->checkCreateUpdate($post)) {
@@ -52,7 +53,7 @@ class BAccountService
         } else {
             //创建
             $model = new BAccount();
-            $model->uid = Yii::$app->user->identity->id;
+            $model->uid = $uid;
         }
         $model->name = $post['name'];
         $model->account = $post['account'];
@@ -69,6 +70,7 @@ class BAccountService
     }
 
     private function checkCreateUpdate($post) {
+        $uid = Yii::$app->user->identity->id;
         $requireFields = ['name' => '账户名称', 'account' => '账户号', 'amount' => '余额'];
         foreach ($requireFields as $k => $v) {
             if (!isset($post[$k]) || $post[$k] === '' || $post[$k] === NULL) {
@@ -85,8 +87,9 @@ class BAccountService
         if (isset($post['id']) && !empty($post['id'])) {
             //编辑
             $bAccount = BAccount::find()
-                ->where(['!=', 'id', $post['id']])
+                ->andWhere(['!=', 'id', $post['id']])
                 ->andWhere(['name' => $post['name']])
+                ->andWhere(['uid' => $uid])
                 ->limit(1)
                 ->one();
             if (!empty($bAccount)) {
@@ -95,7 +98,7 @@ class BAccountService
             }
         } else {
             //创建
-            $bAccount = BAccount::find()->where(['name' => $post['name']])->limit(1)->one();
+            $bAccount = BAccount::find()->andWhere(['name' => $post['name']])->andWhere(['uid' => $uid])->limit(1)->one();
             if (!empty($bAccount)) {
                 $this->errMsg = '账户名称已经存在';
                 return false;

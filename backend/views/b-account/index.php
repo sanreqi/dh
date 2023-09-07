@@ -13,8 +13,8 @@ $this->title = 'ACCOUNTING';
 
 <form class="form-row align-items-center">
     <div class="col-auto">
-<!--        <input class="form-control mb-2" name="date"-->
-<!--               value="--><?php //echo isset($params['date']) && !empty($params['date']) ? date('Y-m-d', strtotime($params['date'])) : ''; ?><!--" id="date" type="text">-->
+        <input class="form-control mb-2" name="date" placeholder="无效搜索"
+               value="<?php echo isset($params['date']) && !empty($params['date']) ? date('Y-m-d', strtotime($params['date'])) : ''; ?>" id="date" type="text">
     </div>
     <div class="col-auto">
         <button type="submit" class="btn btn-primary mb-2">搜索</button>
