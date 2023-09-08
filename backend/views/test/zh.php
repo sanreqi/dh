@@ -15,5 +15,4 @@ zh ----  ss
         jsApiList: ["startAutoLBS","stopAutoLBS"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
 
-    alert(123);
 </script>
