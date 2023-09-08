@@ -147,4 +147,9 @@ exit;
         $xml = simplexml_load_string($xml,NULL,LIBXML_NOCDATA);
         return  json_decode(json_encode($xml),true);
     }
+
+    public function actionZh() {
+        echo 666666;
+        exit;
+    }
 }
