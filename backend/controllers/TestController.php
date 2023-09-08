@@ -57,6 +57,9 @@ class TestController extends Controller
         $token = 'r23fn4iw0PZzfX537HAsGdnD';
         $corpId = 'wwb9164107d1885dd1';
         $encodingAesKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
+
+        $this->receivePush();
+        exit;
 //        $agentId = '1000667';
 
         //接收get参数
@@ -77,5 +80,66 @@ class TestController extends Controller
         } else {
             return "ERR: " . $errCode . "\n\n";
         }
+    }
+
+    public function receivePush()
+    {
+        $token = 'r23fn4iw0PZzfX537HAsGdnD';
+        $corpId = 'wwb9164107d1885dd1';
+        $encodingAesKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
+
+        //接收get参数
+        $request = Yii::$app->request;
+        $sVerifyMsgSig = $request->get('msg_signature');
+        $sVerifyNonce = $request->get('nonce');
+        $sVerifyTimeStamp = $request->get('timestamp');
+
+        //接收post数据包
+        $sReqData = file_get_contents("php://input");
+
+        $wxcpt = new \WXBizMsgCrypt($token, $encodingAesKey, $corpId);
+
+        //密文解析
+        $sMsg = "";  //用于存储解析之后的明文, sMsg是xml格式的明文
+        $errCode = $wxcpt->DecryptMsg($sVerifyMsgSig, $sVerifyTimeStamp, $sVerifyNonce, $sReqData, $sMsg);
+
+        if ($errCode != 0) {
+            return "ERR: " . $errCode . "\n\n";
+        }
+        $wxData = $this->xmlToArray($sMsg);
+
+        Yii::error('===receivepush-params==='.json_encode($wxData));
+exit;
+
+        //记录微信推送记录
+        //$this->saveWxMsgLog($wxData);
+        $this->sysLog['content']['wx_msg_data'] = $wxData;
+
+        //消息类型
+        $this->sysLog['des'] = $this->sysLog['des'] . '_' . $wxData['MsgType'];
+
+        //接收事件
+        if (isset($wxData['MsgType']) && $wxData['MsgType'] == 'event') {
+
+            //事件类型
+            $this->sysLog['des'] = $this->sysLog['des'] . '_' . $wxData['Event'];
+
+            /*判断微信回调动作类型*/
+            switch ($wxData['Event']) {
+                //上报地理位置
+                case 'LOCATION':
+                    return $this->location($wxData);
+                case 'enter_agent':
+                    return $this->enterAgent($wxData);
+                default:
+                    return false;
+            }
+        }
+
+        //接收普通消息
+        if (isset($wxData['MsgType']) && in_array($wxData['MsgType'], ['text', 'image', 'voice', 'video', 'location', 'link'])) {
+            return $this->message($wxData);
+        }
+
     }
 }
