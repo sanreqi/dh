@@ -245,14 +245,14 @@ exit;
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
         if ($redis->get($key)) {
-            return $redis->get($key);
+//            return $redis->get($key);
         }
         $accessToken = $this->getAccessToken();
         $url = 'http://zwwxuat.shdata.com/cgi-bin/get_jsapi_ticket?access_token='.$accessToken;
         $response = $this->request($url);
         $response = json_decode($response,true);
         $ticket = $response['ticket'];
-        $redis->set($key,$accessToken,7100);
+        $redis->set($key,$ticket,7100);
         return $ticket;
     }
 
