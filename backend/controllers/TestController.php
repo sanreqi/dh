@@ -168,7 +168,6 @@ exit;
         $url = 'dhadmin.xiaosanjun.com/test/zh';
 
         $string1 = "jsapi_ticket={$ticket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$url}";
-//        echo $string1;exit;
         $signature = sha1($string1);
         $data = [
             'appId' => $corpId,
@@ -180,6 +179,10 @@ exit;
                 'chooseWXPay'
             ],
         ];
+
+//        $str = 'jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg&noncestr=Wm3WZYTPz0wzccnW&timestamp=1414587457&url=http://mp.weixin.qq.com';
+//        $r = sha1($str,true);
+//        echo $r;exit;
 
         return $this->render('zh',$data);
 
@@ -226,7 +229,7 @@ exit;
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
         if ($redis->get($key)) {
-            return $redis->get($key);
+//            return $redis->get($key);
         }
 
         $url = 'http://zwwxuat.shdata.com/cgi-bin/gettoken?corpid=wwb9164107d1885dd1&corpsecret=d4FZ67U6je9yJq3_YwdMVcor_7Gv_lWTXoOj9YnnpLU';
@@ -242,7 +245,7 @@ exit;
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
         if ($redis->get($key)) {
-            return $redis->get($key);
+//            return $redis->get($key);
         }
         $accessToken = $this->getAccessToken();
         $url = 'http://zwwxuat.shdata.com/cgi-bin/get_jsapi_ticket?access_token='.$accessToken;
