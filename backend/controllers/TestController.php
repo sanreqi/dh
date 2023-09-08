@@ -58,7 +58,7 @@ class TestController extends Controller
         $corpId = 'wwb9164107d1885dd1';
         $encodingAesKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
 
-        if (isset($_GET['echostr'])) {
+        if (!isset($_GET['echostr'])) {
             $this->receivePush();
             exit;
         }
