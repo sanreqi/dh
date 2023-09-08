@@ -58,9 +58,11 @@ class TestController extends Controller
         $corpId = 'wwb9164107d1885dd1';
         $encodingAesKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
 
-//        $this->receivePush();
-//        exit;
-//        $agentId = '1000667';
+        if (isset($_GET['echostr'])) {
+            $this->receivePush();
+            exit;
+        }
+        $agentId = '1000667';
 
         //接收get参数
         $request = Yii::$app->request;
