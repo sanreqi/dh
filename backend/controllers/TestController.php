@@ -148,7 +148,31 @@ exit;
         return  json_decode(json_encode($xml),true);
     }
 
+    public function createNonceStr($length=16) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $str = '';
+        for ($i=0; $i<$length; $i++) {
+            $str .= substr($chars,mt_rand(0,strlen($chars)-1),1);
+        }
+        return $str;
+    }
+
     public function actionZh() {
+//        $token = 'r23fn4iw0PZzfX537HAsGdnD';
+//        $corpId = 'wwb9164107d1885dd1';
+//        $encodingAesKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
+//
+//        $jsapi = $this->getJsapi();
+
+        $ticket = $this->getJsapi();
+        $nonceStr = $this->createNonceStr();
+        $timeStamp = time();
+        $url = 'http://dhadmin.xiaosanjun.com';
+        $string1 = "jsapi_ticket={$ticket}&noncestr={$nonceStr}&timestamp={$timeStamp}&url={$url}";
+        $signature = sha1($string1);
+        print_r($signature);exit;
+
+
         echo $this->getJsapi();
         exit;
         echo 666666;
@@ -212,5 +236,19 @@ exit;
         $ticket = $response['ticket'];
         $redis->set($key,$accessToken,7100);
         return $ticket;
+    }
+
+    public function getSHA1($token, $timestamp, $nonce, $encrypt_msg)
+    {
+        //排序
+        try {
+            $array = array($encrypt_msg, $token, $timestamp, $nonce);
+            sort($array, SORT_STRING);
+            $str = implode($array);
+            return array(ErrorCode::$OK, sha1($str));
+        } catch (Exception $e) {
+            print $e . "\n";
+            return array(ErrorCode::$ComputeSignatureError, null);
+        }
     }
 }
