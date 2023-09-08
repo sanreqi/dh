@@ -165,8 +165,10 @@ exit;
         $nonceStr = $this->createNonceStr();
         $timestamp = time();
         $corpId = 'wwb9164107d1885dd1';
-        $url = 'http://dhadmin.xiaosanjun.com/test/zh';
+        $url = 'dhadmin.xiaosanjun.com/test/zh';
+
         $string1 = "jsapi_ticket={$ticket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$url}";
+//        echo $string1;exit;
         $signature = sha1($string1);
         $data = [
             'appId' => $corpId,
