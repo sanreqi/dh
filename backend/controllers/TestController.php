@@ -149,7 +149,68 @@ exit;
     }
 
     public function actionZh() {
+        echo $this->getJsapi();
+        exit;
         echo 666666;
         exit;
+    }
+
+    protected function request($url, $method = "get", $body = []) {
+        $method = strtolower($method);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        if ($method == 'post') {
+            if (is_array($body)) {
+                $body = json_encode($body);
+            }
+            curl_setopt($curl, CURLOPT_POST, 1);//post提交方式
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+
+            curl_setopt($curl, CURLOPT_HEADER, 0);
+            $header = [
+                'Content-Type: application/json; charset=utf-8',
+                'Content-Length:' . strlen($body)
+            ];
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        }
+        $output = curl_exec($curl);
+        curl_close($curl);
+        return $output;
+    }
+
+    public function getAccessToken() {
+        $key = 'zw_access_token';
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1', 6379);
+        if ($redis->get($key)) {
+            return $redis->get($key);
+        }
+
+        $url = 'http://zwwxuat.shdata.com/cgi-bin/gettoken?corpid=wwb9164107d1885dd1&corpsecret=d4FZ67U6je9yJq3_YwdMVcor_7Gv_lWTXoOj9YnnpLU';
+        $response = $this->request($url);
+        $response = json_decode($response,true);
+        $accessToken = $response['access_token'];
+        $redis->set($key,$accessToken,7100);
+        return $accessToken;
+    }
+
+    public function getJsapi() {
+        $key = 'zw_jsapi';
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1', 6379);
+        if ($redis->get($key)) {
+            return $redis->get($key);
+        }
+        $accessToken = $this->getAccessToken();
+        $url = 'http://zwwxuat.shdata.com/cgi-bin/get_jsapi_ticket?access_token='.$accessToken;
+        $response = $this->request($url);
+        $response = json_decode($response,true);
+        $ticket = $response['ticket'];
+        $redis->set($key,$accessToken,7100);
+        return $ticket;
     }
 }

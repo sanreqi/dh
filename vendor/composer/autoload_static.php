@@ -113,6 +113,10 @@ class ComposerStaticInitc6ccc601ff2058fdea354619c8fd4fea
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-faker',
         ),
+        'yii\\redis\\' =>
+            array (
+                0 => __DIR__ . '/..' . '/yiisoft/yii2-redis/src',
+            ),
         'yii\\debug\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-debug/src',
