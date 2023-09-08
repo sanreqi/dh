@@ -142,4 +142,9 @@ exit;
         }
 
     }
+
+    public function xmlToArray($xml){
+        $xml = simplexml_load_string($xml,NULL,LIBXML_NOCDATA);
+        return  json_decode(json_encode($xml),true);
+    }
 }
