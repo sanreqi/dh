@@ -64,8 +64,10 @@ zh ----  ss
                     var speed = res.speed; // 速度，以米/每秒计
                     var accuracy = res.accuracy; // 位置精度
                     var lbsIndex = 0;
+                    alert('on suc');
                 } else {
                     //错误处理
+                    alert('on errrrrrr');
                 }
             }
         );
