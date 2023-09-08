@@ -158,18 +158,31 @@ exit;
     }
 
     public function actionZh() {
-//        $token = 'r23fn4iw0PZzfX537HAsGdnD';
-//        $corpId = 'wwb9164107d1885dd1';
-//        $encodingAesKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
-//
-//        $jsapi = $this->getJsapi();
 
+
+        $this->layout = false;
         $ticket = $this->getJsapi();
         $nonceStr = $this->createNonceStr();
-        $timeStamp = time();
+        $timestamp = time();
+        $corpId = 'wwb9164107d1885dd1';
         $url = 'http://dhadmin.xiaosanjun.com';
-        $string1 = "jsapi_ticket={$ticket}&noncestr={$nonceStr}&timestamp={$timeStamp}&url={$url}";
+        $string1 = "jsapi_ticket={$ticket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$url}";
         $signature = sha1($string1);
+        $data = [
+            'appId' => $corpId,
+            'nonceStr' => $nonceStr,
+            'timestamp' => $timestamp,
+            'url' => $url,
+            'signature' => $signature,
+            'jsApiList' => [
+                'chooseWXPay'
+            ],
+        ];
+
+        return $this->render('zh',$data);
+
+
+
         print_r($signature);exit;
 
 
