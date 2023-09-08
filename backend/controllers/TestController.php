@@ -8,6 +8,8 @@ use yii\web\Controller;
 
 class TestController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     public function actionIndex() {
 //        $user = User::find()->where(['username' => 'xinrujifeng'])->one();
 //        $r = Yii::$app->user->login($user,1000);
