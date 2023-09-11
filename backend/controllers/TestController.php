@@ -161,9 +161,9 @@ exit;
 
     public function actionZh() {
 
-
         $this->layout = false;
         $ticket = $this->getJsapi();
+//print_r($ticket);exit;
         $nonceStr = $this->createNonceStr();
         $timestamp = time();
         $corpId = 'wwb9164107d1885dd1';
@@ -231,10 +231,11 @@ exit;
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
         if ($redis->get($key)) {
-            return $redis->get($key);
+            //return $redis->get($key);
         }
 
         $url = 'http://zwwxuat.shdata.com/cgi-bin/gettoken?corpid=wwb9164107d1885dd1&corpsecret=d4FZ67U6je9yJq3_YwdMVcor_7Gv_lWTXoOj9YnnpLU';
+//echo $url;exit;
         $response = $this->request($url);
         $response = json_decode($response,true);
         $accessToken = $response['access_token'];
@@ -246,13 +247,16 @@ exit;
         $key = 'zw_jsapi';
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
+//print_r($redis->get($key));exit;
         if ($redis->get($key)) {
             return $redis->get($key);
         }
         $accessToken = $this->getAccessToken();
         $url = 'http://zwwxuat.shdata.com/cgi-bin/get_jsapi_ticket?access_token='.$accessToken;
+//echo $url;exit;
         $response = $this->request($url);
         $response = json_decode($response,true);
+print_r($response);exit;
         $ticket = $response['ticket'];
         $redis->set($key,$ticket,7100);
         return $ticket;
