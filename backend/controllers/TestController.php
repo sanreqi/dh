@@ -283,4 +283,11 @@ exit;
             return array(ErrorCode::$ComputeSignatureError, null);
         }
     }
+
+    public function actionGetKData() {
+        $arr = ['name'=>'srq','age'=>'30','job'=>'coding'];
+        $result = json_encode($arr);
+        echo $result;
+        exit;
+    }
 }
