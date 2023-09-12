@@ -1,10 +1,13 @@
 zh ----  ss
 
-<meta name="viewport" content="width=device_width, initial-scale=1.0, user-scalable=no,
-        maximum-scale=1.0, minimum-scale=1.0">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script>(function () {var src = '//eruda.liriliri.io/eruda.min.js';if (!/eruda=true/.test(window.location)) return;document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');setTimeout(()=>{// 初始化eruda && eruda.init()}, 3000)})();</script>
+<!--<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>-->
+<script type="text/javascript" src="https://cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+
+<script>eruda.init();</script>
 
 <script>
 
@@ -77,7 +80,6 @@ zh ----  ss
     //        }
     //    );
     //});
-
 
 
 </script>
