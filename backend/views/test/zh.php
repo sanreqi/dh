@@ -57,32 +57,48 @@ zh ----  ss
 
         wx.invoke('startAutoLBS',{
             type: 'wgs84', // wgs84是gps坐标，gcj02是火星坐标
-            // continue: 0, // 默认关闭，值为1的时候启用。页面关闭后，也可继续获取成员的位置信息。需在“应用详情” - “接收消息”页面配置“实时位置信息事件”回调接口，此参数才会生效。
+            continue: 1, // 默认关闭，值为1的时候启用。页面关闭后，也可继续获取成员的位置信息。需在“应用详情” - “接收消息”页面配置“实时位置信息事件”回调接口，此参数才会生效。
         }, function(res) {
             alert(JSON.stringify(res));
             if (res.err_msg == "startAutoLBS:ok") {
                 //调用成功
+
+                wx.onLocationChange(
+                    function(res) {
+                        if (res.errMsg == "auto:location:report:ok") {
+                            var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                            var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                            var speed = res.speed; // 速度，以米/每秒计
+                            var accuracy = res.accuracy; // 位置精度
+                            var lbsIndex = 0;
+                            alert('on suc');
+                        } else {
+                            //错误处理
+                            alert('on errrrrrr');
+                        }
+                    }
+                );
             } else {
                 alert('fail');
                 //错误处理
             }
         });
 
-        wx.onLocationChange(
-            function(res) {
-                if (res.errMsg == "auto:location:report:ok") {
-                    var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                    var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                    var speed = res.speed; // 速度，以米/每秒计
-                    var accuracy = res.accuracy; // 位置精度
-                    var lbsIndex = 0;
-                    alert('on suc');
-                } else {
-                    //错误处理
-                    alert('on errrrrrr');
-                }
-            }
-        );
+        // wx.onLocationChange(
+        //     function(res) {
+        //         if (res.errMsg == "auto:location:report:ok") {
+        //             var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+        //             var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+        //             var speed = res.speed; // 速度，以米/每秒计
+        //             var accuracy = res.accuracy; // 位置精度
+        //             var lbsIndex = 0;
+        //             alert('on suc');
+        //         } else {
+        //             //错误处理
+        //             alert('on errrrrrr');
+        //         }
+        //     }
+        // );
 
     });
 
