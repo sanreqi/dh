@@ -59,7 +59,7 @@ zh ----  ss
             type: 'gcj02', // wgs84是gps坐标，gcj02是火星坐标
             continue: 1, // 默认关闭，值为1的时候启用。页面关闭后，也可继续获取成员的位置信息。需在“应用详情” - “接收消息”页面配置“实时位置信息事件”回调接口，此参数才会生效。
         }, function(res) {
-            alert(JSON.stringify(res));
+            // alert(JSON.stringify(res));
             if (res.err_msg == "startAutoLBS:ok") {
                 //调用成功
 
