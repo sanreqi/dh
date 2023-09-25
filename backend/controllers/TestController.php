@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 use common\models\User;
+use common\models\WqBlacklist;
 use Yii;
 use yii\web\Controller;
 
@@ -272,6 +273,24 @@ exit;
         $arr = ['name'=>'srq','age'=>'30','job'=>'coding'];
         $result = json_encode($arr);
         echo $result;
+        exit;
+    }
+
+    public function actionTimeout() {
+        $this->layout = false;
+        return $this->render('timeout');
+    }
+
+    public function actionSaveWq() {
+        $model = new WqBlacklist();
+        $model->platform = 1;
+        $model->username = 'dahhh';
+        if ($model->save()) {
+            echo 123;
+        } else {
+            print_r($model->getFirstErrors());
+        }
+
         exit;
     }
 }
