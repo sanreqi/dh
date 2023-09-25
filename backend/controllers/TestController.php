@@ -62,7 +62,7 @@ class TestController extends Controller
             $this->receivePush();
             exit;
         }
-        $agentId = '1000667';
+//        $agentId = '1000667';
 
         //接收get参数
         $request = Yii::$app->request;
@@ -181,23 +181,7 @@ exit;
             ],
         ];
 
-        $str = 'jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg&noncestr=Wm3WZYTPz0wzccnW&timestamp=1414587457&url=http://mp.weixin.qq.com';
-        $r = sha1($str,true);
-//        echo $r;exit;
-//
-//
-//        return $this->render('zh',[]);
         return $this->render('zh',$data);
-
-
-
-        print_r($signature);exit;
-
-
-        echo $this->getJsapi();
-        exit;
-        echo 666666;
-        exit;
     }
 
     protected function request($url, $method = "get", $body = []) {
@@ -232,7 +216,7 @@ exit;
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
         if ($redis->get($key)) {
-            //return $redis->get($key);
+            return $redis->get($key);
         }
 
 //        wwb9164107d1885dd1
@@ -252,17 +236,16 @@ exit;
         $key = 'zw_jsapi';
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
-//print_r($redis->get($key));exit;
+
         if ($redis->get($key)) {
-//            return $redis->get($key);
+            return $redis->get($key);
         }
         $accessToken = $this->getAccessToken();
         $url = 'http://zwwxuat.shdata.com/cgi-bin/get_jsapi_ticket?access_token='.$accessToken;
-//        echo $url;exit;
-//echo $url;exit;
+
         $response = $this->request($url);
         $response = json_decode($response,true);
-//print_r($response);exit;
+
         if (!isset($response['ticket'])) {
             return '';
         }
