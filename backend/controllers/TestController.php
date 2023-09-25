@@ -160,34 +160,30 @@ exit;
     }
 
     public function actionZh() {
-//     $r = md5('/12312321');
-//     $t = substr($r,0,1);
-//     echo $t; exit;
-//     echo $r;exit;
         $this->layout = false;
         $ticket = $this->getJsapi();
-//print_r($ticket);exit;
-//        $nonceStr = $this->createNonceStr();
-//        $timestamp = time();
-//        $corpId = 'wwb9164107d1885dd1';
-//        $url = 'http://dhadmin.xiaosanjun.com/test/zh';
-//
-//        $string1 = "jsapi_ticket={$ticket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$url}";
-//        $signature = sha1($string1);
-//        $data = [
-//            'appId' => $corpId,
-//            'nonceStr' => $nonceStr,
-//            'timestamp' => $timestamp,
-//            'url' => $url,
-//            'signature' => $signature,
-//            'jsApiList' => [
-//                'chooseWXPay'
-//            ],
-//        ];
 
-//        $str = 'jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg&noncestr=Wm3WZYTPz0wzccnW&timestamp=1414587457&url=http://mp.weixin.qq.com';
-//        $r = sha1($str,true);
-//        echo $r;exit;
+        $nonceStr = $this->createNonceStr();
+        $timestamp = time();
+        $corpId = 'wwb9164107d1885dd1';
+        $url = 'http://dhadmin.xiaosanjun.com/test/zh';
+
+        $string1 = "jsapi_ticket={$ticket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$url}";
+        $signature = sha1($string1);
+        $data = [
+            'appId' => $corpId,
+            'nonceStr' => $nonceStr,
+            'timestamp' => $timestamp,
+            'url' => $url,
+            'signature' => $signature,
+            'jsApiList' => [
+                'chooseWXPay'
+            ],
+        ];
+
+        $str = 'jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg&noncestr=Wm3WZYTPz0wzccnW&timestamp=1414587457&url=http://mp.weixin.qq.com';
+        $r = sha1($str,true);
+        echo $r;exit;
 
 
         return $this->render('zh',[]);
@@ -239,7 +235,11 @@ exit;
             //return $redis->get($key);
         }
 
-        $url = 'http://zwwxuat.shdata.com/cgi-bin/gettoken?corpid=wwb9164107d1885dd1&corpsecret=d4FZ67U6je9yJq3_YwdMVcor_7Gv_lWTXoOj9YnnpLU';
+//        wwb9164107d1885dd1
+//d4FZ67U6je9yJq3_YwdMVcor_7Gv_lWTXoOj9YnnpLU
+//        $url = 'http://zwwxuat.shdata.com/cgi-bin/gettoken?corpid=wwb9164107d1885dd1&corpsecret=d4FZ67U6je9yJq3_YwdMVcor_7Gv_lWTXoOj9YnnpLU';
+
+        $url = 'http://zwwxuat.shdata.com/cgi-bin/gettoken?corpid=wwb9164107d1885dd1&corpsecret=-EhXFEI7ILMyGICzyHIZyifXCJn6GmKTuhpIgQv8moo';
 
         $response = $this->request($url);
         $response = json_decode($response,true);
@@ -258,6 +258,7 @@ exit;
         }
         $accessToken = $this->getAccessToken();
         $url = 'http://zwwxuat.shdata.com/cgi-bin/get_jsapi_ticket?access_token='.$accessToken;
+//        echo $url;exit;
 //echo $url;exit;
         $response = $this->request($url);
         $response = json_decode($response,true);
