@@ -1,0 +1,37 @@
+{
+  "id": "4282701",
+  "name": "acq",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "609508",
+      "name": "删除",
+      "font_class": "shanchudelete30",
+      "unicode": "e70a",
+      "unicode_decimal": 59146
+    },
+    {
+      "icon_id": "9928436",
+      "name": "delete",
+      "font_class": "delete",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
+      "icon_id": "32321993",
+      "name": "基础_删除",
+      "font_class": "jichu_shanchu",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "28897511",
+      "name": "edit",
+      "font_class": "edit",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    }
+  ]
+}
