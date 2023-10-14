@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <title>后台登录</title>
+    <title>不要再说了</title>
 
     <?php $this->head(); //必须，layout=false情况下，通过这行代码引入前端资源包，asset register ?>
 </head>
