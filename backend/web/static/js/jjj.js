@@ -83,6 +83,10 @@ $(document).ready(function() {
     });
 
     $(document).on("click","#sort a",function () {
+        if ($(this).attr("sort_type") == 2) {
+            alert("还没有开发哦");
+            return false;
+        }
         $(this).parents("#sort").find("a.active").removeClass("active");
         $(this).addClass("active");
         requestTable();
@@ -99,6 +103,7 @@ $(document).ready(function() {
     $(document).on("click",".search-btn",function () {
         requestTable();
     });
+
 
     function renderIcon() {
         if ($(".edit-mode-div input").is(":checked")) {
