@@ -19,7 +19,7 @@
     <!-- 弹窗内容 -->
     <div class="modal-content">
         <div class="modal-header">
-            <h2>弹窗头部</h2>
+            <h2>不要说了</h2>
         </div>
         <div class="modal-body">
             <form id="ban-form" data-id="0">
