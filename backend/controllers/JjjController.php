@@ -15,6 +15,8 @@ class JjjController extends Controller
     public $enableCsrfValidation = false;
 
     public function actionIndex() {
+        echo '';
+        exit;
 //        $currentTime = time();
 //        $keywords = ['从来','一直','肯定','狠','无敌','绝了','不要脸','不理人',
 //                '不是人','故意','长期这样','一年前','半年前','恶毒','不善良','折磨','恶心','舒服','开心'];
