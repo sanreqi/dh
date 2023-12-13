@@ -35,7 +35,7 @@ class WxCallbackService
         $postStr = file_get_contents("php://input");
 
         $model = new Contact();
-        $model->contact = '====callback_postObj===='.json_encode($postObj);
+        $model->contact = '====callback_postStr===='.json_encode($postStr);
         $model->save();
 
         if (empty($postStr) || !is_string($postStr)) {
