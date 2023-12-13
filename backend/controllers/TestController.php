@@ -88,9 +88,10 @@ class TestController extends Controller
 
     public function receivePush()
     {
-        $token = 'r23fn4iw0PZzfX537HAsGdnD';
-        $corpId = 'wwb9164107d1885dd1';
-        $encodingAesKey = 'MXWW3p35iovYtgfRJbNobaN1jiz3CRKNj8oxWWTcu9g';
+
+        $token = 'weixin';
+        $corpId = 'wxc7fde5728dd8873c';
+        $encodingAesKey = 'jxSkkNezF0VJI2w6dE9gjK6i7rYhkT1a0quHhgYVe7D';
 
         //接收get参数
         $request = Yii::$app->request;
