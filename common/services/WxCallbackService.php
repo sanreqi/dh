@@ -4,6 +4,8 @@
 namespace common\services;
 
 
+use common\models\Contact;
+
 class WxCallbackService
 {
 
@@ -36,6 +38,9 @@ class WxCallbackService
         }
         libxml_disable_entity_loader(true);
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $model = new Contact();
+        $model->contact = '====callback_response===='.json_encode($response);
+        $model->save();
         $RX_TYPE = trim($postObj->MsgType);
         switch ($RX_TYPE) {
             case 'text':
