@@ -39,7 +39,7 @@ class WxCallbackService
         libxml_disable_entity_loader(true);
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         $model = new Contact();
-        $model->contact = '====callback_response===='.json_encode($response);
+        $model->contact = '====callback_response===='.json_encode($postObj);
         $model->save();
         $RX_TYPE = trim($postObj->MsgType);
         switch ($RX_TYPE) {
