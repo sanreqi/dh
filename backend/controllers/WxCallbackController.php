@@ -12,6 +12,7 @@ class WxCallbackController extends Controller
 
     public function actionIndex() {
         $service = new WxCallbackService();
-        $service->response();
+        echo $service->response();
+        exit;
     }
 }

@@ -7,7 +7,7 @@ require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
 
 
 //require __DIR__ . '/../../common/utils/wxcallback/WXBizMsgCrypt.php';
-require __DIR__ . '/../../common/utils/wxevent/WXBizMsgCrypt.php';
+//require __DIR__ . '/../../common/utils/wxevent/WXBizMsgCrypt.php';
 
 
 require __DIR__ . '/../../common/config/bootstrap.php';
