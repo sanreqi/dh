@@ -33,13 +33,18 @@ class WxCallbackService
     private function responseMsg()
     {
         $postStr = file_get_contents("php://input");
+
+        $model = new Contact();
+        $model->contact = '====callback_postObj===='.json_encode($postObj);
+        $model->save();
+
         if (empty($postStr) || !is_string($postStr)) {
             return 'empty';
         }
         libxml_disable_entity_loader(true);
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         $model = new Contact();
-        $model->contact = '====callback_response===='.json_encode($postObj);
+        $model->contact = '====callback_postObj===='.json_encode($postObj);
         $model->save();
         $RX_TYPE = trim($postObj->MsgType);
         switch ($RX_TYPE) {
