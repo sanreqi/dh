@@ -50,7 +50,6 @@ class Contact extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
             [['id', 'uid', 'type', 'is_main', 'create_uid', 'update_uid', 'created_at', 'updated_at'], 'integer'],
             [['contact'], 'string', 'max' => 400],
         ];
